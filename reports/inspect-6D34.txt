@@ -1,0 +1,1127 @@
+Products matching 6D34 => 24
+
+---
+id=415 name=Liner kit Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/2019/07/IMG-20190709-WA0044.jpg
+
+---
+id=743 name=Turbo Mitsubishi para motor 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/8456b098-c30b-4be3-9248-5bc6a320b11d_(1).jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/ebe62e50-1fa5-4c8e-8540-cdadc44a28c3.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/ce564152-17cc-4809-8068-0f3b7332adbb.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/98bcc019-442d-4d0b-9690-f262b7597c93.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/96161320-4d01-4c90-8b8d-cd972a12384d.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/0243f591-f4a3-4847-80ba-ee1ddfcb5183.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/6b364d5c-972e-4d22-9150-b4e1eac33b87.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/0b53821d-34dc-4238-9d77-9dcaf789df6d.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/02d057f3-bdc1-4039-bf75-ffb03530324d.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/2c6cf0e7-236d-44cc-ad17-109a67c58337.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/43da5235-706d-4ecd-8190-7d55d4ab9310.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/74ad1a27-2013-40e1-9a67-0fae63e68735.jpg
+
+---
+id=988 name=Enfriador de aceite de motor Mistsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/1df6fea4-569a-49e0-a68f-07d7fbc8e6e8.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/598fedd6-a6f1-4230-b0ac-a20c659a51b1.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/c25cb7e1-c2fd-4ef6-9d2e-fdbeb7d2eb5e.jpg
+
+---
+id=1074 name=Tornillo de culata motor Mistsubishi 6D34 6D31
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/ce681dbf-42a9-4d5b-9557-1d45c9f5a162.jpg
+
+---
+id=1103 name=Rociador de aceite Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/60e446c0-80dd-46f3-b287-505a65be8e15.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/31afee7b-3355-42ed-9d13-dd4d68ae2dd7.jpg
+
+---
+id=1150 name=Bomba de Aceite de Motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/0e13ac12-1517-45bc-b89b-dabd028957a0_(1).jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/e414ff3f-ced7-4528-95bc-2b4d13f0ff65_(1).jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/596163ca-7559-4227-9ea2-4d4778c80b64.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/f634eceb-3746-4334-b807-174579a7af6d.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/422aafc2-94b5-4a32-a343-2cf47271b82f.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/b436206a-12bd-4ba7-a43f-ec9c2b2da6b0.jpg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/8d94c426-bb5f-49b4-9f84-0137b29d390c.jpg
+
+---
+id=1210 name=Inyectores Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.39_(1).jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.40.jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.39_(2).jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.39_(3)_(1).jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.38_(1).jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.37_(1).jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.38.jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-01-22_at_16.47.39_(1)_(1).jpeg
+
+---
+id=1510 name=Cigueñal Motor Mitsubishi 6D34 Forjado
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM.jpeg
+
+---
+id=1524 name=Kit Casquetes Biela+Bancada  Motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/2020/04/WhatsApp-Image-2020-04-07-at-14.33.07.jpeg
+  - https://partemaquinas.com/wp-content/uploads/2020/04/WhatsApp-Image-2020-04-07-at-14.33.07.jpeg
+  - https://partemaquinas.com/wp-content/uploads/2020/04/WhatsApp-Image-2020-04-07-at-14.33.08-1.jpeg
+  - https://partemaquinas.com/wp-content/uploads/2020/04/WhatsApp-Image-2020-04-07-at-14.33.08.jpeg
+
+---
+id=1593 name=Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=1975 name=Culata Motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=2020 name=Guias culata motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=2167 name=Empaquetadura Motor - Mitsubishi  6D34- Excavadora Kobelco SK210 Sany Y215 Kato 820
+images:
+  - https://partemaquinas.com/wp-content/uploads/2020/07/WhatsApp-Image-2020-07-14-at-11.56.43.jpeg
+
+---
+id=2201 name=Empaquetadura de motor - Mitsubishi 6d34 - Excavadora kobelco sk210, Kato 820, Sany Y215
+images:
+  - https://partemaquinas.com/wp-content/uploads/2020/07/WhatsApp-Image-2020-07-17-at-11.15.08-1.jpeg
+
+---
+id=2412 name=Motor SANY 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/2020/09/WhatsApp-Image-2020-09-10-at-12.42.47.jpeg
+
+---
+id=2452 name=Damper de cigueñal motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=2475 name=Multiple escape motor Mitsubishi 6D34 Isuzu 6BG1 Cummins 6BT5-9
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0019.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0020.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0017.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0016.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0018.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0014.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0015.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0013.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0028.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0027.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0010.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0029.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0011.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0012.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0023.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0022.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0025.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0024.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/IMG-20190709-WA0026.jpg
+    shared with:
+      * 471 - Liner kit Cummins 6BT
+      * 1242 - Valvula de escape culata y admisión  - Cummins 6BT
+      * 1488 - Bloque Motor Cummins 6BT5.9
+      * 1494 - Cigueñal Motor Cummins 6BT5.9 Forjado
+      * 1553 - Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75
+      * 1606 - Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior
+      * 1767 - Culata de Motor Cummins 6BT5-9
+      * 1965 - Bomba de Aceite - Motor Cummins 6BT5-9
+      * 2011 - Asientos de culata motor Cummins 6BT5-9
+      * 2015 - Guias culata motor Cummins 6BT5-9
+      * 2307 - Empaque de culata motor Cummins 6BT5-9
+      * 2471 - Multiple escape motor Cummins 6BT5-9
+      * 2523 - Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7
+      * 2608 - Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922
+      * 2820 - Bomba aceite motor Cummins 6BT5-9
+
+---
+id=2506 name=Multiple escape motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=2618 name=Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=2684 name=Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=2824 name=Bomba aceite motor Mitsubishi 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 3174 - Motor MITSUBISHI 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 3174 - Motor MITSUBISHI 6D34
+
+---
+id=3174 name=Motor MITSUBISHI 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.08-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.10-PM.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-1.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-02-05-at-2.09.11-PM-2.jpeg
+    shared with:
+      * 1510 - Cigueñal Motor Mitsubishi 6D34 Forjado
+      * 1593 - Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34
+      * 1975 - Culata Motor Mitsubishi 6D34
+      * 2020 - Guias culata motor Mitsubishi 6D34
+      * 2452 - Damper de cigueñal motor Mitsubishi 6D34
+      * 2506 - Multiple escape motor Mitsubishi 6D34
+      * 2618 - Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3
+      * 2684 - Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3
+      * 2824 - Bomba aceite motor Mitsubishi 6D34
+
+---
+id=3194 name=Motor MITSHUBISHI (3/4) 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/2024/02/WhatsApp-Image-2024-02-05-at-2.12.12-PM-3.jpeg
+
+---
+id=3641 name=Tapa Valvula 6D34
+images:
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-05-29-at-5.01.27-PM-1.jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-05-29-at-5.01.27-PM.jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-05-29-at-5.01.28-PM-1.jpeg
+  - https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/WhatsApp-Image-2024-05-29-at-5.01.28-PM.jpeg
