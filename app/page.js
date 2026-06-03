@@ -51,12 +51,14 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="bg-white border-b border-slate-200">
         <div className="py-6">
-          <div className="relative w-full h-[120px] sm:h-[180px] lg:h-[240px]">
+          <div className="w-full">
             <Image
-              src="/banners/ChatGPT%20Image%203%20jun%202026,%2012_57_22%20a.m..png"
+              src="/banners/ChatGPT%20Image%203%20jun%202026,%2001_09_04%20a.m..png"
               alt="Banner principal"
-              fill
-              className="object-contain border-y border-slate-200"
+              width={2172}
+              height={419}
+              sizes="100vw"
+              className="w-full h-auto border-y border-slate-200"
               priority
             />
           </div>
