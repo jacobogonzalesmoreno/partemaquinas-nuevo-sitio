@@ -1,8 +1,24 @@
+require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-const CK = 'ck_d6f713f837ed2fce72418048e64a3e257671d5c5';
-const CS = 'cs_df98a4520ad4c5109f05cec61d65d22a23f11b8a';
-const BASE = 'https://partemaquinas.com/wp-json/wc/v3/products';
+const {
+  WC_CONSUMER_KEY,
+  WC_CONSUMER_SECRET,
+  WC_BASE_URL,
+  DB_HOST,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  DB_PORT,
+} = process.env;
+
+if (!WC_CONSUMER_KEY || !WC_CONSUMER_SECRET || !WC_BASE_URL) {
+  throw new Error('Faltan variables WC_CONSUMER_KEY, WC_CONSUMER_SECRET o WC_BASE_URL.');
+}
+
+if (!DB_HOST || !DB_USER || !DB_NAME) {
+  throw new Error('Faltan variables DB_HOST, DB_USER o DB_NAME.');
+}
 
 const ids = [1023,1028,1074,1078,1140,1904,2015,2161,2163,2165,2263,2475,2506,2558,3783,3784,3785,3786,3787,3788,3789,3790,3791];
 
@@ -47,14 +63,15 @@ function extraerImagenes(html) {
 
 async function main() {
   const db = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'partemaquinassitio',
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD || '',
+    database: DB_NAME,
+    port: DB_PORT ? Number(DB_PORT) : undefined,
   });
 
   for (const id of ids) {
-    const url = BASE + '/' + id + '?consumer_key=' + CK + '&consumer_secret=' + CS;
+    const url = WC_BASE_URL + '/' + id + '?consumer_key=' + WC_CONSUMER_KEY + '&consumer_secret=' + WC_CONSUMER_SECRET;
     const res = await fetch(url);
     const p = await res.json();
     const desc = p.description || '';

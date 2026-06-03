@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { parseImagenesValue } from '@/lib/imagenes';
+import { getImagenesProducto } from '@/lib/imagenes';
 
 export default function DetalleProducto() {
   const { id } = useParams();
@@ -35,9 +35,7 @@ export default function DetalleProducto() {
     <div className="min-h-screen bg-white flex items-center justify-center text-slate-500 text-xl">Producto no encontrado</div>
   );
 
-  const parseImagenes = parseImagenesValue;
-
-  const imagenes = parseImagenes(producto.imagenes);
+  const imagenes = getImagenesProducto(producto);
   const whatsappUrl = 'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa: ' + producto.nombre);
   const descripcionCorta = producto.descripcion_corta || '';
   const descripcionCortaTexto = descripcionCorta.replace(/\\n/g, '\n');

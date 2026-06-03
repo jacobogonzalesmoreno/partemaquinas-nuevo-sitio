@@ -1,12 +1,16 @@
-const CK = 'ck_d6f713f837ed2fce72418048e64a3e257671d5c5';
-const CS = 'cs_df98a4520ad4c5109f05cec61d65d22a23f11b8a';
-const BASE = 'https://partemaquinas.com/wp-json/wc/v3/products';
+require('dotenv').config();
+
+const { WC_CONSUMER_KEY, WC_CONSUMER_SECRET, WC_BASE_URL } = process.env;
+
+if (!WC_CONSUMER_KEY || !WC_CONSUMER_SECRET || !WC_BASE_URL) {
+  throw new Error('Faltan variables WC_CONSUMER_KEY, WC_CONSUMER_SECRET o WC_BASE_URL.');
+}
 
 const ids = [700,1023,1028,1074,1078,1140,1904,2015,2161,2163,2165,2263,2475,2477,2506,2558,2783,2784,2785,2786,2787,2788,2789,2790,2791,3783,3784,3785,3786,3787,3788,3789,3790,3791];
 
 async function main() {
   for (const id of ids) {
-    const url = BASE + '/' + id + '?consumer_key=' + CK + '&consumer_secret=' + CS;
+    const url = WC_BASE_URL + '/' + id + '?consumer_key=' + WC_CONSUMER_KEY + '&consumer_secret=' + WC_CONSUMER_SECRET;
     const res = await fetch(url);
     const p = await res.json();
     const desc = p.description || '';

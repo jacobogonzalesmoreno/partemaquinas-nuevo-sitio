@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
-import { normalizeImagenesText, parseImagenesValue } from '@/lib/imagenes';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { normalizeImagenesText, parseImagenesValue, getImagenesProducto } from '@/lib/imagenes';
 import { normalizeCategoriasText, parseCategoriasValue, normalizeCategoriaKey } from '@/lib/categorias';
-import { getCategoriasCatalogo } from '@/lib/catalogo-categorias';
+import { MENU_CATEGORIAS_FLAT } from '@/lib/menu-categorias';
 
 const TEXTAREA_FIELDS = new Set(['descripcion', 'descripcion_corta']);
 const EXCLUDED_FIELDS = new Set(['id', 'created_at', 'updated_at', 'createdAt', 'updatedAt']);
@@ -44,8 +44,18 @@ export default function AdminPage() {
   const [guardando, setGuardando] = useState(false);
   const [guardandoCategoria, setGuardandoCategoria] = useState(false);
   const [subiendo, setSubiendo] = useState(false);
+  const [autenticado, setAutenticado] = useState(false);
+  const [validandoSesion, setValidandoSesion] = useState(true);
+  const [usuario, setUsuario] = useState('');
+  const [clave, setClave] = useState('');
+  const [cargandoLogin, setCargandoLogin] = useState(false);
+  const [mostrarLogin, setMostrarLogin] = useState(false);
+  const [loginShake, setLoginShake] = useState(false);
+  const [loginErrorFlash, setLoginErrorFlash] = useState(false);
   const [error, setError] = useState('');
   const [aviso, setAviso] = useState('');
+  const [toast, setToast] = useState('');
+  const [toastVisible, setToastVisible] = useState(false);
   const [busqueda, setBusqueda] = useState('');
   const [buscar, setBuscar] = useState('');
   const [categoria, setCategoria] = useState('');
@@ -55,6 +65,80 @@ export default function AdminPage() {
   const [form, setForm] = useState({});
   const [categoriaForm, setCategoriaForm] = useState({ nombre: '', emoji: '' });
   const [categoriaEditId, setCategoriaEditId] = useState(null);
+  const [selectedImagenIndex, setSelectedImagenIndex] = useState(0);
+  const [replaceIndex, setReplaceIndex] = useState(null);
+  const replaceInputRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    let isAuth = false;
+    fetch('/api/auth/me')
+      .then(res => {
+        if (!active) return;
+        isAuth = res.ok;
+        setAutenticado(res.ok);
+      })
+      .catch(() => {
+        if (!active) return;
+        isAuth = false;
+        setAutenticado(false);
+      })
+      .finally(() => {
+        if (!active) return;
+        setValidandoSesion(false);
+        if (!isAuth) {
+          setCargandoSchema(false);
+          setCargandoProductos(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (validandoSesion || autenticado) {
+      setMostrarLogin(false);
+      return undefined;
+    }
+    setMostrarLogin(false);
+    const frame = requestAnimationFrame(() => setMostrarLogin(true));
+    return () => cancelAnimationFrame(frame);
+  }, [validandoSesion, autenticado]);
+
+  const handleLogin = async event => {
+    event.preventDefault();
+    setCargandoLogin(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: usuario.trim(), password: clave }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'No se pudo iniciar sesion.');
+      }
+      setAutenticado(true);
+      setUsuario('');
+      setClave('');
+    } catch (err) {
+      setError(err.message || 'No se pudo iniciar sesion.');
+      setLoginShake(true);
+      setTimeout(() => setLoginShake(false), 350);
+      setLoginErrorFlash(true);
+      setTimeout(() => setLoginErrorFlash(false), 1000);
+    } finally {
+      setCargandoLogin(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setAutenticado(false);
+  };
 
   const columnMap = useMemo(
     () => new Map(schema.map(column => [column.name, column])),
@@ -141,15 +225,7 @@ export default function AdminPage() {
     }
   };
   const loadCategorias = async () => {
-    try {
-      const res = await fetch('/api/productos?limit=1000');
-      if (!res.ok) throw new Error('No se pudo cargar categorias.');
-      const data = await res.json();
-      const categorias = getCategoriasCatalogo(Array.isArray(data) ? data : []);
-      setCategoriasAdmin(categorias);
-    } catch (err) {
-      setError(err.message || 'No se pudo cargar categorias.');
-    }
+    setCategoriasAdmin(MENU_CATEGORIAS_FLAT);
   };
 
   const loadProductos = async (searchValue, categoriaValue, pageValue) => {
@@ -185,19 +261,32 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    if (!autenticado) return;
     loadSchema();
     loadCategorias();
-  }, []);
+  }, [autenticado]);
 
   useEffect(() => {
+    if (!autenticado) return;
     loadProductos(buscar, categoria, pagina);
-  }, [buscar, categoria, pagina]);
+  }, [autenticado, buscar, categoria, pagina]);
 
   useEffect(() => {
     if (!schema.length) return;
     if (editId) return;
     setForm(buildEmptyForm(editableFields));
   }, [schema, editId, editableFields]);
+
+  useEffect(() => {
+    const imagenes = parseImagenes(form.imagenes);
+    if (imagenes.length === 0) {
+      setSelectedImagenIndex(0);
+      return;
+    }
+    if (selectedImagenIndex >= imagenes.length) {
+      setSelectedImagenIndex(0);
+    }
+  }, [form.imagenes, selectedImagenIndex]);
 
   const handleEdit = producto => {
     const next = {};
@@ -217,6 +306,7 @@ export default function AdminPage() {
     });
     setEditId(String(producto.id));
     setForm(next);
+    setSelectedImagenIndex(0);
     setAviso('');
     setError('');
   };
@@ -224,6 +314,7 @@ export default function AdminPage() {
   const resetForm = () => {
     setEditId(null);
     setForm(buildEmptyForm(editableFields));
+    setSelectedImagenIndex(0);
     setAviso('');
     setError('');
   };
@@ -293,7 +384,14 @@ export default function AdminPage() {
       if (!editId && data?.id) {
         setEditId(String(data.id));
       }
-      setAviso(editId ? 'Producto actualizado.' : 'Producto creado.');
+      const message = editId ? 'Producto actualizado.' : 'Producto creado.';
+      setAviso(message);
+      if (editId) {
+        setToast(message);
+        setToastVisible(true);
+        setTimeout(() => setToastVisible(false), 2000);
+        setTimeout(() => setToast(''), 2300);
+      }
       loadProductos(buscar, categoria, pagina);
       loadCategorias();
     } catch (err) {
@@ -310,7 +408,9 @@ export default function AdminPage() {
 
     try {
       setError('');
-      const res = await fetch(`/api/productos/${producto.id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/productos/${producto.id}`, {
+        method: 'DELETE',
+      });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || 'No se pudo eliminar el producto.');
@@ -337,7 +437,10 @@ export default function AdminPage() {
       for (const file of Array.from(files)) {
         const formData = new FormData();
         formData.append('file', file);
-        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
         if (!res.ok) {
           const data = await res.json().catch(() => ({}));
           throw new Error(data.error || 'No se pudo subir una imagen.');
@@ -357,10 +460,53 @@ export default function AdminPage() {
     }
   };
 
-  const handleRemoveImagen = url => {
+  const handleRemoveImagenAt = index => {
     const actuales = parseImagenes(form.imagenes);
-    const filtered = actuales.filter(item => item !== url);
+    if (index < 0 || index >= actuales.length) return;
+    const filtered = actuales.filter((_, idx) => idx !== index);
     handleFieldChange('imagenes', filtered.join(', '));
+    if (index === selectedImagenIndex) {
+      setSelectedImagenIndex(0);
+    }
+  };
+
+  const handleReplaceImagen = async file => {
+    if (!file) return;
+    setSubiendo(true);
+    setError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'No se pudo subir la imagen.');
+      }
+      const data = await res.json();
+      const url = data?.url;
+      if (!url) throw new Error('Respuesta invalida de subida.');
+
+      const actuales = parseImagenes(form.imagenes);
+      const index = replaceIndex ?? selectedImagenIndex;
+      if (actuales.length === 0) {
+        handleFieldChange('imagenes', url);
+        setSelectedImagenIndex(0);
+      } else if (index >= 0 && index < actuales.length) {
+        const next = [...actuales];
+        next[index] = url;
+        handleFieldChange('imagenes', next.join(', '));
+        setSelectedImagenIndex(index);
+      }
+    } catch (err) {
+      setError(err.message || 'No se pudo reemplazar la imagen.');
+    } finally {
+      setSubiendo(false);
+      setReplaceIndex(null);
+      if (replaceInputRef.current) {
+        replaceInputRef.current.value = '';
+      }
+    }
   };
 
   const getFieldKind = field => {
@@ -386,12 +532,83 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-8">
+      <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-8 relative">
         <div className="flex flex-col gap-2">
           <p className="text-xs uppercase tracking-[0.3em] text-orange-500 font-semibold">Panel</p>
           <h1 className="text-3xl font-bold">Administracion de productos</h1>
           <p className="text-slate-600">Agrega productos, edita precios y sube fotos.</p>
         </div>
+
+        {validandoSesion ? (
+          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+            Validando sesion...
+          </div>
+        ) : !autenticado ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-md px-4">
+            <div
+              className={`relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl transition-all duration-300 ease-out ${
+                mostrarLogin
+                  ? 'opacity-100 scale-100 translate-y-0'
+                  : 'opacity-0 scale-95 translate-y-3'
+              } ${loginShake ? 'login-shake' : ''}`}
+            >
+              <div
+                className={`pointer-events-none absolute inset-0 rounded-3xl border border-orange-200/50 transition-all duration-300 ${
+                  mostrarLogin ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+              <div className="mb-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-orange-500 font-semibold">Acceso</p>
+                <h2 className="text-2xl font-semibold text-slate-900">Iniciar sesion</h2>
+                <p className="text-sm text-slate-500">Ingresa tus credenciales de admin.</p>
+              </div>
+              <form onSubmit={handleLogin} className="flex flex-col gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500">Usuario</label>
+                  <input
+                    type="text"
+                    value={usuario}
+                    onChange={event => setUsuario(event.target.value)}
+                    placeholder="Usuario"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500">Contrasena</label>
+                  <input
+                    type="password"
+                    value={clave}
+                    onChange={event => setClave(event.target.value)}
+                    placeholder="Contrasena"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={cargandoLogin}
+                  className={`btn-anim mt-2 inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60 ${
+                    loginShake ? 'login-shake-button' : ''
+                  } ${
+                    loginErrorFlash ? 'login-error' : ''
+                  }`}
+                >
+                  {cargandoLogin ? 'Ingresando...' : 'Ingresar'}
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 flex items-center justify-between">
+            <span>Sesion activa</span>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
+            >
+              Cerrar sesion
+            </button>
+          </div>
+        )}
 
         {error && (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -404,7 +621,8 @@ export default function AdminPage() {
           </div>
         )}
 
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        {autenticado && !validandoSesion && (
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -444,43 +662,60 @@ export default function AdminPage() {
               <div className="py-10 text-center text-slate-500">Cargando productos...</div>
             ) : (
               <div className="flex flex-col gap-3">
-                {productos.map(producto => (
-                  <div
-                    key={producto.id}
-                    className={`rounded-2xl border p-4 flex flex-col gap-3 transition-shadow ${
-                      editId === String(producto.id)
-                        ? 'border-orange-300 bg-orange-50/40'
-                        : 'border-slate-200 bg-white'
-                    }`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                      <div>
-                        <p className="text-sm text-slate-400">ID {producto.id}</p>
-                        <h3 className="text-base font-semibold text-slate-900">{producto.nombre}</h3>
-                        {producto.sku && <p className="text-xs text-slate-500">SKU: {producto.sku}</p>}
-                        {priceColumn && producto[priceColumn] && (
-                          <p className="text-xs text-slate-500">{toLabel(priceColumn)}: {producto[priceColumn]}</p>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleEdit(producto)}
-                          className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300"
-                        >
-                          Editar
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleEliminar(producto)}
-                          className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:border-red-300"
-                        >
-                          Eliminar
-                        </button>
+                {productos.map(producto => {
+                  const previewUrl = getImagenesProducto(producto)[0];
+                  return (
+                    <div
+                      key={producto.id}
+                      className={`rounded-2xl border p-4 flex flex-col gap-3 transition-shadow ${
+                        editId === String(producto.id)
+                          ? 'border-orange-300 bg-orange-50/40'
+                          : 'border-slate-200 bg-white'
+                      }`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div className="flex items-start gap-3">
+                          <div className="h-14 w-14 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center">
+                            {previewUrl ? (
+                              <img
+                                src={previewUrl}
+                                alt={producto.nombre}
+                                className="h-full w-full object-cover"
+                                onError={event => { event.currentTarget.style.display = 'none'; }}
+                              />
+                            ) : (
+                              <span className="text-xl text-slate-300">⚙️</span>
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm text-slate-400">ID {producto.id}</p>
+                            <h3 className="text-base font-semibold text-slate-900">{producto.nombre}</h3>
+                            {producto.sku && <p className="text-xs text-slate-500">SKU: {producto.sku}</p>}
+                            {priceColumn && producto[priceColumn] && (
+                              <p className="text-xs text-slate-500">{toLabel(priceColumn)}: {producto[priceColumn]}</p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleEdit(producto)}
+                            className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleEliminar(producto)}
+                            className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:border-red-300"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 {productos.length === 0 && (
                   <div className="py-10 text-center text-slate-500">No hay productos con ese filtro.</div>
                 )}
@@ -525,65 +760,109 @@ export default function AdminPage() {
                 </button>
               </div>
 
+              {editId && (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs uppercase tracking-[0.28em] text-slate-400 font-semibold">Imagenes</p>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setReplaceIndex(selectedImagenIndex);
+                            replaceInputRef.current?.click();
+                          }}
+                          className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
+                          disabled={subiendo}
+                        >
+                          Reemplazar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImagenAt(selectedImagenIndex)}
+                          className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300"
+                          disabled={subiendo}
+                        >
+                          Quitar
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
+                      <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
+                        {parseImagenes(form.imagenes)[selectedImagenIndex] ? (
+                          <img
+                            src={parseImagenes(form.imagenes)[selectedImagenIndex]}
+                            alt={form.nombre || 'Producto'}
+                            className="h-full w-full object-cover"
+                            onError={event => { event.currentTarget.style.display = 'none'; }}
+                          />
+                        ) : (
+                          <span className="text-3xl text-slate-300">⚙️</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
+                          {parseImagenes(form.imagenes).length === 0 && (
+                            <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>
+                          )}
+                          {parseImagenes(form.imagenes).map((url, index) => (
+                            <button
+                              key={`${url}-${index}`}
+                              type="button"
+                              onClick={() => setSelectedImagenIndex(index)}
+                              className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${
+                                index === selectedImagenIndex
+                                  ? 'border-orange-400 bg-orange-50'
+                                  : 'border-slate-200 bg-white hover:border-orange-300'
+                              }`}
+                            >
+                              <img
+                                src={url}
+                                alt="Miniatura"
+                                className="h-full w-full object-cover"
+                                onError={event => { event.currentTarget.style.display = 'none'; }}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <input
+                            id="admin-imagenes-upload"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={event => {
+                              handleUpload(event.target.files);
+                              event.target.value = '';
+                            }}
+                            className="hidden"
+                          />
+                          <label
+                            htmlFor="admin-imagenes-upload"
+                            className="btn-anim inline-flex items-center justify-center rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-400"
+                          >
+                            Agregar imagenes
+                          </label>
+                          {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
+                        </div>
+                        <input
+                          ref={replaceInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={event => handleReplaceImagen(event.target.files?.[0])}
+                          className="hidden"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {visibleFields.map(field => {
                 const kind = getFieldKind(field);
                 if (kind === 'images') {
-                  const imagenes = parseImagenes(form.imagenes);
-                  return (
-                    <div key={field} className="flex flex-col gap-3">
-                      <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <input
-                          id="admin-imagenes-upload"
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={event => {
-                            handleUpload(event.target.files);
-                            event.target.value = '';
-                          }}
-                          className="hidden"
-                        />
-                        <label
-                          htmlFor="admin-imagenes-upload"
-                          className="btn-anim inline-flex items-center justify-center rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-400"
-                        >
-                          Agregar imagenes
-                        </label>
-                        <span className="text-xs text-slate-500">Selecciona una o varias fotos</span>
-                      </div>
-                      {subiendo && <p className="text-xs text-slate-500">Subiendo imagenes...</p>}
-                      {imagenes.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {imagenes.map(url => (
-                            <div key={url} className="relative rounded-2xl border border-slate-200 bg-slate-50 p-2">
-                              <img
-                                src={url}
-                                alt="Imagen"
-                                className="h-20 w-20 object-cover rounded-xl"
-                                onError={event => { event.currentTarget.style.display = 'none'; }}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveImagen(url)}
-                                className="absolute -top-2 -right-2 rounded-full bg-red-500 text-white text-xs w-6 h-6"
-                                aria-label="Quitar"
-                              >
-                                x
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      <textarea
-                        rows={3}
-                        value={form.imagenes || ''}
-                        onChange={event => handleFieldChange(field, event.target.value)}
-                        placeholder="Pega URLs separadas por coma o salto de linea"
-                        className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                      />
-                    </div>
-                  );
+                  return null;
                 }
 
                 if (field === 'categorias') {
@@ -712,9 +991,19 @@ export default function AdminPage() {
                   Limpiar
                 </button>
               </div>
+              {toast && (
+                <div
+                  className={`rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 shadow-lg transition-all duration-300 ${
+                    toastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                  }`}
+                >
+                  {toast}
+                </div>
+              )}
             </form>
           </section>
-        </div>
+          </div>
+        )}
       </div>
     </main>
   );

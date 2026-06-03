@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import db from '@/lib/db';
 import { ensureCategoriasTable, getCategorias } from '@/lib/categorias-admin';
+import { requireRole } from '@/lib/auth';
 
 const normalizePayload = payload => {
   const nombre = String(payload?.nombre || '').trim();
@@ -8,8 +10,15 @@ const normalizePayload = payload => {
   return { nombre, emoji: emoji || null };
 };
 
-export async function GET() {
+const categoriaSchema = z.object({
+  nombre: z.string().trim().min(1, 'El nombre es obligatorio.').max(255),
+  emoji: z.string().trim().max(32).optional().nullable(),
+});
+
+export async function GET(request) {
   try {
+    const auth = requireRole(request, 'editor');
+    if (!auth.ok) return auth.response;
     const categorias = await getCategorias();
     return NextResponse.json(categorias);
   } catch (error) {
@@ -19,9 +28,17 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    const auth = requireRole(request, 'admin');
+    if (!auth.ok) return auth.response;
     await ensureCategoriasTable();
     const body = await request.json();
-    const { nombre, emoji } = normalizePayload(body);
+    const parsed = categoriaSchema.safeParse(normalizePayload(body));
+
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Datos invalidos.' }, { status: 400 });
+    }
+
+    const { nombre, emoji } = parsed.data;
 
     if (!nombre) {
       return NextResponse.json({ error: 'El nombre es obligatorio.' }, { status: 400 });

@@ -2,9 +2,12 @@ import db from '@/lib/db';
 import { NextResponse } from 'next/server';
 import { getCategorias } from '@/lib/categorias-admin';
 import { parseCategoriasValue } from '@/lib/categorias';
+import { requireRole } from '@/lib/auth';
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const auth = requireRole(request, 'editor');
+    if (!auth.ok) return auth.response;
     const categorias = await getCategorias();
     if (categorias.length > 0) {
       return NextResponse.json(categorias.map(item => item.nombre));

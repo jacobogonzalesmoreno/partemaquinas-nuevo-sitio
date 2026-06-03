@@ -120,6 +120,39 @@ body {
   }
 }
 
+@keyframes loginShake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes loginButtonShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.login-shake {
+  animation: loginShake 320ms ease-in-out;
+}
+
+.login-shake-button {
+  animation: loginButtonShake 260ms ease-in-out;
+}
+
+.login-error {
+  background-color: #dc2626;
+}
+
+.login-error:hover {
+  background-color: #b91c1c;
+}
+
 @keyframes pageEnter {
   from {
     opacity: 0;

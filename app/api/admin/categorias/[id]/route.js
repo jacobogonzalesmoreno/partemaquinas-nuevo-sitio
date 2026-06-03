@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import db from '@/lib/db';
 import { ensureCategoriasTable } from '@/lib/categorias-admin';
+import { requireRole } from '@/lib/auth';
 
 const normalizePayload = payload => {
   const nombre = String(payload?.nombre || '').trim();
@@ -8,12 +10,31 @@ const normalizePayload = payload => {
   return { nombre, emoji: emoji || null };
 };
 
+const categoriaSchema = z.object({
+  nombre: z.string().trim().min(1, 'El nombre es obligatorio.').max(255),
+  emoji: z.string().trim().max(32).optional().nullable(),
+});
+
+const idSchema = z.string().regex(/^\d+$/);
+
 export async function PUT(request, { params }) {
   try {
+    const auth = requireRole(request, 'admin');
+    if (!auth.ok) return auth.response;
     await ensureCategoriasTable();
     const { id } = await Promise.resolve(params);
+    const parsedId = idSchema.safeParse(String(id));
+    if (!parsedId.success) {
+      return NextResponse.json({ error: 'ID invalido.' }, { status: 400 });
+    }
     const body = await request.json();
-    const { nombre, emoji } = normalizePayload(body);
+    const parsed = categoriaSchema.safeParse(normalizePayload(body));
+
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Datos invalidos.' }, { status: 400 });
+    }
+
+    const { nombre, emoji } = parsed.data;
 
     if (!nombre) {
       return NextResponse.json({ error: 'El nombre es obligatorio.' }, { status: 400 });
@@ -31,8 +52,14 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const auth = requireRole(request, 'admin');
+    if (!auth.ok) return auth.response;
     await ensureCategoriasTable();
     const { id } = await Promise.resolve(params);
+    const parsedId = idSchema.safeParse(String(id));
+    if (!parsedId.success) {
+      return NextResponse.json({ error: 'ID invalido.' }, { status: 400 });
+    }
     const [result] = await db.query('DELETE FROM categorias WHERE id = ?', [id]);
     return NextResponse.json({ deleted: result.affectedRows });
   } catch (error) {

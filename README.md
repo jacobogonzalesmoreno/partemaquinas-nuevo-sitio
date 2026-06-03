@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Configuracion
+
+1. Copia `.env.example` a `.env.local` y completa tus variables.
+2. Define `ADMIN_USER`, `ADMIN_PASSWORD` y `SESSION_SECRET` para usar el panel admin.
+3. Para scripts de WooCommerce, completa `WC_BASE_URL`, `WC_CONSUMER_KEY`, `WC_CONSUMER_SECRET`.
+
 ## Getting Started
 
 First, run the development server:

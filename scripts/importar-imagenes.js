@@ -1,21 +1,38 @@
+require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-const CK = 'ck_d6f713f837ed2fce72418048e64a3e257671d5c5';
-const CS = 'cs_df98a4520ad4c5109f05cec61d65d22a23f11b8a';
-const BASE = 'https://partemaquinas.com/wp-json/wc/v3/products';
+const {
+  WC_CONSUMER_KEY,
+  WC_CONSUMER_SECRET,
+  WC_BASE_URL,
+  DB_HOST,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  DB_PORT,
+} = process.env;
+
+if (!WC_CONSUMER_KEY || !WC_CONSUMER_SECRET || !WC_BASE_URL) {
+  throw new Error('Faltan variables WC_CONSUMER_KEY, WC_CONSUMER_SECRET o WC_BASE_URL.');
+}
+
+if (!DB_HOST || !DB_USER || !DB_NAME) {
+  throw new Error('Faltan variables DB_HOST, DB_USER o DB_NAME.');
+}
 
 async function obtenerProductos(pagina) {
-  const url = BASE + '?per_page=100&page=' + pagina + '&consumer_key=' + CK + '&consumer_secret=' + CS;
+  const url = WC_BASE_URL + '?per_page=100&page=' + pagina + '&consumer_key=' + WC_CONSUMER_KEY + '&consumer_secret=' + WC_CONSUMER_SECRET;
   const res = await fetch(url);
   return await res.json();
 }
 
 async function main() {
   const db = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'partemaquinassitio',
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD || '',
+    database: DB_NAME,
+    port: DB_PORT ? Number(DB_PORT) : undefined,
   });
 
   let pagina = 1;

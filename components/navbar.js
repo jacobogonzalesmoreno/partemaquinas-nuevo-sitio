@@ -1,53 +1,20 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
 export default function Navbar() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [categoriaActiva, setCategoriaActiva] = useState(null);
   const [subcategoriaActiva, setSubcategoriaActiva] = useState(null);
   const [buscarNav, setBuscarNav] = useState('');
+  const hideCategoriaTimer = useRef(null);
+  const hideSubcategoriaTimer = useRef(null);
   const router = useRouter();
 
-  const menuCategorias = [
-    {
-      nombre: 'Motor',
-      hijos: [
-        { nombre: 'Motores' },
-        { nombre: 'Liner kit' },
-        { nombre: 'Bomba Inyeccion' },
-        { nombre: 'Inyectores' },
-        { nombre: 'Turbos' },
-        {
-          nombre: 'Accesorios',
-          hijos: [
-            { nombre: 'Tuberia Inyeccion' },
-            { nombre: 'Correas' },
-            { nombre: 'Soportes' },
-            { nombre: 'Filtros' },
-          ],
-        },
-        { nombre: 'Bloques' },
-        { nombre: 'Culatas' },
-        { nombre: 'Cigueñales' },
-        { nombre: 'Casquetes' },
-        { nombre: 'Arboles De Levas' },
-        { nombre: 'Tapa Valvulas' },
-        { nombre: 'Empaquetaduras' },
-        { nombre: 'Coronas' },
-        {
-          nombre: 'Piñones',
-          hijos: [
-            { nombre: 'Solares' },
-            { nombre: 'Planetario' },
-          ],
-        },
-        { nombre: 'Ventiladores' },
-      ],
-    },
-  ];
+  const menuCategorias = MENU_CATEGORIAS;
 
   const hrefCategoria = nombre => `/productos?buscar=${encodeURIComponent(nombre)}`;
   const onSubmitBuscar = event => {
@@ -58,79 +25,111 @@ export default function Navbar() {
 
   const renderCategorias = onSelect => (
     <ul className="inline-flex flex-col gap-1 w-fit">
-      {menuCategorias.map(categoria => (
-        <li
-          key={categoria.nombre}
-          className="relative group w-fit"
-          onMouseEnter={() => setCategoriaActiva(categoria.nombre)}
-          onMouseLeave={() => setCategoriaActiva(null)}
-        >
-          <Link
-            href={hrefCategoria(categoria.nombre)}
-            onClick={onSelect}
-            className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
+      {menuCategorias.map(categoria => {
+        const submenuOffsetClass = categoria.nombre === 'Giro'
+          ? 'left-[calc(100%+40px)]'
+          : 'left-[calc(100%+12px)]';
+
+        return (
+          <li
+            key={categoria.nombre}
+            className="relative group w-fit"
+            onMouseEnter={() => {
+              if (hideCategoriaTimer.current) {
+                clearTimeout(hideCategoriaTimer.current);
+                hideCategoriaTimer.current = null;
+              }
+              setCategoriaActiva(categoria.nombre);
+            }}
+            onMouseLeave={() => {
+              if (hideCategoriaTimer.current) {
+                clearTimeout(hideCategoriaTimer.current);
+              }
+              hideCategoriaTimer.current = setTimeout(() => {
+                setCategoriaActiva(null);
+              }, 150);
+            }}
           >
-            <span>{categoria.nombre}</span>
-            {categoria.hijos && <span className="text-orange-400">›</span>}
-          </Link>
-          {categoria.hijos && (
-            <div
-              className={`absolute left-full top-0 w-56 pl-2 transition-all duration-200 ease-out ${
-                categoriaActiva === categoria.nombre
-                  ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
-                  : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
-              }`}
+            <Link
+              href={hrefCategoria(categoria.nombre)}
+              onClick={onSelect}
+              className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
             >
-              <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
-                <ul className="space-y-1">
-                  {categoria.hijos.map(hijo => (
-                    <li
-                      key={hijo.nombre}
-                      className="relative group/child"
-                      onMouseEnter={() => setSubcategoriaActiva(hijo.nombre)}
-                      onMouseLeave={() => setSubcategoriaActiva(null)}
-                    >
-                      <Link
-                        href={hrefCategoria(hijo.nombre)}
-                        onClick={onSelect}
-                        className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
+              <span>{categoria.nombre}</span>
+              {categoria.hijos && <span className="text-orange-400">›</span>}
+            </Link>
+            {categoria.hijos && (
+              <div
+                className={`absolute ${submenuOffsetClass} top-0 w-56 transition-all duration-200 ease-out ${
+                  categoriaActiva === categoria.nombre
+                    ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
+                    : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
+                }`}
+              >
+                <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
+                  <ul className="space-y-1">
+                    {categoria.hijos.map(hijo => (
+                      <li
+                        key={hijo.nombre}
+                        className="relative group/child"
+                        onMouseEnter={() => {
+                          if (hideSubcategoriaTimer.current) {
+                            clearTimeout(hideSubcategoriaTimer.current);
+                            hideSubcategoriaTimer.current = null;
+                          }
+                          setSubcategoriaActiva(hijo.nombre);
+                        }}
+                        onMouseLeave={() => {
+                          if (hideSubcategoriaTimer.current) {
+                            clearTimeout(hideSubcategoriaTimer.current);
+                          }
+                          hideSubcategoriaTimer.current = setTimeout(() => {
+                            setSubcategoriaActiva(null);
+                          }, 150);
+                        }}
                       >
-                        <span>{hijo.nombre}</span>
-                        {hijo.hijos && <span className="text-orange-400">›</span>}
-                      </Link>
-                      {hijo.hijos && (
-                        <div
-                          className={`absolute left-full top-0 w-52 pl-2 transition-all duration-200 ease-out ${
-                            subcategoriaActiva === hijo.nombre
-                              ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
-                              : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
-                          }`}
+                        <Link
+                          href={hrefCategoria(hijo.nombre)}
+                          onClick={onSelect}
+                          className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
                         >
-                          <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
-                            <ul className="space-y-1">
-                              {hijo.hijos.map(nieto => (
-                                <li key={nieto.nombre}>
-                                  <Link
-                                    href={hrefCategoria(nieto.nombre)}
-                                    onClick={onSelect}
-                                    className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[140px]"
-                                  >
-                                    {nieto.nombre}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
+                          <span>{hijo.nombre}</span>
+                          {hijo.hijos && <span className="text-orange-400">›</span>}
+                        </Link>
+                        {hijo.hijos && (
+                          <div
+                            className={`absolute left-[calc(100%+24px)] top-0 w-52 transition-all duration-200 ease-out ${
+                              subcategoriaActiva === hijo.nombre
+                                ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
+                                : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
+                            }`}
+                          >
+                            <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
+                              <ul className="space-y-1">
+                                {hijo.hijos.map(nieto => (
+                                  <li key={nieto.nombre}>
+                                    <Link
+                                      href={hrefCategoria(nieto.nombre)}
+                                      onClick={onSelect}
+                                      className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[140px]"
+                                    >
+                                      {nieto.nombre}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          )}
-        </li>
-      ))}
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 

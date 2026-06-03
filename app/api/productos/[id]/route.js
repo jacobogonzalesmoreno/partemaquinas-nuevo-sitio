@@ -1,9 +1,17 @@
 import db from '@/lib/db';
 import { NextResponse } from 'next/server';
-import { getProductosSchema, pickWritableFields } from '@/lib/productos-admin';
+import { z } from 'zod';
+import { getProductosSchema, pickWritableFields, validateWritablePayload } from '@/lib/productos-admin';
+import { requireRole } from '@/lib/auth';
+
+const idSchema = z.string().regex(/^\d+$/);
 
 export async function GET(request, { params }) {
   const { id } = await Promise.resolve(params);
+  const parsedId = idSchema.safeParse(String(id));
+  if (!parsedId.success) {
+    return NextResponse.json({ error: 'ID invalido.' }, { status: 400 });
+  }
   const [rows] = await db.query('SELECT * FROM productos WHERE id = ?', [id]);
   if (rows.length === 0) {
     return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 });
@@ -14,9 +22,21 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   const { id } = await Promise.resolve(params);
 
+  const auth = requireRole(request, 'editor');
+  if (!auth.ok) return auth.response;
+
+  const parsedId = idSchema.safeParse(String(id));
+  if (!parsedId.success) {
+    return NextResponse.json({ error: 'ID invalido.' }, { status: 400 });
+  }
+
   try {
     const body = await request.json();
     const schema = await getProductosSchema();
+    const validation = validateWritablePayload(body, schema);
+    if (!validation.ok) {
+      return NextResponse.json({ error: 'Datos invalidos.', details: validation.errors }, { status: 400 });
+    }
     const writableSchema = schema.filter(column => column.name !== 'id');
     const payload = pickWritableFields(body, writableSchema);
     const columns = Object.keys(payload);
@@ -38,6 +58,14 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   const { id } = await Promise.resolve(params);
+
+  const auth = requireRole(request, 'editor');
+  if (!auth.ok) return auth.response;
+
+  const parsedId = idSchema.safeParse(String(id));
+  if (!parsedId.success) {
+    return NextResponse.json({ error: 'ID invalido.' }, { status: 400 });
+  }
 
   try {
     const [result] = await db.query('DELETE FROM productos WHERE id = ?', [id]);
