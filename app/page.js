@@ -50,15 +50,16 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <Image
-            src="/banners/ChatGPT%20Image%202%20jun%202026,%2004_45_32%20p.m..png"
-            alt="Banner principal"
-            width={1800}
-            height={520}
-            className="w-full h-auto rounded-3xl border border-slate-200"
-            priority
-          />
+        <div className="py-6">
+          <div className="relative w-full h-[120px] sm:h-[180px] lg:h-[240px]">
+            <Image
+              src="/banners/ChatGPT%20Image%203%20jun%202026,%2012_57_22%20a.m..png"
+              alt="Banner principal"
+              fill
+              className="object-contain border-y border-slate-200"
+              priority
+            />
+          </div>
         </div>
       </section>
 
@@ -117,7 +118,7 @@ export default function Home() {
         </div>
         <div className="w-full mb-8">
           <Image
-            src="/sellos/garantias.png"
+            src="/sellos/ChatGPT%20Image%202%20jun%202026,%2006_49_53%20p.m..png"
             alt="Sellos de garantia"
             width={1600}
             height={420}
