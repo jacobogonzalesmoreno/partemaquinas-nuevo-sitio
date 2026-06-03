@@ -56,9 +56,8 @@ export default function Home() {
               src="/banners/ChatGPT%20Image%203%20jun%202026,%2001_09_04%20a.m..png"
               alt="Banner principal"
               width={2172}
-              height={419}
-              sizes="100vw"
-              className="w-full h-auto border-y border-slate-200"
+              height={100}
+              className="border-y border-slate-200"
               priority
             />
           </div>
