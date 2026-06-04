@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
+import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
 import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
 export default function Productos() {
@@ -75,7 +76,7 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
     event.preventDefault();
     const value = inputBuscar.trim();
     setBuscar(value);
-    router.push(value ? `/productos?buscar=${encodeURIComponent(value)}` : '/productos');
+    router.push(resolverRutaBusquedaCatalogo(value));
   };
 
   const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
@@ -90,7 +91,7 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
     sessionStorage.setItem('catalogoScroll', String(window.scrollY));
   };
 
-  const hrefCategoria = nombre => `/productos?buscar=${encodeURIComponent(nombre)}`;
+  const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -100,10 +101,10 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
         <div className="w-full max-w-xl mx-auto flex flex-col sm:flex-row gap-3">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={() => router.push('/')}
             className="btn-anim inline-flex items-center justify-center rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-5 py-3"
           >
-            Atras
+            Volver al inicio
           </button>
           <form onSubmit={onSubmitBuscar} className="flex-1">
             <input
@@ -126,19 +127,19 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
           <div className="text-center text-slate-500 py-20 text-xl">No se encontraron productos</div>
         ) : (
           <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-            <aside className="hidden lg:block">
+            <aside className="hidden lg:block relative z-20">
               <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold">Categorias</p>
-                <ul className="mt-4 inline-flex flex-col gap-1 w-fit">
+                <ul className="mt-4 inline-flex flex-col gap-2 w-fit">
                   {MENU_CATEGORIAS.map(categoria => {
                     const submenuOffsetClass = categoria.nombre === 'Giro'
-                      ? 'left-[calc(100%+40px)]'
-                      : 'left-[calc(100%+12px)]';
+                      ? 'left-[calc(100%+32px)]'
+                      : 'left-[calc(100%+16px)]';
 
                     return (
                       <li
                         key={categoria.nombre}
-                        className="relative group w-fit"
+                        className="relative group w-fit z-10 hover:z-30"
                         onMouseEnter={() => {
                           if (hideCategoriaTimer.current) {
                             clearTimeout(hideCategoriaTimer.current);
@@ -158,25 +159,25 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
                         <Link
                           href={hrefCategoria(categoria.nombre)}
                           onClick={guardarScrollCatalogo}
-                          className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
+                          className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
                         >
                           <span>{categoria.nombre}</span>
                           {categoria.hijos && <span className="text-orange-400">›</span>}
                         </Link>
                         {categoria.hijos && (
                           <div
-                            className={`absolute ${submenuOffsetClass} top-0 w-56 transition-all duration-200 ease-out ${
+                            className={`absolute ${submenuOffsetClass} top-0 z-[60] w-56 transition-all duration-200 ease-out ${
                               categoriaActiva === categoria.nombre
                                 ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
                                 : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
                             }`}
                           >
-                            <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
-                              <ul className="space-y-1">
+                            <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-3">
+                              <ul className="space-y-1.5">
                                 {categoria.hijos.map(hijo => (
                                   <li
                                     key={hijo.nombre}
-                                    className="relative group/child"
+                                    className="relative group/child z-10 hover:z-30"
                                     onMouseEnter={() => {
                                       if (hideSubcategoriaTimer.current) {
                                         clearTimeout(hideSubcategoriaTimer.current);
@@ -196,27 +197,27 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
                                     <Link
                                       href={hrefCategoria(hijo.nombre)}
                                       onClick={guardarScrollCatalogo}
-                                      className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
+                                      className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[160px]"
                                     >
                                       <span>{hijo.nombre}</span>
                                       {hijo.hijos && <span className="text-orange-400">›</span>}
                                     </Link>
                                     {hijo.hijos && (
                                       <div
-                                        className={`absolute left-[calc(100%+24px)] top-0 w-52 transition-all duration-200 ease-out ${
+                                        className={`absolute left-[calc(100%+16px)] top-0 z-[70] w-52 transition-all duration-200 ease-out ${
                                           subcategoriaActiva === hijo.nombre
                                             ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
                                             : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
                                         }`}
                                       >
-                                        <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
-                                          <ul className="space-y-1">
+                                        <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-3">
+                                          <ul className="space-y-1.5">
                                             {hijo.hijos.map(nieto => (
                                               <li key={nieto.nombre}>
                                                 <Link
                                                   href={hrefCategoria(nieto.nombre)}
                                                   onClick={guardarScrollCatalogo}
-                                                  className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[140px]"
+                                                  className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
                                                 >
                                                   {nieto.nombre}
                                                 </Link>

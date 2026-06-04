@@ -1,0 +1,2646 @@
+{
+  "generatedAt": "2026-06-04T22:12:24.559Z",
+  "applied": false,
+  "summary": {
+    "publicProducts": 391,
+    "localProducts": 391,
+    "matchedProducts": 391,
+    "missingLocalProducts": 0,
+    "extraLocalProducts": 0,
+    "categoryMismatches": 155,
+    "imageMismatches": 0,
+    "updatedImages": 0,
+    "ambiguousMatches": 2,
+    "imageExtractionFailures": 0
+  },
+  "missingLocalProducts": [],
+  "extraLocalProducts": [],
+  "categoryMismatches": [
+    {
+      "local": {
+        "id": 3893,
+        "nombre": "Carrier Traslacion (Pequeño) Zaxis 330",
+        "sku": "",
+        "categorias": [
+          "Carrier Externo",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3893,
+        "name": "Carrier Traslacion (Pequeño) Zaxis 330",
+        "sku": "",
+        "categories": [
+          "Carrier Externo"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 3883,
+        "nombre": "Carrier Traslacion (Mediano) Zaxis 330",
+        "sku": "",
+        "categorias": [
+          "Carrier Externo",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3883,
+        "name": "Carrier Traslacion (Mediano) Zaxis 330",
+        "sku": "",
+        "categories": [
+          "Carrier Externo"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 3873,
+        "nombre": "Carrier Reductor Giro (Pequeño) Hitachi Zaxis200-3",
+        "sku": "",
+        "categorias": [
+          "Carrier Superior",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3873,
+        "name": "Carrier Reductor Giro (Pequeño) Hitachi Zaxis200-3",
+        "sku": "",
+        "categories": [
+          "Carrier Superior"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 3871,
+        "nombre": "Carrier Reductor Giro (Mediano) Hitachi Zaxis200-3",
+        "sku": "",
+        "categorias": [
+          "Carrier Superior",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3871,
+        "name": "Carrier Reductor Giro (Mediano) Hitachi Zaxis200-3",
+        "sku": "",
+        "categories": [
+          "Carrier Superior"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 3853,
+        "nombre": "Carrier Traslacion (Grande) Hitachi EX200-5",
+        "sku": "",
+        "categorias": [
+          "Carrier Inferior",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3853,
+        "name": "Carrier Traslacion (Grande) Hitachi EX200-5",
+        "sku": "",
+        "categories": [
+          "Carrier Inferior"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 3852,
+        "nombre": "Carrier Traslacion (Mediano) Hitachi EX200-5",
+        "sku": "",
+        "categorias": [
+          "Carrier Interno",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3852,
+        "name": "Carrier Traslacion (Mediano) Hitachi EX200-5",
+        "sku": "",
+        "categories": [
+          "Carrier Interno"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 3851,
+        "nombre": "Carrier Traslacion (Pequeño) Hitachi EX200-5",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3851,
+        "name": "Carrier Traslacion (Pequeño) Hitachi EX200-5",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3809,
+        "nombre": "Rueda Guía (Tensora - Loca) HITACHI EX100-5",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3809,
+        "name": "Rueda Guía (Tensora &#8211; Loca) HITACHI EX100-5",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3808,
+        "nombre": "Rueda Guía (Tensora - Loca) KOBELCO SK200-3",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3808,
+        "name": "Rueda Guía (Tensora &#8211; Loca) KOBELCO SK200-3",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3807,
+        "nombre": "Rueda Guía (Tensora - Loca) DOOSAN DH220-5",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3807,
+        "name": "Rueda Guía (Tensora &#8211; Loca) DOOSAN DH220-5",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3806,
+        "nombre": "Rueda Guía (Tensora - Loca) HITACHI ZX300-5",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3806,
+        "name": "Rueda Guía (Tensora &#8211; Loca) HITACHI ZX300-5",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3805,
+        "nombre": "Rueda Guía (Tensora - Loca) CATERPILLAR E200B",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3805,
+        "name": "Rueda Guía (Tensora &#8211; Loca) CATERPILLAR E200B",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3804,
+        "nombre": "Rueda Guía (Tensora - Loca) HITACHI EX200-2",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3804,
+        "name": "Rueda Guía (Tensora &#8211; Loca) HITACHI EX200-2",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3803,
+        "nombre": "Rueda Guia (Tensora - Loca) HITACHI EX200-6",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3803,
+        "name": "Rueda Guia (Tensora &#8211; Loca) HITACHI EX200-6",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3802,
+        "nombre": "Rueda Guía (Tensora - Loca) CATERPILLAR E120B",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3802,
+        "name": "Rueda Guía (Tensora &#8211; Loca) CATERPILLAR E120B",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3791,
+        "nombre": "Cadena Para Excavadora CATERPILLAR E200B",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3791,
+        "name": "Cadena Para Excavadora CATERPILLAR E200B",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3790,
+        "nombre": "Cadena Para Excavadora DOOSAN DX225",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3790,
+        "name": "Cadena Para Excavadora DOOSAN DX225",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3789,
+        "nombre": "Cadena Para Excavadora KOMATSU PC200-5",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3789,
+        "name": "Cadena Para Excavadora KOMATSU PC200-5",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3788,
+        "nombre": "Cadena Para Excavadora KOBELCO SK200-3-4/SK210-6",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3788,
+        "name": "Cadena Para Excavadora KOBELCO SK200-3-4/SK210-6",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3787,
+        "nombre": "Cadena Para Excavadora HYUNDAI R210/R215/R220/R225",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3787,
+        "name": "Cadena Para Excavadora HYUNDAI R210/R215/R220/R225",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3786,
+        "nombre": "Cadena Para Excavadora HITACHI EX100/EX120-5/ZX120",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3786,
+        "name": "Cadena Para Excavadora HITACHI EX100/EX120-5/ZX120",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3785,
+        "nombre": "Cadena Para Excavadora HITACHI ZX200/EX200-5",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3785,
+        "name": "Cadena Para Excavadora HITACHI ZX200/EX200-5",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3784,
+        "nombre": "Cadena Para Excavadora KOMATSU PC200-3",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3784,
+        "name": "Cadena Para Excavadora KOMATSU PC200-3",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3783,
+        "nombre": "Cadena Para Excavadora HITACHI EX300-5/ZX330/ZX270",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3783,
+        "name": "Cadena Para Excavadora HITACHI EX300-5/ZX330/ZX270",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3746,
+        "nombre": "Carril Inferior HITACHI EX300-5/330",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3746,
+        "name": "Carril Inferior HITACHI EX300-5/330",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3738,
+        "nombre": "Carril Inferior KOBELCO SK200-3",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3738,
+        "name": "Carril Inferior KOBELCO SK200-3",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3731,
+        "nombre": "Carril Inferior DOOSAN DH200",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3731,
+        "name": "Carril Inferior DOOSAN DH200",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3724,
+        "nombre": "Carril Inferior CAT E120B",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3724,
+        "name": "Carril Inferior CAT E120B",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3719,
+        "nombre": "Carril Inferior HITACHI EX100",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3719,
+        "name": "Carril Inferior HITACHI EX100",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 3256,
+        "nombre": "Kit Reparacion Motor de Giro (M5X130) - Zaxis 200 / SK210-6",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 3256,
+        "name": "Kit Reparacion Motor de Giro (M5X130) &#8211; Zaxis 200 / SK210-6",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2840,
+        "nombre": "Tapa bomba de aceite - motor Caterpillar 3066 - excavadora Caterpillar 320C",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2840,
+        "name": "Tapa bomba de aceite &#8211; motor Caterpillar 3066 &#8211; excavadora Caterpillar 320C",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2820,
+        "nombre": "Bomba aceite motor Cummins 6BT5-9",
+        "sku": "",
+        "categorias": [
+          "Bomba Aceite"
+        ]
+      },
+      "public": {
+        "id": 2820,
+        "name": "Bomba aceite motor Cummins 6BT5-9",
+        "sku": "",
+        "categories": [
+          "Hidráulico"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2815,
+        "nombre": "Bomba aceite motor Isuzu 4HK1",
+        "sku": "",
+        "categorias": [
+          "Hidráulico",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2815,
+        "name": "Bomba aceite motor Isuzu 4HK1",
+        "sku": "",
+        "categories": [
+          "Hidráulico"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2810,
+        "nombre": "Bomba aceite motor Isuzu 6WG1",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2810,
+        "name": "Bomba aceite motor Isuzu 6WG1",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2805,
+        "nombre": "Bomba aceite motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Bomba Aceite"
+        ]
+      },
+      "public": {
+        "id": 2805,
+        "name": "Bomba aceite motor Isuzu 6BG1",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2792,
+        "nombre": "Moto Reductor Giro - Excavadora Liugong 922, XGMA 822",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2792,
+        "name": "Moto Reductor Giro &#8211; Excavadora Liugong 922, XGMA 822",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2761,
+        "nombre": "Kit Reparacion Motor Traslacion - Excavadora Hyundai R210-7 Doosan DX225",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2761,
+        "name": "Kit Reparacion Motor Traslacion &#8211; Excavadora Hyundai R210-7 Doosan DX225",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2741,
+        "nombre": "Kit Reparacion Motor Traslacion - Excavadora Kobelco SK200-3-4 Caterpillar E200B-320c",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2741,
+        "name": "Kit Reparacion Motor Traslacion &#8211; Excavadora Kobelco SK200-3-4 Caterpillar E200B-320c",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2729,
+        "nombre": "Liner Kit Cummins ISX",
+        "sku": "",
+        "categorias": [
+          "Liner Kit",
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2729,
+        "name": "Liner Kit Cummins ISX",
+        "sku": "",
+        "categories": [
+          "Liner Kit",
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2646,
+        "nombre": "Acople Manguera tanque combustible",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2646,
+        "name": "Acople Manguera tanque combustible",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2640,
+        "nombre": "Sensor lubricación",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2640,
+        "name": "Sensor lubricación",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2635,
+        "nombre": "Sensor temperatura - motor Cummins ISX ISM",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2635,
+        "name": "Sensor temperatura &#8211; motor Cummins ISX ISM",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2623,
+        "nombre": "Sensor de refrigerante - Motor Cummins ISM ISX- Kenworth T800 - Internacional 9400 7600",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2623,
+        "name": "Sensor de refrigerante &#8211; Motor Cummins ISM ISX- Kenworth T800 &#8211; Internacional 9400 7600",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2602,
+        "nombre": "Bomba de agua, motor Isuzu 6WG1,  Hitachi Zaxis 450",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2602,
+        "name": "Bomba de agua, motor Isuzu 6WG1,  Hitachi Zaxis 450",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2579,
+        "nombre": "Reparacion Motor Giro SG08 Link Belt 210",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2579,
+        "name": "Reparacion Motor Giro SG08 Link Belt 210",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2571,
+        "nombre": "Bomba piloto excavadora Kobelco SK200-3-4",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2571,
+        "name": "Bomba piloto excavadora Kobelco SK200-3-4",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2558,
+        "nombre": "Manzan punta balde excavadora",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2558,
+        "name": "Manzan punta balde excavadora",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2511,
+        "nombre": "Motobomba con motor Cummins 350",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2511,
+        "name": "Motobomba con motor Cummins 350",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2506,
+        "nombre": "Multiple escape motor Mitsubishi 6D34",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2506,
+        "name": "Multiple escape motor Mitsubishi 6D34",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2500,
+        "nombre": "Multiple escape motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2500,
+        "name": "Multiple escape motor Isuzu 6BG1",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2475,
+        "nombre": "Multiple escape motor Mitsubishi 6D34 Isuzu 6BG1 Cummins 6BT5-9",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2475,
+        "name": "Multiple escape motor Mitsubishi 6D34 Isuzu 6BG1 Cummins 6BT5-9",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2471,
+        "nombre": "Multiple escape motor Cummins 6BT5-9",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2471,
+        "name": "Multiple escape motor Cummins 6BT5-9",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2452,
+        "nombre": "Damper de cigueñal motor Mitsubishi 6D34",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2452,
+        "name": "Damper de cigueñal motor Mitsubishi 6D34",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2447,
+        "nombre": "Bomba de inyeccion motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Bomba Inyeccion",
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2447,
+        "name": "Bomba de inyeccion motor Isuzu 6BG1",
+        "sku": "",
+        "categories": [
+          "Bomba Inyeccion",
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2423,
+        "nombre": "Plato escualizable motor de traslacion Volvo EC210B",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2423,
+        "name": "Plato escualizable motor de traslacion Volvo EC210B",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2420,
+        "nombre": "Retenedor delantero motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2420,
+        "name": "Retenedor delantero motor Isuzu 6BG1",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2417,
+        "nombre": "Retenedor trasero motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2417,
+        "name": "Retenedor trasero motor Isuzu 6BG1",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2400,
+        "nombre": "Kit motor de traslacion Volvo EC210B",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2400,
+        "name": "Kit motor de traslacion Volvo EC210B",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2307,
+        "nombre": "Empaque de culata motor Cummins 6BT5-9",
+        "sku": "ECMC6BT",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 2307,
+        "name": "Empaque de culata motor Cummins 6BT5-9",
+        "sku": "ECMC6BT",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 2304,
+        "nombre": "Kit pasadores carrier inferior reductor giro excavadora XGMA 822",
+        "sku": "KPCIRGEXGMA",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2304,
+        "name": "Kit pasadores carrier inferior reductor giro excavadora XGMA 822",
+        "sku": "KPCIRGEXGMA",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2289,
+        "nombre": "Scanner Caterpillar ET - Herramienta Diagnostico Excavadora Bulldozer Retroexcavadora Cargador Minicargador - Caterpillar",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2289,
+        "name": "Scanner Caterpillar ET &#8211; Herramienta Diagnostico Excavadora Bulldozer Retroexcavadora Cargador Minicargador &#8211; Caterpillar",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2284,
+        "nombre": "Tapa Distribución - Motor Isuzu 6BG1 Doosan",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2284,
+        "name": "Tapa Distribución &#8211; Motor Isuzu 6BG1 Doosan",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2268,
+        "nombre": "Cableado Eléctrico (Harness) - Excavadora  Caterpillar 312-320-330B-C-D",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2268,
+        "name": "Cableado Eléctrico (Harness) &#8211; Excavadora  Caterpillar 312-320-330B-C-D",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2263,
+        "nombre": "Cableado Electrico (Harness) - Excavadora Sany Y215 - 235",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2263,
+        "name": "Cableado Electrico (Harness) &#8211; Excavadora Sany Y215 &#8211; 235",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2165,
+        "nombre": "Buje Baby (Du Bushing) Cilindro (gato) arrastre - Excavadora Caterpillar 312B-C",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2165,
+        "name": "Buje Baby (Du Bushing) Cilindro (gato) arrastre &#8211; Excavadora Caterpillar 312B-C",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2163,
+        "nombre": "Buje Baby (Du Bushing) Cilindro (Gato) alce - Excavadora Caterpillar 312B-C",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2163,
+        "name": "Buje Baby (Du Bushing) Cilindro (Gato) alce &#8211; Excavadora Caterpillar 312B-C",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2161,
+        "nombre": "Buje Baby (Du Bushing) Cilindro (gato) balde - Excavadora Caterpillar 312B-C",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2161,
+        "name": "Buje Baby (Du Bushing) Cilindro (gato) balde &#8211; Excavadora Caterpillar 312B-C",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2051,
+        "nombre": "Kobelco SK210 Mark 8",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2051,
+        "name": "Kobelco SK210 Mark 8",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2023,
+        "nombre": "Kato 820-3",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2023,
+        "name": "Kato 820-3",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2020,
+        "nombre": "Guias culata motor Mitsubishi 6D34",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2020,
+        "name": "Guias culata motor Mitsubishi 6D34",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2017,
+        "nombre": "Guias de culata motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2017,
+        "name": "Guias de culata motor Isuzu 6BG1",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2015,
+        "nombre": "Guias culata motor Cummins 6BT5-9",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2015,
+        "name": "Guias culata motor Cummins 6BT5-9",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2011,
+        "nombre": "Asientos de culata motor Cummins 6BT5-9",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2011,
+        "name": "Asientos de culata motor Cummins 6BT5-9",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2008,
+        "nombre": "Guias culata motor Isuzu 4HK1",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2008,
+        "name": "Guias culata motor Isuzu 4HK1",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2005,
+        "nombre": "Guias culata motor Isuzu 6HK1",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2005,
+        "name": "Guias culata motor Isuzu 6HK1",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 2001,
+        "nombre": "Guias de Culata Motor Caterpillar 3066",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 2001,
+        "name": "Guias de Culata Motor Caterpillar 3066",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1998,
+        "nombre": "Asientos de Culata Motor Isuzu 4HK1",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1998,
+        "name": "Asientos de Culata Motor Isuzu 4HK1",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1994,
+        "nombre": "Asientos de Culata Motor Caterpillar 3066",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1994,
+        "name": "Asientos de Culata Motor Caterpillar 3066",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1990,
+        "nombre": "Asientos de culata motor Isuzu 6HK1",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1990,
+        "name": "Asientos de culata motor Isuzu 6HK1",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1986,
+        "nombre": "Asientos de culata motor Isuzu 6BG1",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1986,
+        "name": "Asientos de culata motor Isuzu 6BG1",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1965,
+        "nombre": "Bomba de Aceite - Motor Cummins 6BT5-9",
+        "sku": "BAMC6BT",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1965,
+        "name": "Bomba de Aceite &#8211; Motor Cummins 6BT5-9",
+        "sku": "BAMC6BT",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1960,
+        "nombre": "Pinon de giro (Pinon de ataque) Excavadora Liugong 922",
+        "sku": "PGPAEXL",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1960,
+        "name": "Pinon de giro (Pinon de ataque) Excavadora Liugong 922",
+        "sku": "PGPAEXL",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1949,
+        "nombre": "Eje de Levas (Arbol de Levas) - Motor Cummins 350-400",
+        "sku": "ELAMC",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1949,
+        "name": "Eje de Levas (Arbol de Levas) &#8211; Motor Cummins 350-400",
+        "sku": "ELAMC",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1933,
+        "nombre": "Cigüeñal motor Cummins 350-400",
+        "sku": "CMC350-400",
+        "categorias": [
+          "Cigueñales"
+        ]
+      },
+      "public": {
+        "id": 1933,
+        "name": "Cigüeñal motor Cummins 350-400",
+        "sku": "CMC350-400",
+        "categories": [
+          "Cigueñales",
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1928,
+        "nombre": "Medidor de Aceite Hidráulico Excavadora Hitachi Zaxis 200, EX 200",
+        "sku": "MAHEHZ",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1928,
+        "name": "Medidor de Aceite Hidráulico Excavadora Hitachi Zaxis 200, EX 200",
+        "sku": "MAHEHZ",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1923,
+        "nombre": "Medidor de Aceite Hidráulico Excavadora Hyundai R210-7",
+        "sku": "MAHEH",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1923,
+        "name": "Medidor de Aceite Hidráulico Excavadora Hyundai R210-7",
+        "sku": "MAHEH",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1918,
+        "nombre": "Medidor de Aceite Hidráulico Excavadora Kobelco SK200-3-4, SK210-6E",
+        "sku": "MAHEK",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1918,
+        "name": "Medidor de Aceite Hidráulico Excavadora Kobelco SK200-3-4, SK210-6E",
+        "sku": "MAHEK",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1904,
+        "nombre": "Medidores Aceite hidráulico excavadora Hyundai Kobelco Hitachi",
+        "sku": "MAHE",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1904,
+        "name": "Medidores Aceite hidráulico excavadora Hyundai Kobelco Hitachi",
+        "sku": "MAHE",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1838,
+        "nombre": "Radiador o Enfriador de Aceite Hidráulico, Kobelco SK210-6E,  SK210-8",
+        "sku": "REAHKSK210",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1838,
+        "name": "Radiador o Enfriador de Aceite Hidráulico, Kobelco SK210-6E,  SK210-8",
+        "sku": "REAHKSK210",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1825,
+        "nombre": "Radiador o Enfriador de Aceite Hidráulico, Kato 820-3 Kato 820R",
+        "sku": "REAHK820",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1825,
+        "name": "Radiador o Enfriador de Aceite Hidráulico, Kato 820-3 Kato 820R",
+        "sku": "REAHK820",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1812,
+        "nombre": "Mando Kawasaki Excavadora Kobelco, Liugong",
+        "sku": "MKEKL",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1812,
+        "name": "Mando Kawasaki Excavadora Kobelco, Liugong",
+        "sku": "MKEKL",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1741,
+        "nombre": "Mofle de Motor Isuzu 6BG1 en excavadora Hitachi Zaxis 200",
+        "sku": "MMI6BG1",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1741,
+        "name": "Mofle de Motor Isuzu 6BG1 en excavadora Hitachi Zaxis 200",
+        "sku": "MMI6BG1",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1733,
+        "nombre": "Radiador de Agua - Motor Isuzu 6BG1- Excavadora Hitachi Zaxis 200 - 270",
+        "sku": "RAMI6BG1",
+        "categorias": [
+          "Otros",
+          "Radiadores",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1733,
+        "name": "Radiador de Agua &#8211; Motor Isuzu 6BG1- Excavadora Hitachi Zaxis 200 &#8211; 270",
+        "sku": "RAMI6BG1",
+        "categories": [
+          "Radiadores",
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1553,
+        "nombre": "Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75",
+        "sku": "KCBBMC6BT",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1553,
+        "name": "Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75",
+        "sku": "KCBBMC6BT",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1542,
+        "nombre": "Kit Casquetes Biela+Bancada Motor Caterpillar 3066, Medidas STD 0.25,0.50,0.75",
+        "sku": "KCBBMC3066",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1542,
+        "name": "Kit Casquetes Biela+Bancada Motor Caterpillar 3066, Medidas STD 0.25,0.50,0.75",
+        "sku": "KCBBMC3066",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1536,
+        "nombre": "Kit Casquetes Biela+Bancada Motor Isuzu 6bg1 Medidas STD 0.25,0.50,0.75",
+        "sku": "KCBBI6BG1",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1536,
+        "name": "Kit Casquetes Biela+Bancada Motor Isuzu 6bg1 Medidas STD 0.25,0.50,0.75",
+        "sku": "KCBBI6BG1",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1524,
+        "nombre": "Kit Casquetes Biela+Bancada  Motor Mitsubishi 6D34",
+        "sku": "KCBBMM6C34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1524,
+        "name": "Kit Casquetes Biela+Bancada  Motor Mitsubishi 6D34",
+        "sku": "KCBBMM6C34",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1469,
+        "nombre": "Botadores Motor Caterpillar 3066, Excavadora Caterpillar E200b y 320BC",
+        "sku": "",
+        "categorias": [
+          "Otros",
+          "Todo Motor"
+        ]
+      },
+      "public": {
+        "id": 1469,
+        "name": "Botadores Motor Caterpillar 3066, Excavadora Caterpillar E200b y 320BC",
+        "sku": "",
+        "categories": [
+          "Todo Motor"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1459,
+        "nombre": "Balinera de traslacion BA205 Kobelco SK210",
+        "sku": "",
+        "categorias": [
+          "Balineras",
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1459,
+        "name": "Balinera de traslacion BA205 Kobelco SK210",
+        "sku": "",
+        "categories": [
+          "Balineras"
+        ]
+      }
+    },
+    {
+      "local": {
+        "id": 1455,
+        "nombre": "Piñon Solar, Carrier Inferior Kobelco Sk210-6E,  SK210-8",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1455,
+        "name": "Piñon Solar, Carrier Inferior Kobelco Sk210-6E,  SK210-8",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1449,
+        "nombre": "Kato 1430",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1449,
+        "name": "Kato 1430",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1437,
+        "nombre": "Eje de balancin (Flauta) Motor Cummins ISX (4059304)",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1437,
+        "name": "Eje de balancin (Flauta) Motor Cummins ISX (4059304)",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1427,
+        "nombre": "Eject de balancing (Flauta) Motor Cummins ISX (4059306)",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1427,
+        "name": "Eject de balancing (Flauta) Motor Cummins ISX (4059306)",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1414,
+        "nombre": "Tapa Bomba aceite Caterpillar 320B",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1414,
+        "name": "Tapa Bomba aceite Caterpillar 320B",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1383,
+        "nombre": "Balancin Valvulas motor Cummins ISM",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1383,
+        "name": "Balancin Valvulas motor Cummins ISM",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1379,
+        "nombre": "Balancin inyeccion Cummins ISM",
+        "sku": "",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1379,
+        "name": "Balancin inyeccion Cummins ISM",
+        "sku": "",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1316,
+        "nombre": "Bobcat - Thomas",
+        "sku": "BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1316,
+        "name": "Bobcat &#8211; Thomas",
+        "sku": "BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1227,
+        "nombre": "Pistola Engrasadora",
+        "sku": "PE",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1227,
+        "name": "Pistola Engrasadora",
+        "sku": "PE",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1203,
+        "nombre": "Bomba de combustible Isuzu 6SD1",
+        "sku": "BCI6SD1",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1203,
+        "name": "Bomba de combustible Isuzu 6SD1",
+        "sku": "BCI6SD1",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1201,
+        "nombre": "Bomba de combustible Cummins 6BT5.9",
+        "sku": "BCC6BT5.9",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1201,
+        "name": "Bomba de combustible Cummins 6BT5.9",
+        "sku": "BCC6BT5.9",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1197,
+        "nombre": "Bomba de agua Isuzu 6SD1",
+        "sku": "BAI6SD1",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1197,
+        "name": "Bomba de agua Isuzu 6SD1",
+        "sku": "BAI6SD1",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1193,
+        "nombre": "Bomba de agua Cummins 6BT",
+        "sku": "BAC6BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1193,
+        "name": "Bomba de agua Cummins 6BT",
+        "sku": "BAC6BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1191,
+        "nombre": "Balas de mandos Kobelco SK200",
+        "sku": "BMKSK200",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1191,
+        "name": "Balas de mandos Kobelco SK200",
+        "sku": "BMKSK200",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1160,
+        "nombre": "Bomba piloto para Bomba Hidráulica K3V112 Ref2",
+        "sku": "BPK3V112",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1160,
+        "name": "Bomba piloto para Bomba Hidráulica K3V112 Ref2",
+        "sku": "BPK3V112",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1157,
+        "nombre": "Bomba piloto para Bomba Hidráulica K3V112 Ref1",
+        "sku": "BPHK3V112",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1157,
+        "name": "Bomba piloto para Bomba Hidráulica K3V112 Ref1",
+        "sku": "BPHK3V112",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1150,
+        "nombre": "Bomba de Aceite de Motor Mitsubishi 6D34",
+        "sku": "BAM6D34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1150,
+        "name": "Bomba de Aceite de Motor Mitsubishi 6D34",
+        "sku": "BAM6D34",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1143,
+        "nombre": "Juego o kit de mandos excavadora, Kobelco, Hyundai, Liugong, Hitachi,  Sany, Kato",
+        "sku": "JME",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1143,
+        "name": "Juego o kit de mandos excavadora, Kobelco, Hyundai, Liugong, Hitachi,  Sany, Kato",
+        "sku": "JME",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1125,
+        "nombre": "Monitor Escavadora Kobelco SK210 - 6E",
+        "sku": "MESK2106E",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1125,
+        "name": "Monitor Escavadora Kobelco SK210 &#8211; 6E",
+        "sku": "MESK2106E",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1103,
+        "nombre": "Rociador de aceite Mitsubishi 6D34",
+        "sku": "RAM6D34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1103,
+        "name": "Rociador de aceite Mitsubishi 6D34",
+        "sku": "RAM6D34",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1097,
+        "nombre": "Bala de mandos de pedales Caterpillar E200B",
+        "sku": "BMPCE200B",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1097,
+        "name": "Bala de mandos de pedales Caterpillar E200B",
+        "sku": "BMPCE200B",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1094,
+        "nombre": "Tapa enfriador de aceite Cummins 6BT",
+        "sku": "TEA6BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1094,
+        "name": "Tapa enfriador de aceite Cummins 6BT",
+        "sku": "TEA6BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1091,
+        "nombre": "Soporte de motor Isuzu 6BG1 Hitachi EX200-5",
+        "sku": "SMI6BG1",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1091,
+        "name": "Soporte de motor Isuzu 6BG1 Hitachi EX200-5",
+        "sku": "SMI6BG1",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1081,
+        "nombre": "Tapa frontal de motor Cummins 6BT",
+        "sku": "TFM6BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1081,
+        "name": "Tapa frontal de motor Cummins 6BT",
+        "sku": "TFM6BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1078,
+        "nombre": "Tornillo de culata motor Cummins 6BT grado 12 corto mediano y largo",
+        "sku": "TCM6BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1078,
+        "name": "Tornillo de culata motor Cummins 6BT grado 12 corto mediano y largo",
+        "sku": "TCM6BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1074,
+        "nombre": "Tornillo de culata motor Mistsubishi 6D34 6D31",
+        "sku": "TCM6D34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1074,
+        "name": "Tornillo de culata motor Mistsubishi 6D34 6D31",
+        "sku": "TCM6D34",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1068,
+        "nombre": "Tornillo de culata Motor Isuzu 6BG1 o 6BD1",
+        "sku": "TC6BG1",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1068,
+        "name": "Tornillo de culata Motor Isuzu 6BG1 o 6BD1",
+        "sku": "TC6BG1",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1054,
+        "nombre": "Rociador de aceite de motor Isuzu 6BG1",
+        "sku": "RAMI",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1054,
+        "name": "Rociador de aceite de motor Isuzu 6BG1",
+        "sku": "RAMI",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1034,
+        "nombre": "Tapete de cabina",
+        "sku": "TC",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1034,
+        "name": "Tapete de cabina",
+        "sku": "TC",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1028,
+        "nombre": "Tornamesa para Sany Y235",
+        "sku": "TY235",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1028,
+        "name": "Tornamesa para Sany Y235",
+        "sku": "TY235",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 1023,
+        "nombre": "Cilindro o Gato tensor para Sany Y215 y Sany Y235",
+        "sku": "CY215",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 1023,
+        "name": "Cilindro o Gato tensor para Sany Y215 y Sany Y235",
+        "sku": "CY215",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 992,
+        "nombre": "Tapa enfriador de aceite Cummins 6BT",
+        "sku": "TEM6BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 992,
+        "name": "Tapa enfriador de aceite Cummins 6BT",
+        "sku": "TEM6BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 989,
+        "nombre": "Enfriador de aceite motor Isuzu 6BG1",
+        "sku": "EAM6BG1",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 989,
+        "name": "Enfriador de aceite motor Isuzu 6BG1",
+        "sku": "EAM6BG1",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 988,
+        "nombre": "Enfriador de aceite de motor Mistsubishi 6D34",
+        "sku": "EAM6D34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 988,
+        "name": "Enfriador de aceite de motor Mistsubishi 6D34",
+        "sku": "EAM6D34",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 976,
+        "nombre": "Balas de mandos de pedales para Kobelco SK 210 - 6",
+        "sku": "BMPSK200-6",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 976,
+        "name": "Balas de mandos de pedales para Kobelco SK 210 &#8211; 6",
+        "sku": "BMPSK200-6",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 973,
+        "nombre": "Balas de mandos de pedales de Liugong 922",
+        "sku": "BMP922",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 973,
+        "name": "Balas de mandos de pedales de Liugong 922",
+        "sku": "BMP922",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 968,
+        "nombre": "Balas de mandos de pedales para Caterpillar E320",
+        "sku": "BMPE320",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 968,
+        "name": "Balas de mandos de pedales para Caterpillar E320",
+        "sku": "BMPE320",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 967,
+        "nombre": "Balas de mandos de pedales para Kobelco SK-200-34",
+        "sku": "BMPSK200-34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 967,
+        "name": "Balas de mandos de pedales para Kobelco SK-200-34",
+        "sku": "BMPSK200-34",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 965,
+        "nombre": "Balas de mandos de pedales para Sanny Y-215",
+        "sku": "BMPY215",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 965,
+        "name": "Balas de mandos de pedales para Sanny Y-215",
+        "sku": "BMPY215",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 962,
+        "nombre": "Balas de mandos de pedales para Hyundai R210",
+        "sku": "BMPR210",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 962,
+        "name": "Balas de mandos de pedales para Hyundai R210",
+        "sku": "BMPR210",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 954,
+        "nombre": "Balas de mandos de pedales para Hitachi Zaxis 200",
+        "sku": "BMP200",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 954,
+        "name": "Balas de mandos de pedales para Hitachi Zaxis 200",
+        "sku": "BMP200",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 953,
+        "nombre": "Balas de mandos de pedales para Hitachi EX200-5",
+        "sku": "BMPEX200",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 953,
+        "name": "Balas de mandos de pedales para Hitachi EX200-5",
+        "sku": "BMPEX200",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 928,
+        "nombre": "Coupling completo 50H",
+        "sku": "CC50H",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 928,
+        "name": "Coupling completo 50H",
+        "sku": "CC50H",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 924,
+        "nombre": "Coupling completo 45H",
+        "sku": "CC45H",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 924,
+        "name": "Coupling completo 45H",
+        "sku": "CC45H",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 847,
+        "nombre": "Bases 225 para balde",
+        "sku": "B225",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 847,
+        "name": "Bases 225 para balde",
+        "sku": "B225",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 843,
+        "nombre": "Dientes 225 para balde",
+        "sku": "D225",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 843,
+        "name": "Dientes 225 para balde",
+        "sku": "D225",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 841,
+        "nombre": "Sensor Negativo o de baja Kobelco SK210-6",
+        "sku": "SNSK210-6",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 841,
+        "name": "Sensor Negativo o de baja Kobelco SK210-6",
+        "sku": "SNSK210-6",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 698,
+        "nombre": "Bala de mandos Kobelco SK210-8 YQ09",
+        "sku": "BMSK210-8",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 698,
+        "name": "Bala de mandos Kobelco SK210-8 YQ09",
+        "sku": "BMSK210-8",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 693,
+        "nombre": "Bala de mando Kobelco SK210-6 YQ07",
+        "sku": "BMSK210-6",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 693,
+        "name": "Bala de mando Kobelco SK210-6 YQ07",
+        "sku": "BMSK210-6",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 692,
+        "nombre": "Bala de mando para Caterpillar",
+        "sku": "BME200B",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 692,
+        "name": "Bala de mando para Caterpillar",
+        "sku": "BME200B",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 691,
+        "nombre": "Bala de mandos Kobelco SK210-6E",
+        "sku": "BMSK210",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 691,
+        "name": "Bala de mandos Kobelco SK210-6E",
+        "sku": "BMSK210",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 633,
+        "nombre": "Juego de mandos Kobelco SK200 – SK210",
+        "sku": "JMSK200",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 633,
+        "name": "Juego de mandos Kobelco SK200 – SK210",
+        "sku": "JMSK200",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 628,
+        "nombre": "O'Rings",
+        "sku": "OR",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 628,
+        "name": "O&#8217;Rings",
+        "sku": "OR",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 626,
+        "nombre": "Sello Tornamesa Kobelco SK200",
+        "sku": "STSK200",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 626,
+        "name": "Sello Tornamesa Kobelco SK200",
+        "sku": "STSK200",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 610,
+        "nombre": "Tubo de descarga Turbo a Bloque Cummins",
+        "sku": "TD6BT",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 610,
+        "name": "Tubo de descarga Turbo a Bloque Cummins",
+        "sku": "TD6BT",
+        "categories": []
+      }
+    },
+    {
+      "local": {
+        "id": 609,
+        "nombre": "Tubo de descarga Turbo a Bloque Mitsubishi",
+        "sku": "TD6D34",
+        "categorias": [
+          "Otros"
+        ]
+      },
+      "public": {
+        "id": 609,
+        "name": "Tubo de descarga Turbo a Bloque Mitsubishi",
+        "sku": "TD6D34",
+        "categories": []
+      }
+    }
+  ],
+  "imageMismatches": [],
+  "ambiguousMatches": [
+    {
+      "publicId": 3549,
+      "name": "Motorreductor de Traslacion KOBELCO SK200-3/4",
+      "sku": "",
+      "slug": "reductor-de-giro-kobelco-sk200-3-4",
+      "method": "name",
+      "localCandidates": [
+        {
+          "id": 3491,
+          "nombre": "Motorreductor de Traslación Kobelco SK200-3/4",
+          "sku": ""
+        },
+        {
+          "id": 3549,
+          "nombre": "Motorreductor de Traslacion KOBELCO SK200-3/4",
+          "sku": ""
+        }
+      ]
+    },
+    {
+      "publicId": 1094,
+      "name": "Tapa enfriador de aceite Cummins 6BT",
+      "sku": "TEA6BT",
+      "slug": "tapa-enfriador-de-aceite-cummins-6bt-2",
+      "method": "sku",
+      "localCandidates": [
+        {
+          "id": 1094,
+          "nombre": "Tapa enfriador de aceite Cummins 6BT",
+          "sku": "TEA6BT"
+        },
+        {
+          "id": 992,
+          "nombre": "Tapa enfriador de aceite Cummins 6BT",
+          "sku": "TEM6BT"
+        }
+      ]
+    }
+  ],
+  "imageExtractionFailures": [],
+  "updatedProducts": []
+}

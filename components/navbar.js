@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
 import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
 export default function Navbar() {
@@ -16,24 +17,26 @@ export default function Navbar() {
 
   const menuCategorias = MENU_CATEGORIAS;
 
-  const hrefCategoria = nombre => `/productos?buscar=${encodeURIComponent(nombre)}`;
+  const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
   const onSubmitBuscar = event => {
     event.preventDefault();
     const value = buscarNav.trim();
-    router.push(value ? `/productos?buscar=${encodeURIComponent(value)}` : '/productos');
+    router.push(resolverRutaBusquedaCatalogo(value));
   };
 
   const renderCategorias = onSelect => (
-    <ul className="inline-flex flex-col gap-1 w-fit">
+    <ul className="inline-flex flex-col gap-2 w-fit">
       {menuCategorias.map(categoria => {
         const submenuOffsetClass = categoria.nombre === 'Giro'
-          ? 'left-[calc(100%+40px)]'
-          : 'left-[calc(100%+12px)]';
+          ? 'left-[calc(100%+24px)] md:left-[calc(100%+40px)]'
+          : categoria.nombre === 'Motor'
+            ? 'left-[calc(100%+16px)] md:left-[calc(100%+28px)]'
+          : 'left-[calc(100%+16px)]';
 
         return (
           <li
             key={categoria.nombre}
-            className="relative group w-fit"
+            className="relative group w-fit z-10 hover:z-30"
             onMouseEnter={() => {
               if (hideCategoriaTimer.current) {
                 clearTimeout(hideCategoriaTimer.current);
@@ -53,25 +56,25 @@ export default function Navbar() {
             <Link
               href={hrefCategoria(categoria.nombre)}
               onClick={onSelect}
-              className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
+              className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
             >
               <span>{categoria.nombre}</span>
               {categoria.hijos && <span className="text-orange-400">›</span>}
             </Link>
             {categoria.hijos && (
               <div
-                className={`absolute ${submenuOffsetClass} top-0 w-56 transition-all duration-200 ease-out ${
+                className={`absolute ${submenuOffsetClass} top-0 z-[60] w-56 transition-all duration-200 ease-out ${
                   categoriaActiva === categoria.nombre
                     ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
                     : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
                 }`}
               >
-                <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
-                  <ul className="space-y-1">
+                <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-3">
+                  <ul className="space-y-1.5">
                     {categoria.hijos.map(hijo => (
                       <li
                         key={hijo.nombre}
-                        className="relative group/child"
+                        className="relative group/child z-10 hover:z-30"
                         onMouseEnter={() => {
                           if (hideSubcategoriaTimer.current) {
                             clearTimeout(hideSubcategoriaTimer.current);
@@ -91,27 +94,27 @@ export default function Navbar() {
                         <Link
                           href={hrefCategoria(hijo.nombre)}
                           onClick={onSelect}
-                          className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
+                          className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[160px]"
                         >
                           <span>{hijo.nombre}</span>
                           {hijo.hijos && <span className="text-orange-400">›</span>}
                         </Link>
                         {hijo.hijos && (
                           <div
-                            className={`absolute left-[calc(100%+24px)] top-0 w-52 transition-all duration-200 ease-out ${
+                            className={`absolute left-[calc(100%+16px)] md:left-[calc(100%+20px)] top-0 z-[70] w-52 transition-all duration-200 ease-out ${
                               subcategoriaActiva === hijo.nombre
                                 ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
                                 : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
                             }`}
                           >
-                            <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2">
-                              <ul className="space-y-1">
+                            <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-3">
+                              <ul className="space-y-1.5">
                                 {hijo.hijos.map(nieto => (
                                   <li key={nieto.nombre}>
                                     <Link
                                       href={hrefCategoria(nieto.nombre)}
                                       onClick={onSelect}
-                                      className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[140px]"
+                                      className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
                                     >
                                       {nieto.nombre}
                                     </Link>
@@ -134,7 +137,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-4 sticky top-0 z-50 shadow-sm relative">
+    <nav className="bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-4 sticky top-0 z-50 shadow-sm relative overflow-visible">
       <div className="relative flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm">
@@ -155,10 +158,10 @@ export default function Navbar() {
               Productos
               <span className="text-orange-400">▾</span>
             </Link>
-            <div className="absolute left-0 top-full pt-2 opacity-0 translate-y-1 pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-              <div className="w-fit rounded-2xl border border-slate-200 bg-white shadow-xl p-3">
+            <div className="absolute left-0 top-full z-50 pt-3 opacity-0 translate-y-1 pointer-events-none transition-all duration-200 group-hover:!opacity-100 group-hover:!translate-y-0 group-hover:!pointer-events-auto">
+              <div className="w-fit rounded-2xl border border-slate-200 bg-white shadow-xl p-4">
                 <p className="text-[10px] uppercase tracking-[0.28em] text-slate-400 font-semibold">Categorias</p>
-                <div className="mt-3">{renderCategorias()}</div>
+                <div className="mt-4">{renderCategorias()}</div>
               </div>
             </div>
           </div>
@@ -207,11 +210,11 @@ export default function Navbar() {
       </div>
 
       {menuAbierto && (
-        <div className="absolute left-0 right-0 top-full bg-white border-b border-slate-200 shadow-lg">
+        <div className="absolute left-0 right-0 top-full z-50 bg-white border-b border-slate-200 shadow-lg">
           <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 md:grid-cols-[1.4fr_0.6fr]">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold">Categorias</p>
-              <div className="mt-4">
+              <div className="mt-5">
                 {renderCategorias(() => setMenuAbierto(false))}
               </div>
             </div>
