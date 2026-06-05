@@ -1,4 +1,5 @@
 'use client';
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -96,9 +97,7 @@ function TarjetaCategoria({ categoria, nivel, categoriasConImagenError, setCateg
 }
 
 function BloqueCategorias({ items, nivel, categoriasConImagenError, setCategoriasConImagenError, hrefCategoria, onNavigate }) {
-  if (!items?.length) {
-    return null;
-  }
+  if (!items?.length) return null;
 
   const columnas = nivel === 0
     ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
@@ -123,7 +122,7 @@ function BloqueCategorias({ items, nivel, categoriasConImagenError, setCategoria
   );
 }
 
-export default function Productos() {
+function ProductosInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const buscarInicial = searchParams.get('buscar') || '';
@@ -138,9 +137,7 @@ export default function Productos() {
     const savedUrl = sessionStorage.getItem(CATALOGO_URL_KEY);
     const savedScroll = sessionStorage.getItem(CATALOGO_SCROLL_KEY);
     const currentUrl = window.location.pathname + window.location.search;
-    if (!savedUrl || !savedScroll || savedUrl !== currentUrl) {
-      return;
-    }
+    if (!savedUrl || !savedScroll || savedUrl !== currentUrl) return;
 
     const scrollY = Number(savedScroll);
     if (Number.isNaN(scrollY)) {
@@ -166,9 +163,7 @@ export default function Productos() {
         setErrorBusqueda('');
         setCargandoBusqueda(false);
       });
-      return () => {
-        activo = false;
-      };
+      return () => { activo = false; };
     }
 
     Promise.resolve().then(() => {
@@ -177,28 +172,31 @@ export default function Productos() {
       setErrorBusqueda('');
     });
 
-    fetch(`/api/productos?buscar=${encodeURIComponent(buscarInicial)}&limit=1000`)
-      .then(res => res.json())
-      .then(data => {
+    const timeout = setTimeout(async () => {
+      if (!activo) return;
+      try {
+        const { resolverRutaBusquedaCatalogo } = await import('@/lib/catalogo-categorias');
+        const resultados = await resolverRutaBusquedaCatalogo(buscarInicial);
         if (!activo) return;
-        setProductos(Array.isArray(data) ? data : []);
-        setCargandoBusqueda(false);
-      })
-      .catch(() => {
+        setProductos(resultados || []);
+      } catch (e) {
         if (!activo) return;
-        setErrorBusqueda('No se pudo cargar la busqueda.');
-        setCargandoBusqueda(false);
-      });
+        setErrorBusqueda('Error al buscar productos.');
+      } finally {
+        if (activo) setCargandoBusqueda(false);
+      }
+    }, 0);
 
-    return () => {
-      activo = false;
-    };
+    return () => { activo = false; clearTimeout(timeout); };
   }, [buscarInicial]);
 
-  const onSubmitBuscar = event => {
-    event.preventDefault();
-    const value = inputBuscar.trim();
-    router.push(resolverRutaBusquedaCatalogo(value));
+  const onSubmitBuscar = e => {
+    e.preventDefault();
+    if (inputBuscar.trim()) {
+      router.push(`/productos?buscar=${encodeURIComponent(inputBuscar.trim())}`);
+    } else {
+      router.push('/productos');
+    }
   };
 
   const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
@@ -310,68 +308,67 @@ export default function Productos() {
           )
         ) : (
           <div className="flex flex-col gap-10">
-            {MENU_CATEGORIAS.map(categoria => {
-              return (
-                <section
-                  key={categoria.nombre}
-                  className="flex flex-col gap-5"
-                >
-                  <BloqueCategorias
-                    items={[categoria]}
-                    nivel={0}
-                    categoriasConImagenError={categoriasConImagenError}
-                    setCategoriasConImagenError={setCategoriasConImagenError}
-                    hrefCategoria={hrefCategoria}
-                    onNavigate={guardarScrollCatalogo}
-                  />
+            {MENU_CATEGORIAS.map(categoria => (
+              <section key={categoria.nombre} className="flex flex-col gap-5">
+                <BloqueCategorias
+                  items={[categoria]}
+                  nivel={0}
+                  categoriasConImagenError={categoriasConImagenError}
+                  setCategoriasConImagenError={setCategoriasConImagenError}
+                  hrefCategoria={hrefCategoria}
+                  onNavigate={guardarScrollCatalogo}
+                />
 
-                  {categoria.hijos?.length > 0 && (
-                    <div className="rounded-[24px] border border-orange-200 bg-gradient-to-b from-orange-50/80 to-white p-4 shadow-sm">
-                      <div className="mb-4 flex items-center gap-3 text-sm font-semibold text-orange-700">
-                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-orange-300 bg-white text-orange-500 shadow-sm">
-                          ↓
-                        </span>
-                        <span className="uppercase tracking-[0.24em] text-[11px]">Subcategorias de {categoria.nombre}</span>
-                      </div>
-                      <BloqueCategorias
-                        items={categoria.hijos}
-                        nivel={1}
-                        categoriasConImagenError={categoriasConImagenError}
-                        setCategoriasConImagenError={setCategoriasConImagenError}
-                        hrefCategoria={hrefCategoria}
-                        onNavigate={guardarScrollCatalogo}
-                      />
-
-                      {categoria.hijos.some(hijo => hijo.hijos?.length > 0) && (
-                        <div className="mt-5 flex flex-col gap-4">
-                          {categoria.hijos.filter(hijo => hijo.hijos?.length > 0).map(hijo => (
-                            <div key={`${categoria.nombre}-${hijo.nombre}`} className="rounded-[20px] border border-sky-200 bg-sky-50/80 p-3.5">
-                              <div className="mb-3 flex items-center gap-3 text-xs font-semibold text-sky-700">
-                                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-sky-300 bg-white text-sky-500 shadow-sm">
-                                  ↓
-                                </span>
-                                <span className="uppercase tracking-[0.22em]">Subnivel de {hijo.nombre}</span>
-                              </div>
-                              <BloqueCategorias
-                                items={hijo.hijos}
-                                nivel={2}
-                                categoriasConImagenError={categoriasConImagenError}
-                                setCategoriasConImagenError={setCategoriasConImagenError}
-                                hrefCategoria={hrefCategoria}
-                                onNavigate={guardarScrollCatalogo}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                {categoria.hijos?.length > 0 && (
+                  <div className="rounded-[24px] border border-orange-200 bg-gradient-to-b from-orange-50/80 to-white p-4 shadow-sm">
+                    <div className="mb-4 flex items-center gap-3 text-sm font-semibold text-orange-700">
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-orange-300 bg-white text-orange-500 shadow-sm">↓</span>
+                      <span className="uppercase tracking-[0.24em] text-[11px]">Subcategorias de {categoria.nombre}</span>
                     </div>
-                  )}
-                </section>
-              );
-            })}
+                    <BloqueCategorias
+                      items={categoria.hijos}
+                      nivel={1}
+                      categoriasConImagenError={categoriasConImagenError}
+                      setCategoriasConImagenError={setCategoriasConImagenError}
+                      hrefCategoria={hrefCategoria}
+                      onNavigate={guardarScrollCatalogo}
+                    />
+
+                    {categoria.hijos.some(hijo => hijo.hijos?.length > 0) && (
+                      <div className="mt-5 flex flex-col gap-4">
+                        {categoria.hijos.filter(hijo => hijo.hijos?.length > 0).map(hijo => (
+                          <div key={`${categoria.nombre}-${hijo.nombre}`} className="rounded-[20px] border border-sky-200 bg-sky-50/80 p-3.5">
+                            <div className="mb-3 flex items-center gap-3 text-xs font-semibold text-sky-700">
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-sky-300 bg-white text-sky-500 shadow-sm">↓</span>
+                              <span className="uppercase tracking-[0.22em]">Subnivel de {hijo.nombre}</span>
+                            </div>
+                            <BloqueCategorias
+                              items={hijo.hijos}
+                              nivel={2}
+                              categoriasConImagenError={categoriasConImagenError}
+                              setCategoriasConImagenError={setCategoriasConImagenError}
+                              hrefCategoria={hrefCategoria}
+                              onNavigate={guardarScrollCatalogo}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
+            ))}
           </div>
         )}
       </div>
     </main>
+  );
+}
+
+export default function Productos() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-500 text-xl">Cargando...</div>}>
+      <ProductosInner />
+    </Suspense>
   );
 }

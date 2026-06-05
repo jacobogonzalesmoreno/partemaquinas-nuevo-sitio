@@ -1,0 +1,1971 @@
+{
+  "generatedAt": "2026-06-05T17:18:45.950Z",
+  "applied": true,
+  "summary": {
+    "products": 391,
+    "productsUpdated": 391,
+    "remoteImagesFound": 3019,
+    "imagesDownloaded": 2752,
+    "descriptionUrlsRewritten": 2,
+    "skippedLocalImages": 0,
+    "failures": 0
+  },
+  "failures": [],
+  "updatedProducts": [
+    {
+      "id": 415,
+      "nombre": "Liner kit Mitsubishi 6D34",
+      "imageCount": 19
+    },
+    {
+      "id": 461,
+      "nombre": "Liner kit Mitsubishi 6D16",
+      "imageCount": 17
+    },
+    {
+      "id": 464,
+      "nombre": "Liner kit Caterpillar 3066",
+      "imageCount": 17
+    },
+    {
+      "id": 471,
+      "nombre": "Liner kit Cummins 6BT",
+      "imageCount": 21
+    },
+    {
+      "id": 473,
+      "nombre": "Liner kit Isuzu 6BG1",
+      "imageCount": 17
+    },
+    {
+      "id": 477,
+      "nombre": "Liner kit Hino H07CT",
+      "imageCount": 19
+    },
+    {
+      "id": 479,
+      "nombre": "Liner kit Volvo 6D6",
+      "imageCount": 9
+    },
+    {
+      "id": 482,
+      "nombre": "Liner kit Doosan DB58",
+      "imageCount": 18
+    },
+    {
+      "id": 486,
+      "nombre": "Liner kit Komatsu 6D102",
+      "imageCount": 8
+    },
+    {
+      "id": 488,
+      "nombre": "Liner kit Kubota V2203",
+      "imageCount": 10
+    },
+    {
+      "id": 490,
+      "nombre": "Liner kit Kubota V2403",
+      "imageCount": 10
+    },
+    {
+      "id": 491,
+      "nombre": "Liner kit Caterpillar 3064",
+      "imageCount": 17
+    },
+    {
+      "id": 506,
+      "nombre": "Turbo IHI Isuzu 6WG1",
+      "imageCount": 12
+    },
+    {
+      "id": 516,
+      "nombre": "Turbo IHI Hino H07C",
+      "imageCount": 12
+    },
+    {
+      "id": 576,
+      "nombre": "Bomba de aceite Isuzu 6BG1",
+      "imageCount": 15
+    },
+    {
+      "id": 609,
+      "nombre": "Tubo de descarga Turbo a Bloque Mitsubishi",
+      "imageCount": 6
+    },
+    {
+      "id": 610,
+      "nombre": "Tubo de descarga Turbo a Bloque Cummins",
+      "imageCount": 4
+    },
+    {
+      "id": 612,
+      "nombre": "Eje de traslaciones Zaxis 200",
+      "imageCount": 4
+    },
+    {
+      "id": 617,
+      "nombre": "Eje de traslaciones Hyundai 210",
+      "imageCount": 4
+    },
+    {
+      "id": 619,
+      "nombre": "Eje de traslaciones Kobelco SK220-4",
+      "imageCount": 5
+    },
+    {
+      "id": 626,
+      "nombre": "Sello Tornamesa Kobelco SK200",
+      "imageCount": 2
+    },
+    {
+      "id": 628,
+      "nombre": "O'Rings",
+      "imageCount": 7
+    },
+    {
+      "id": 633,
+      "nombre": "Juego de mandos Kobelco SK200 – SK210",
+      "imageCount": 2
+    },
+    {
+      "id": 639,
+      "nombre": "Válvula de servicio Hitachi Zaxis 200",
+      "imageCount": 6
+    },
+    {
+      "id": 641,
+      "nombre": "Válvula principal Hitachi Ex200-5",
+      "imageCount": 4
+    },
+    {
+      "id": 643,
+      "nombre": "Válvula principal Hitachi Zaxis 200",
+      "imageCount": 4
+    },
+    {
+      "id": 691,
+      "nombre": "Bala de mandos Kobelco SK210-6E",
+      "imageCount": 8
+    },
+    {
+      "id": 692,
+      "nombre": "Bala de mando para Caterpillar",
+      "imageCount": 11
+    },
+    {
+      "id": 693,
+      "nombre": "Bala de mando Kobelco SK210-6 YQ07",
+      "imageCount": 7
+    },
+    {
+      "id": 698,
+      "nombre": "Bala de mandos Kobelco SK210-8 YQ09",
+      "imageCount": 5
+    },
+    {
+      "id": 699,
+      "nombre": "Carrier superior reductor de giro Kobelco SK210-6",
+      "imageCount": 4
+    },
+    {
+      "id": 700,
+      "nombre": "Carrier superior reductor de giro Kobelco SK220-4",
+      "imageCount": 1
+    },
+    {
+      "id": 703,
+      "nombre": "Carrier Superior Reductor Giro Liugong 922 – 922D",
+      "imageCount": 4
+    },
+    {
+      "id": 704,
+      "nombre": "Carrier superior de giro Sany Y215",
+      "imageCount": 5
+    },
+    {
+      "id": 705,
+      "nombre": "Carrier Superior Reductor Giro Kobelco Sk200-4",
+      "imageCount": 5
+    },
+    {
+      "id": 725,
+      "nombre": "Válvula secundaria o de servicio o de alivio banco de válvulas Kobelco SK200-3/4",
+      "imageCount": 7
+    },
+    {
+      "id": 727,
+      "nombre": "Válvula principal banco de válvulas Kobelco SK210-6",
+      "imageCount": 6
+    },
+    {
+      "id": 730,
+      "nombre": "Carrier superior reductor de giro Case Cx210 Kato 820-3",
+      "imageCount": 3
+    },
+    {
+      "id": 741,
+      "nombre": "Turbo Holset sin Valvula para motor Cummins 6BT",
+      "imageCount": 15
+    },
+    {
+      "id": 743,
+      "nombre": "Turbo Mitsubishi para motor 6D34",
+      "imageCount": 13
+    },
+    {
+      "id": 753,
+      "nombre": "Turbo Holset con Válvula para motor Cummins 6BT",
+      "imageCount": 13
+    },
+    {
+      "id": 759,
+      "nombre": "Turbo Caterpillar para motor Caterpillar 3066",
+      "imageCount": 11
+    },
+    {
+      "id": 797,
+      "nombre": "Carrier inferior reductor de giro Case Cx210, Kato 820-3",
+      "imageCount": 6
+    },
+    {
+      "id": 804,
+      "nombre": "Corona para reductor de giro Hyundai R210",
+      "imageCount": 2
+    },
+    {
+      "id": 810,
+      "nombre": "Turbo Garret para motor Hino J08 en Excavadora Kobelco SK350-8",
+      "imageCount": 14
+    },
+    {
+      "id": 817,
+      "nombre": "Turbo IHI para motor Isuzu 4HK1",
+      "imageCount": 9
+    },
+    {
+      "id": 841,
+      "nombre": "Sensor Negativo o de baja Kobelco SK210-6",
+      "imageCount": 6
+    },
+    {
+      "id": 843,
+      "nombre": "Dientes 225 para balde",
+      "imageCount": 6
+    },
+    {
+      "id": 847,
+      "nombre": "Bases 225 para balde",
+      "imageCount": 6
+    },
+    {
+      "id": 888,
+      "nombre": "Válvula solenoide o electrovalvula punto verde YN35V00052F1",
+      "imageCount": 11
+    },
+    {
+      "id": 889,
+      "nombre": "Válvula solenoide o electrovalvula punto verde YN35V00054F1",
+      "imageCount": 17
+    },
+    {
+      "id": 900,
+      "nombre": "Válvula solenoide o electrovalvula punto verde YB35V00005F1",
+      "imageCount": 12
+    },
+    {
+      "id": 907,
+      "nombre": "Válvula solenoide o electrovalvula punto verde YN35V00041F1",
+      "imageCount": 11
+    },
+    {
+      "id": 908,
+      "nombre": "Válvula solenoide o electrovalvula punto verde YN35V00048F1",
+      "imageCount": 11
+    },
+    {
+      "id": 909,
+      "nombre": "Válvula solenoide o electrovalvula punto negro YN35V00049F1",
+      "imageCount": 12
+    },
+    {
+      "id": 916,
+      "nombre": "Válvula solenoide o electrovalvula punto azul YN35V00051F1",
+      "imageCount": 13
+    },
+    {
+      "id": 918,
+      "nombre": "Válvula solenoide o electrovalvula punto rojo YN35V00050F1",
+      "imageCount": 19
+    },
+    {
+      "id": 924,
+      "nombre": "Coupling completo 45H",
+      "imageCount": 5
+    },
+    {
+      "id": 928,
+      "nombre": "Coupling completo 50H",
+      "imageCount": 7
+    },
+    {
+      "id": 938,
+      "nombre": "Balinera Reductor de Giro - NTN 22320 - Kobelco SK210-6",
+      "imageCount": 5
+    },
+    {
+      "id": 939,
+      "nombre": "Liner Kit Isuzu 6HK1",
+      "imageCount": 11
+    },
+    {
+      "id": 946,
+      "nombre": "Balinera reductor de giro NTN 22319 Kobelco sk200-3/4",
+      "imageCount": 5
+    },
+    {
+      "id": 953,
+      "nombre": "Balas de mandos de pedales para Hitachi EX200-5",
+      "imageCount": 5
+    },
+    {
+      "id": 954,
+      "nombre": "Balas de mandos de pedales para Hitachi Zaxis 200",
+      "imageCount": 4
+    },
+    {
+      "id": 962,
+      "nombre": "Balas de mandos de pedales para Hyundai R210",
+      "imageCount": 4
+    },
+    {
+      "id": 965,
+      "nombre": "Balas de mandos de pedales para Sanny Y-215",
+      "imageCount": 4
+    },
+    {
+      "id": 967,
+      "nombre": "Balas de mandos de pedales para Kobelco SK-200-34",
+      "imageCount": 4
+    },
+    {
+      "id": 968,
+      "nombre": "Balas de mandos de pedales para Caterpillar E320",
+      "imageCount": 4
+    },
+    {
+      "id": 973,
+      "nombre": "Balas de mandos de pedales de Liugong 922",
+      "imageCount": 4
+    },
+    {
+      "id": 976,
+      "nombre": "Balas de mandos de pedales para Kobelco SK 210 - 6",
+      "imageCount": 4
+    },
+    {
+      "id": 979,
+      "nombre": "Balinera Reductor de Giro - NTN 22322",
+      "imageCount": 5
+    },
+    {
+      "id": 988,
+      "nombre": "Enfriador de aceite de motor Mistsubishi 6D34",
+      "imageCount": 4
+    },
+    {
+      "id": 989,
+      "nombre": "Enfriador de aceite motor Isuzu 6BG1",
+      "imageCount": 7
+    },
+    {
+      "id": 992,
+      "nombre": "Tapa enfriador de aceite Cummins 6BT",
+      "imageCount": 5
+    },
+    {
+      "id": 995,
+      "nombre": "Soporte de motor Isuzu 6BG1 en Zaxis 200",
+      "imageCount": 4
+    },
+    {
+      "id": 1002,
+      "nombre": "Kit de reparación bomba hidráulica HPV95, para Komatsu PC200-6",
+      "imageCount": 31
+    },
+    {
+      "id": 1004,
+      "nombre": "Kit de reparación bomba hidráulica HPV145, para Hitachi Zaxis 330",
+      "imageCount": 31
+    },
+    {
+      "id": 1009,
+      "nombre": "Kit de reparación bomba hidráulica HPV102/105 para Hitachi EX200-5 y ZAXIS 200",
+      "imageCount": 31
+    },
+    {
+      "id": 1014,
+      "nombre": "Motor de Aceleración,  para Kobelco SK210-6 / 6E",
+      "imageCount": 11
+    },
+    {
+      "id": 1016,
+      "nombre": "Válvula Principal Banco Valvulas , Hyundai R210-7",
+      "imageCount": 6
+    },
+    {
+      "id": 1019,
+      "nombre": "Válvula Servicio, Banco de Valvulas, Hyundai R210-7",
+      "imageCount": 4
+    },
+    {
+      "id": 1023,
+      "nombre": "Cilindro o Gato tensor para Sany Y215 y Sany Y235",
+      "imageCount": 2
+    },
+    {
+      "id": 1025,
+      "nombre": "Reductor de Traslacion para Sany Y215 y Y235",
+      "imageCount": 2
+    },
+    {
+      "id": 1028,
+      "nombre": "Tornamesa para Sany Y235",
+      "imageCount": 2
+    },
+    {
+      "id": 1031,
+      "nombre": "Liner Kit Isuzu 4HK1",
+      "imageCount": 11
+    },
+    {
+      "id": 1032,
+      "nombre": "Turbo IHI para motor Isuzu 6HK1",
+      "imageCount": 10
+    },
+    {
+      "id": 1034,
+      "nombre": "Tapete de cabina",
+      "imageCount": 3
+    },
+    {
+      "id": 1046,
+      "nombre": "Soporte de motor para Hyundai 210 - 5",
+      "imageCount": 3
+    },
+    {
+      "id": 1054,
+      "nombre": "Rociador de aceite de motor Isuzu 6BG1",
+      "imageCount": 4
+    },
+    {
+      "id": 1062,
+      "nombre": "Soporte de motor para Kobelco SK-200-3 - 4",
+      "imageCount": 5
+    },
+    {
+      "id": 1068,
+      "nombre": "Tornillo de culata Motor Isuzu 6BG1 o 6BD1",
+      "imageCount": 3
+    },
+    {
+      "id": 1071,
+      "nombre": "Eje motor traslación Kobelco SK220-4",
+      "imageCount": 5
+    },
+    {
+      "id": 1074,
+      "nombre": "Tornillo de culata motor Mistsubishi 6D34 6D31",
+      "imageCount": 2
+    },
+    {
+      "id": 1078,
+      "nombre": "Tornillo de culata motor Cummins 6BT grado 12 corto mediano y largo",
+      "imageCount": 2
+    },
+    {
+      "id": 1081,
+      "nombre": "Tapa frontal de motor Cummins 6BT",
+      "imageCount": 4
+    },
+    {
+      "id": 1084,
+      "nombre": "Enfriador de aceite motor Cummins 6BT",
+      "imageCount": 6
+    },
+    {
+      "id": 1091,
+      "nombre": "Soporte de motor Isuzu 6BG1 Hitachi EX200-5",
+      "imageCount": 6
+    },
+    {
+      "id": 1094,
+      "nombre": "Tapa enfriador de aceite Cummins 6BT",
+      "imageCount": 5
+    },
+    {
+      "id": 1097,
+      "nombre": "Bala de mandos de pedales Caterpillar E200B",
+      "imageCount": 4
+    },
+    {
+      "id": 1100,
+      "nombre": "Soporte de motor Kobelco SK210 - 6",
+      "imageCount": 6
+    },
+    {
+      "id": 1103,
+      "nombre": "Rociador de aceite Mitsubishi 6D34",
+      "imageCount": 3
+    },
+    {
+      "id": 1108,
+      "nombre": "Turbo Holset para motor ISX",
+      "imageCount": 11
+    },
+    {
+      "id": 1111,
+      "nombre": "Turbo Holset para motor ISM, M11,L10",
+      "imageCount": 12
+    },
+    {
+      "id": 1114,
+      "nombre": "Liner Kit Cummins ISM",
+      "imageCount": 8
+    },
+    {
+      "id": 1121,
+      "nombre": "Liner Kit Motor Shibaura N844T",
+      "imageCount": 8
+    },
+    {
+      "id": 1125,
+      "nombre": "Monitor Escavadora Kobelco SK210 - 6E",
+      "imageCount": 9
+    },
+    {
+      "id": 1131,
+      "nombre": "Liner kit Isuzu 6SD1",
+      "imageCount": 22
+    },
+    {
+      "id": 1138,
+      "nombre": "Empaquetadura de motor Isuzu 6SD1",
+      "imageCount": 4
+    },
+    {
+      "id": 1140,
+      "nombre": "Valvulas de Escape y Admision Isuzu 6SD1",
+      "imageCount": 2
+    },
+    {
+      "id": 1143,
+      "nombre": "Juego o kit de mandos excavadora, Kobelco, Hyundai, Liugong, Hitachi,  Sany, Kato",
+      "imageCount": 7
+    },
+    {
+      "id": 1144,
+      "nombre": "Empaqueradura de motor Mitsubishi 6D16",
+      "imageCount": 11
+    },
+    {
+      "id": 1150,
+      "nombre": "Bomba de Aceite de Motor Mitsubishi 6D34",
+      "imageCount": 8
+    },
+    {
+      "id": 1157,
+      "nombre": "Bomba piloto para Bomba Hidráulica K3V112 Ref1",
+      "imageCount": 10
+    },
+    {
+      "id": 1160,
+      "nombre": "Bomba piloto para Bomba Hidráulica K3V112 Ref2",
+      "imageCount": 12
+    },
+    {
+      "id": 1172,
+      "nombre": "Culata de Motor ISX Usada",
+      "imageCount": 5
+    },
+    {
+      "id": 1175,
+      "nombre": "Kit Piñon Planetario Kato, Case Reductor De Giro Inferior",
+      "imageCount": 7
+    },
+    {
+      "id": 1178,
+      "nombre": "Motor Cummins N14 Remanofacturado",
+      "imageCount": 1
+    },
+    {
+      "id": 1181,
+      "nombre": "Turbo Motor Caterpillar 3066 Para Serie 320C",
+      "imageCount": 9
+    },
+    {
+      "id": 1184,
+      "nombre": "Motor Cummins ISX Remanofacturado",
+      "imageCount": 1
+    },
+    {
+      "id": 1191,
+      "nombre": "Balas de mandos Kobelco SK200",
+      "imageCount": 4
+    },
+    {
+      "id": 1193,
+      "nombre": "Bomba de agua Cummins 6BT",
+      "imageCount": 8
+    },
+    {
+      "id": 1197,
+      "nombre": "Bomba de agua Isuzu 6SD1",
+      "imageCount": 9
+    },
+    {
+      "id": 1201,
+      "nombre": "Bomba de combustible Cummins 6BT5.9",
+      "imageCount": 9
+    },
+    {
+      "id": 1203,
+      "nombre": "Bomba de combustible Isuzu 6SD1",
+      "imageCount": 7
+    },
+    {
+      "id": 1207,
+      "nombre": "Casquetes biela y bancada Isuzu 6WG1",
+      "imageCount": 3
+    },
+    {
+      "id": 1210,
+      "nombre": "Inyectores Mitsubishi 6D34",
+      "imageCount": 9
+    },
+    {
+      "id": 1213,
+      "nombre": "Liner kit Hino J05E- J08E",
+      "imageCount": 16
+    },
+    {
+      "id": 1218,
+      "nombre": "Liner kit Isuzu 4JB1 cámara cuadrada",
+      "imageCount": 16
+    },
+    {
+      "id": 1221,
+      "nombre": "Liner kit Isuzu 4JB1 cámara redonda",
+      "imageCount": 16
+    },
+    {
+      "id": 1224,
+      "nombre": "Liner kit Isuzu 4JJ1 cámara redonda",
+      "imageCount": 19
+    },
+    {
+      "id": 1227,
+      "nombre": "Pistola Engrasadora",
+      "imageCount": 7
+    },
+    {
+      "id": 1233,
+      "nombre": "Valvula principal banco de valvulas Kobelco SK200 3-4",
+      "imageCount": 7
+    },
+    {
+      "id": 1236,
+      "nombre": "Valvula de escape y admision culata Isuzu 6WG1",
+      "imageCount": 18
+    },
+    {
+      "id": 1239,
+      "nombre": "Valvula de escape y de admision culata Isuzu 6SD1",
+      "imageCount": 21
+    },
+    {
+      "id": 1242,
+      "nombre": "Valvula de escape culata y admisión  - Cummins 6BT",
+      "imageCount": 20
+    },
+    {
+      "id": 1246,
+      "nombre": "Tuberia inyeccion Isuzu 6WG1",
+      "imageCount": 6
+    },
+    {
+      "id": 1248,
+      "nombre": "Tubería de inyeccion Isuzu 6HK1",
+      "imageCount": 6
+    },
+    {
+      "id": 1252,
+      "nombre": "Liner kit Isuzu 6WG1",
+      "imageCount": 15
+    },
+    {
+      "id": 1316,
+      "nombre": "Bobcat - Thomas",
+      "imageCount": 10
+    },
+    {
+      "id": 1329,
+      "nombre": "Bloque de Motor Isuzu 6BG1",
+      "imageCount": 5
+    },
+    {
+      "id": 1339,
+      "nombre": "Carrier inferior reductor de giro Kobelco SK200-3-4",
+      "imageCount": 9
+    },
+    {
+      "id": 1342,
+      "nombre": "Eje de reductor de  traslacion (Torito) Liugong 922",
+      "imageCount": 4
+    },
+    {
+      "id": 1346,
+      "nombre": "Rueda Tensora Kobelco SK200-3-4  SK210- 6-6E",
+      "imageCount": 6
+    },
+    {
+      "id": 1350,
+      "nombre": "Cadena 49 pasos Kobelco SK200-34, SK210-66, Caterpillar E200B",
+      "imageCount": 8
+    },
+    {
+      "id": 1352,
+      "nombre": "Carril Inferior Kobelco SK200-3-4, SK210-6E",
+      "imageCount": 8
+    },
+    {
+      "id": 1355,
+      "nombre": "Sprocket Kobelco SK200-3-4, SK210-6E",
+      "imageCount": 4
+    },
+    {
+      "id": 1358,
+      "nombre": "Carril Inferior Komatsu PC200-5-6-7",
+      "imageCount": 7
+    },
+    {
+      "id": 1361,
+      "nombre": "Motor Cummins 6BT5.9, Kobelco SK200-4, Liugon 922, Hyundai R210-7",
+      "imageCount": 1
+    },
+    {
+      "id": 1379,
+      "nombre": "Balancin inyeccion Cummins ISM",
+      "imageCount": 4
+    },
+    {
+      "id": 1383,
+      "nombre": "Balancin Valvulas motor Cummins ISM",
+      "imageCount": 7
+    },
+    {
+      "id": 1390,
+      "nombre": "Empaquetadura Cilindro Arrastre Liugong 922D",
+      "imageCount": 6
+    },
+    {
+      "id": 1397,
+      "nombre": "Cigueñal Motor Shibaura ( Pesa Pequeña)",
+      "imageCount": 7
+    },
+    {
+      "id": 1404,
+      "nombre": "Cigueñal Motor Shibaura (Pesa Grande)",
+      "imageCount": 10
+    },
+    {
+      "id": 1414,
+      "nombre": "Tapa Bomba aceite Caterpillar 320B",
+      "imageCount": 10
+    },
+    {
+      "id": 1427,
+      "nombre": "Eject de balancing (Flauta) Motor Cummins ISX (4059306)",
+      "imageCount": 10
+    },
+    {
+      "id": 1437,
+      "nombre": "Eje de balancin (Flauta) Motor Cummins ISX (4059304)",
+      "imageCount": 12
+    },
+    {
+      "id": 1449,
+      "nombre": "Kato 1430",
+      "imageCount": 5
+    },
+    {
+      "id": 1455,
+      "nombre": "Piñon Solar, Carrier Inferior Kobelco Sk210-6E,  SK210-8",
+      "imageCount": 4
+    },
+    {
+      "id": 1459,
+      "nombre": "Balinera de traslacion BA205 Kobelco SK210",
+      "imageCount": 10
+    },
+    {
+      "id": 1469,
+      "nombre": "Botadores Motor Caterpillar 3066, Excavadora Caterpillar E200b y 320BC",
+      "imageCount": 7
+    },
+    {
+      "id": 1477,
+      "nombre": "Bloque Motor Isuzu 6BG1",
+      "imageCount": 11
+    },
+    {
+      "id": 1488,
+      "nombre": "Bloque Motor Cummins 6BT5.9",
+      "imageCount": 6
+    },
+    {
+      "id": 1494,
+      "nombre": "Cigueñal Motor Cummins 6BT5.9 Forjado",
+      "imageCount": 8
+    },
+    {
+      "id": 1503,
+      "nombre": "Cigueñal Motor Isuzu 6BG1 Forjado",
+      "imageCount": 7
+    },
+    {
+      "id": 1510,
+      "nombre": "Cigueñal Motor Mitsubishi 6D34 Forjado",
+      "imageCount": 8
+    },
+    {
+      "id": 1522,
+      "nombre": "Empaquetadura de Motor Caterpillar 3066",
+      "imageCount": 2
+    },
+    {
+      "id": 1524,
+      "nombre": "Kit Casquetes Biela+Bancada  Motor Mitsubishi 6D34",
+      "imageCount": 4
+    },
+    {
+      "id": 1529,
+      "nombre": "Culata de Motor Isuzu 4HK1",
+      "imageCount": 7
+    },
+    {
+      "id": 1536,
+      "nombre": "Kit Casquetes Biela+Bancada Motor Isuzu 6bg1 Medidas STD 0.25,0.50,0.75",
+      "imageCount": 4
+    },
+    {
+      "id": 1542,
+      "nombre": "Kit Casquetes Biela+Bancada Motor Caterpillar 3066, Medidas STD 0.25,0.50,0.75",
+      "imageCount": 9
+    },
+    {
+      "id": 1553,
+      "nombre": "Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75",
+      "imageCount": 10
+    },
+    {
+      "id": 1566,
+      "nombre": "Turbo Hitachi Zaxis 200 Motor Isuzu 6BG1",
+      "imageCount": 11
+    },
+    {
+      "id": 1593,
+      "nombre": "Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34",
+      "imageCount": 12
+    },
+    {
+      "id": 1606,
+      "nombre": "Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior",
+      "imageCount": 3
+    },
+    {
+      "id": 1713,
+      "nombre": "Kit de Piñones Planetarios Reductor de Giro, Carrier Inferior Liugong 922",
+      "imageCount": 7
+    },
+    {
+      "id": 1721,
+      "nombre": "Turbo Motor Cummins ISX sin Valvula HX55W",
+      "imageCount": 12
+    },
+    {
+      "id": 1733,
+      "nombre": "Radiador de Agua - Motor Isuzu 6BG1- Excavadora Hitachi Zaxis 200 - 270",
+      "imageCount": 8
+    },
+    {
+      "id": 1741,
+      "nombre": "Mofle de Motor Isuzu 6BG1 en excavadora Hitachi Zaxis 200",
+      "imageCount": 4
+    },
+    {
+      "id": 1746,
+      "nombre": "Eje Central (Torito) - Traslacion Hyundai R210-7,  XCMG",
+      "imageCount": 7
+    },
+    {
+      "id": 1753,
+      "nombre": "Arbol de Levas Motor Isuzu 6BG1",
+      "imageCount": 13
+    },
+    {
+      "id": 1767,
+      "nombre": "Culata de Motor Cummins 6BT5-9",
+      "imageCount": 11
+    },
+    {
+      "id": 1779,
+      "nombre": "Turbo Motor Mitsubishi 6D16 -  Kobelco SK330",
+      "imageCount": 23
+    },
+    {
+      "id": 1802,
+      "nombre": "Sello Hidráulico (Empaquetadura) de Cilindros (Gatos) Alce (Mellizos), Arrastre, Balde para Sany Y215",
+      "imageCount": 10
+    },
+    {
+      "id": 1812,
+      "nombre": "Mando Kawasaki Excavadora Kobelco, Liugong",
+      "imageCount": 11
+    },
+    {
+      "id": 1825,
+      "nombre": "Radiador o Enfriador de Aceite Hidráulico, Kato 820-3 Kato 820R",
+      "imageCount": 7
+    },
+    {
+      "id": 1838,
+      "nombre": "Radiador o Enfriador de Aceite Hidráulico, Kobelco SK210-6E,  SK210-8",
+      "imageCount": 6
+    },
+    {
+      "id": 1845,
+      "nombre": "Carrier Inferior Reductor de Giro Hyundai R210-7",
+      "imageCount": 9
+    },
+    {
+      "id": 1854,
+      "nombre": "Carrier Inferior Reductor de Giro Case CX210, Kato HD820-3",
+      "imageCount": 7
+    },
+    {
+      "id": 1861,
+      "nombre": "Carrier Inferior Reductor de Giro Liugong 922",
+      "imageCount": 8
+    },
+    {
+      "id": 1868,
+      "nombre": "Tuberia de Inyeccion Caterpillar E200B - 3066 - 320C - 3066",
+      "imageCount": 3
+    },
+    {
+      "id": 1879,
+      "nombre": "Carrier Grande, Mediano y Pequeño Traslacion Hitachi Zaxis 200",
+      "imageCount": 25
+    },
+    {
+      "id": 1904,
+      "nombre": "Medidores Aceite hidráulico excavadora Hyundai Kobelco Hitachi",
+      "imageCount": 2
+    },
+    {
+      "id": 1906,
+      "nombre": "Turbo motor D6D sin Valvula, Excavadora Volvo EC210",
+      "imageCount": 12
+    },
+    {
+      "id": 1918,
+      "nombre": "Medidor de Aceite Hidráulico Excavadora Kobelco SK200-3-4, SK210-6E",
+      "imageCount": 4
+    },
+    {
+      "id": 1923,
+      "nombre": "Medidor de Aceite Hidráulico Excavadora Hyundai R210-7",
+      "imageCount": 5
+    },
+    {
+      "id": 1928,
+      "nombre": "Medidor de Aceite Hidráulico Excavadora Hitachi Zaxis 200, EX 200",
+      "imageCount": 4
+    },
+    {
+      "id": 1933,
+      "nombre": "Cigüeñal motor Cummins 350-400",
+      "imageCount": 7
+    },
+    {
+      "id": 1940,
+      "nombre": "Empaquetadura de Motor Caterpillar 3066 - Caterpillar 320BC - E200B",
+      "imageCount": 8
+    },
+    {
+      "id": 1949,
+      "nombre": "Eje de Levas (Arbol de Levas) - Motor Cummins 350-400",
+      "imageCount": 11
+    },
+    {
+      "id": 1960,
+      "nombre": "Pinon de giro (Pinon de ataque) Excavadora Liugong 922",
+      "imageCount": 4
+    },
+    {
+      "id": 1965,
+      "nombre": "Bomba de Aceite - Motor Cummins 6BT5-9",
+      "imageCount": 10
+    },
+    {
+      "id": 1975,
+      "nombre": "Culata Motor Mitsubishi 6D34",
+      "imageCount": 10
+    },
+    {
+      "id": 1986,
+      "nombre": "Asientos de culata motor Isuzu 6BG1",
+      "imageCount": 4
+    },
+    {
+      "id": 1990,
+      "nombre": "Asientos de culata motor Isuzu 6HK1",
+      "imageCount": 4
+    },
+    {
+      "id": 1994,
+      "nombre": "Asientos de Culata Motor Caterpillar 3066",
+      "imageCount": 4
+    },
+    {
+      "id": 1998,
+      "nombre": "Asientos de Culata Motor Isuzu 4HK1",
+      "imageCount": 3
+    },
+    {
+      "id": 2001,
+      "nombre": "Guias de Culata Motor Caterpillar 3066",
+      "imageCount": 2
+    },
+    {
+      "id": 2005,
+      "nombre": "Guias culata motor Isuzu 6HK1",
+      "imageCount": 3
+    },
+    {
+      "id": 2008,
+      "nombre": "Guias culata motor Isuzu 4HK1",
+      "imageCount": 4
+    },
+    {
+      "id": 2011,
+      "nombre": "Asientos de culata motor Cummins 6BT5-9",
+      "imageCount": 4
+    },
+    {
+      "id": 2015,
+      "nombre": "Guias culata motor Cummins 6BT5-9",
+      "imageCount": 2
+    },
+    {
+      "id": 2017,
+      "nombre": "Guias de culata motor Isuzu 6BG1",
+      "imageCount": 3
+    },
+    {
+      "id": 2020,
+      "nombre": "Guias culata motor Mitsubishi 6D34",
+      "imageCount": 3
+    },
+    {
+      "id": 2023,
+      "nombre": "Kato 820-3",
+      "imageCount": 28
+    },
+    {
+      "id": 2051,
+      "nombre": "Kobelco SK210 Mark 8",
+      "imageCount": 20
+    },
+    {
+      "id": 2073,
+      "nombre": "Turbo motor Isuzu 6SD1 - Hitachi EX300",
+      "imageCount": 12
+    },
+    {
+      "id": 2085,
+      "nombre": "Empaquetadura de Motor Isuzu 6WG1 - Hitachi Zaxis 450",
+      "imageCount": 8
+    },
+    {
+      "id": 2094,
+      "nombre": "Empaquetadura de Motor- Cummins ISM - Kenworth",
+      "imageCount": 8
+    },
+    {
+      "id": 2102,
+      "nombre": "Carrier inferior - Motor de giro - Case 130",
+      "imageCount": 4
+    },
+    {
+      "id": 2108,
+      "nombre": "Sellos Hidraulico (empaquetadura) Caterpillar 312",
+      "imageCount": 8
+    },
+    {
+      "id": 2117,
+      "nombre": "Empaquetadura Motor - Mitsubishi  6D16- Excavadora Kobelco SK330",
+      "imageCount": 11
+    },
+    {
+      "id": 2128,
+      "nombre": "Empaquetadura Motor - Isuzu  6bg1- Excavadora Hitachi Zaxis 200-270 Sany Y235",
+      "imageCount": 9
+    },
+    {
+      "id": 2137,
+      "nombre": "Empaquetadura Motor - Doosan DB58 - Excavadora Doosan DX225",
+      "imageCount": 11
+    },
+    {
+      "id": 2149,
+      "nombre": "Empaquetadura Motor- Isuzu 4HK1- Excavadora Zaxis 200-3",
+      "imageCount": 12
+    },
+    {
+      "id": 2161,
+      "nombre": "Buje Baby (Du Bushing) Cilindro (gato) balde - Excavadora Caterpillar 312B-C",
+      "imageCount": 2
+    },
+    {
+      "id": 2163,
+      "nombre": "Buje Baby (Du Bushing) Cilindro (Gato) alce - Excavadora Caterpillar 312B-C",
+      "imageCount": 2
+    },
+    {
+      "id": 2165,
+      "nombre": "Buje Baby (Du Bushing) Cilindro (gato) arrastre - Excavadora Caterpillar 312B-C",
+      "imageCount": 2
+    },
+    {
+      "id": 2167,
+      "nombre": "Empaquetadura Motor - Mitsubishi  6D34- Excavadora Kobelco SK210 Sany Y215 Kato 820",
+      "imageCount": 14
+    },
+    {
+      "id": 2182,
+      "nombre": "Empaquetadura de Motor - Shibaura N844T Mini Cargador New Holland S170",
+      "imageCount": 19
+    },
+    {
+      "id": 2201,
+      "nombre": "Empaquetadura de motor - Mitsubishi 6d34 - Excavadora kobelco sk210, Kato 820, Sany Y215",
+      "imageCount": 14
+    },
+    {
+      "id": 2215,
+      "nombre": "Turbo Motor- Cummins 6CT - HX40W",
+      "imageCount": 12
+    },
+    {
+      "id": 2228,
+      "nombre": "Turbo sin Valvula - Motor Cummins 6CT - HX40",
+      "imageCount": 15
+    },
+    {
+      "id": 2244,
+      "nombre": "Kit piñon planetario carrier inferior - Reductor de giro - Excavadora kobelco SK200-3-4",
+      "imageCount": 6
+    },
+    {
+      "id": 2250,
+      "nombre": "Empaquetadura Motor - Isuzu  6HK1- Excavadora Hitachi Zaxis 330",
+      "imageCount": 13
+    },
+    {
+      "id": 2263,
+      "nombre": "Cableado Electrico (Harness) - Excavadora Sany Y215 - 235",
+      "imageCount": 2
+    },
+    {
+      "id": 2265,
+      "nombre": "Kit tuberia inyección motor Isuzu 6BG1 - Excavadora Hitachi EX-Zaxis 200",
+      "imageCount": 3
+    },
+    {
+      "id": 2268,
+      "nombre": "Cableado Eléctrico (Harness) - Excavadora  Caterpillar 312-320-330B-C-D",
+      "imageCount": 8
+    },
+    {
+      "id": 2277,
+      "nombre": "Carrier Superiro - Reductor Giro - Excavadora XGMA",
+      "imageCount": 6
+    },
+    {
+      "id": 2284,
+      "nombre": "Tapa Distribución - Motor Isuzu 6BG1 Doosan",
+      "imageCount": 5
+    },
+    {
+      "id": 2289,
+      "nombre": "Scanner Caterpillar ET - Herramienta Diagnostico Excavadora Bulldozer Retroexcavadora Cargador Minicargador - Caterpillar",
+      "imageCount": 11
+    },
+    {
+      "id": 2304,
+      "nombre": "Kit pasadores carrier inferior reductor giro excavadora XGMA 822",
+      "imageCount": 3
+    },
+    {
+      "id": 2307,
+      "nombre": "Empaque de culata motor Cummins 6BT5-9",
+      "imageCount": 5
+    },
+    {
+      "id": 2312,
+      "nombre": "Inyectores motor Isuzu 6BG1",
+      "imageCount": 7
+    },
+    {
+      "id": 2319,
+      "nombre": "Carrier grande traslacion Hyundai R210-7,  Volvo EC210B",
+      "imageCount": 8
+    },
+    {
+      "id": 2327,
+      "nombre": "Carrier pequeño traslacion Hyundai R210-7,  Volvo EC210B",
+      "imageCount": 7
+    },
+    {
+      "id": 2348,
+      "nombre": "Empaquetadura de cilindros (gatos) excavadora Volvo EC210B - arrastre, balde - mellizos",
+      "imageCount": 6
+    },
+    {
+      "id": 2354,
+      "nombre": "Empaquetadura de cilindros (gatos) excavadora XGMA 822 arrastre, balde, mellizos, center",
+      "imageCount": 7
+    },
+    {
+      "id": 2373,
+      "nombre": "Empaquetadura de cilindros (gatos) excavadora Liugong 922, arrastre, balde, mellizos",
+      "imageCount": 14
+    },
+    {
+      "id": 2387,
+      "nombre": "Empaquetadura de cilindros (gatos) excavadora Hyundai R210-7,  arrastre, balde, mellizos, center",
+      "imageCount": 12
+    },
+    {
+      "id": 2399,
+      "nombre": "Turbo Cummins 350",
+      "imageCount": 12
+    },
+    {
+      "id": 2400,
+      "nombre": "Kit motor de traslacion Volvo EC210B",
+      "imageCount": 12
+    },
+    {
+      "id": 2412,
+      "nombre": "Motor SANY 6D34",
+      "imageCount": 5
+    },
+    {
+      "id": 2417,
+      "nombre": "Retenedor trasero motor Isuzu 6BG1",
+      "imageCount": 3
+    },
+    {
+      "id": 2420,
+      "nombre": "Retenedor delantero motor Isuzu 6BG1",
+      "imageCount": 3
+    },
+    {
+      "id": 2423,
+      "nombre": "Plato escualizable motor de traslacion Volvo EC210B",
+      "imageCount": 9
+    },
+    {
+      "id": 2433,
+      "nombre": "Inyector de combustible motor Isuzu 4HK1",
+      "imageCount": 14
+    },
+    {
+      "id": 2447,
+      "nombre": "Bomba de inyeccion motor Isuzu 6BG1",
+      "imageCount": 4
+    },
+    {
+      "id": 2452,
+      "nombre": "Damper de cigueñal motor Mitsubishi 6D34",
+      "imageCount": 4
+    },
+    {
+      "id": 2457,
+      "nombre": "Piñon Solar Carrier inferior Giro Casé CX210 Kato 820-3",
+      "imageCount": 4
+    },
+    {
+      "id": 2462,
+      "nombre": "Motor Isuzu 6BG1",
+      "imageCount": 7
+    },
+    {
+      "id": 2471,
+      "nombre": "Multiple escape motor Cummins 6BT5-9",
+      "imageCount": 4
+    },
+    {
+      "id": 2475,
+      "nombre": "Multiple escape motor Mitsubishi 6D34 Isuzu 6BG1 Cummins 6BT5-9",
+      "imageCount": 2
+    },
+    {
+      "id": 2477,
+      "nombre": "Piñon solar carrier inferior reductor giro excavadora Casé CX210 Kato 820-3",
+      "imageCount": 1
+    },
+    {
+      "id": 2481,
+      "nombre": "Empaquetadura motor Komatsu",
+      "imageCount": 19
+    },
+    {
+      "id": 2500,
+      "nombre": "Multiple escape motor Isuzu 6BG1",
+      "imageCount": 5
+    },
+    {
+      "id": 2506,
+      "nombre": "Multiple escape motor Mitsubishi 6D34",
+      "imageCount": 1
+    },
+    {
+      "id": 2511,
+      "nombre": "Motobomba con motor Cummins 350",
+      "imageCount": 12
+    },
+    {
+      "id": 2523,
+      "nombre": "Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7",
+      "imageCount": 11
+    },
+    {
+      "id": 2534,
+      "nombre": "Filtro aceite hidráulico excavadora Sany Y215",
+      "imageCount": 9
+    },
+    {
+      "id": 2545,
+      "nombre": "Filtro hidráulico de succión excavadora Sany Y215",
+      "imageCount": 6
+    },
+    {
+      "id": 2551,
+      "nombre": "Filtro hidráulico piloto excavadora Sany Y215",
+      "imageCount": 6
+    },
+    {
+      "id": 2558,
+      "nombre": "Manzan punta balde excavadora",
+      "imageCount": 1
+    },
+    {
+      "id": 2560,
+      "nombre": "Bomba de inyeccion Cummins Iveco CNH excavadora Kobelco SK210-8",
+      "imageCount": 5
+    },
+    {
+      "id": 2566,
+      "nombre": "Bomba inyeccion Motor Isuzu 6BG1 excavadora Hitachi Zaxis 200 Sany Y235",
+      "imageCount": 5
+    },
+    {
+      "id": 2571,
+      "nombre": "Bomba piloto excavadora Kobelco SK200-3-4",
+      "imageCount": 7
+    },
+    {
+      "id": 2579,
+      "nombre": "Reparacion Motor Giro SG08 Link Belt 210",
+      "imageCount": 22
+    },
+    {
+      "id": 2602,
+      "nombre": "Bomba de agua, motor Isuzu 6WG1,  Hitachi Zaxis 450",
+      "imageCount": 6
+    },
+    {
+      "id": 2608,
+      "nombre": "Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922",
+      "imageCount": 4
+    },
+    {
+      "id": 2612,
+      "nombre": "Ventilador motor Komatsu - excavadora Komatsu PC200-6-7-8",
+      "imageCount": 4
+    },
+    {
+      "id": 2618,
+      "nombre": "Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3",
+      "imageCount": 4
+    },
+    {
+      "id": 2623,
+      "nombre": "Sensor de refrigerante - Motor Cummins ISM ISX- Kenworth T800 - Internacional 9400 7600",
+      "imageCount": 5
+    },
+    {
+      "id": 2628,
+      "nombre": "Ventilador motor Cummins ISL ISM ISC",
+      "imageCount": 7
+    },
+    {
+      "id": 2635,
+      "nombre": "Sensor temperatura - motor Cummins ISX ISM",
+      "imageCount": 5
+    },
+    {
+      "id": 2640,
+      "nombre": "Sensor lubricación",
+      "imageCount": 6
+    },
+    {
+      "id": 2646,
+      "nombre": "Acople Manguera tanque combustible",
+      "imageCount": 4
+    },
+    {
+      "id": 2650,
+      "nombre": "Bloque motor - Caterpillar 3066 - Excavadora Caterpillar E200B 320C",
+      "imageCount": 6
+    },
+    {
+      "id": 2656,
+      "nombre": "Culata motor Isuzu 6HK1",
+      "imageCount": 14
+    },
+    {
+      "id": 2670,
+      "nombre": "Cigueñal motor Isuzu 6HK1",
+      "imageCount": 8
+    },
+    {
+      "id": 2678,
+      "nombre": "Banco de Valvulas Hyundai R210-7",
+      "imageCount": 5
+    },
+    {
+      "id": 2684,
+      "nombre": "Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3",
+      "imageCount": 13
+    },
+    {
+      "id": 2698,
+      "nombre": "Bloque Motor Isuzu 6hk1 Excavadora Hitachi Zaxis 330",
+      "imageCount": 10
+    },
+    {
+      "id": 2710,
+      "nombre": "Liner Kit Cummins 6CT",
+      "imageCount": 17
+    },
+    {
+      "id": 2729,
+      "nombre": "Liner Kit Cummins ISX",
+      "imageCount": 11
+    },
+    {
+      "id": 2741,
+      "nombre": "Kit Reparacion Motor Traslacion - Excavadora Kobelco SK200-3-4 Caterpillar E200B-320c",
+      "imageCount": 19
+    },
+    {
+      "id": 2761,
+      "nombre": "Kit Reparacion Motor Traslacion - Excavadora Hyundai R210-7 Doosan DX225",
+      "imageCount": 14
+    },
+    {
+      "id": 2777,
+      "nombre": "Reductor Traslacion - Excavadora CASE CX130-130B",
+      "imageCount": 14
+    },
+    {
+      "id": 2792,
+      "nombre": "Moto Reductor Giro - Excavadora Liugong 922, XGMA 822",
+      "imageCount": 13
+    },
+    {
+      "id": 2805,
+      "nombre": "Bomba aceite motor Isuzu 6BG1",
+      "imageCount": 3
+    },
+    {
+      "id": 2810,
+      "nombre": "Bomba aceite motor Isuzu 6WG1",
+      "imageCount": 4
+    },
+    {
+      "id": 2815,
+      "nombre": "Bomba aceite motor Isuzu 4HK1",
+      "imageCount": 4
+    },
+    {
+      "id": 2820,
+      "nombre": "Bomba aceite motor Cummins 6BT5-9",
+      "imageCount": 3
+    },
+    {
+      "id": 2824,
+      "nombre": "Bomba aceite motor Mitsubishi 6D34",
+      "imageCount": 3
+    },
+    {
+      "id": 2827,
+      "nombre": "Bomba aceite motor Isuzu 6HK1",
+      "imageCount": 3
+    },
+    {
+      "id": 2832,
+      "nombre": "Bomba de inyección - motor CNH - excavadora Kobelco SK210-8",
+      "imageCount": 7
+    },
+    {
+      "id": 2840,
+      "nombre": "Tapa bomba de aceite - motor Caterpillar 3066 - excavadora Caterpillar 320C",
+      "imageCount": 4
+    },
+    {
+      "id": 2844,
+      "nombre": "Liner kit Caterpillar E200B ( 3116 )",
+      "imageCount": 4
+    },
+    {
+      "id": 2907,
+      "nombre": "Motor CATERPILLAR 3066",
+      "imageCount": 1
+    },
+    {
+      "id": 2920,
+      "nombre": "Motor HINO J08",
+      "imageCount": 1
+    },
+    {
+      "id": 2932,
+      "nombre": "Radiador de aceite KOBELCO SK200-3/4",
+      "imageCount": 1
+    },
+    {
+      "id": 2935,
+      "nombre": "Motor DOOSAN DB58",
+      "imageCount": 1
+    },
+    {
+      "id": 2962,
+      "nombre": "Liner Kit CATERPILLAR C15",
+      "imageCount": 1
+    },
+    {
+      "id": 3126,
+      "nombre": "Excavadora HYUNDAI R220-9S",
+      "imageCount": 1
+    },
+    {
+      "id": 3145,
+      "nombre": "Excavadora HITACHI EX100-5",
+      "imageCount": 1
+    },
+    {
+      "id": 3174,
+      "nombre": "Motor MITSUBISHI 6D34",
+      "imageCount": 8
+    },
+    {
+      "id": 3175,
+      "nombre": "Motor ISUZU 6HK1",
+      "imageCount": 7
+    },
+    {
+      "id": 3194,
+      "nombre": "Motor MITSHUBISHI (3/4) 6D34",
+      "imageCount": 17
+    },
+    {
+      "id": 3223,
+      "nombre": "Carrier Inferior Reductor Giro VOLVO 210/220",
+      "imageCount": 11
+    },
+    {
+      "id": 3256,
+      "nombre": "Kit Reparacion Motor de Giro (M5X130) - Zaxis 200 / SK210-6",
+      "imageCount": 21
+    },
+    {
+      "id": 3264,
+      "nombre": "Turbo VOLVO EC210B con Valvula",
+      "imageCount": 7
+    },
+    {
+      "id": 3274,
+      "nombre": "Culata HINO J05",
+      "imageCount": 13
+    },
+    {
+      "id": 3325,
+      "nombre": "Motorreductor de Traslación Hitachi Zaxis200",
+      "imageCount": 5
+    },
+    {
+      "id": 3345,
+      "nombre": "Motorreductor De Traslacion Hyundai R210/R220",
+      "imageCount": 6
+    },
+    {
+      "id": 3359,
+      "nombre": "Motor De Giro Liugong 922",
+      "imageCount": 5
+    },
+    {
+      "id": 3360,
+      "nombre": "Reductor De Giro Liugong 922",
+      "imageCount": 8
+    },
+    {
+      "id": 3378,
+      "nombre": "Liner Kit Caterpillar 3054 (C7.1)",
+      "imageCount": 12
+    },
+    {
+      "id": 3393,
+      "nombre": "Banco De Valvulas Zaxis200",
+      "imageCount": 12
+    },
+    {
+      "id": 3399,
+      "nombre": "Reductor Giro EX200-5",
+      "imageCount": 5
+    },
+    {
+      "id": 3411,
+      "nombre": "Carrier de giro superior (pequeño) zaxis 200-3",
+      "imageCount": 8
+    },
+    {
+      "id": 3420,
+      "nombre": "Carrier de traslacion interno (grande) EX120-5",
+      "imageCount": 5
+    },
+    {
+      "id": 3431,
+      "nombre": "Carrier de traslacion externo (pequeño) EX120-5",
+      "imageCount": 9
+    },
+    {
+      "id": 3440,
+      "nombre": "Carrier de traslacion interno (grande) komatsu pc200-6 (6D102)",
+      "imageCount": 8
+    },
+    {
+      "id": 3450,
+      "nombre": "Carrier de traslacion externo (pequeño) ZAXIS120-1",
+      "imageCount": 9
+    },
+    {
+      "id": 3460,
+      "nombre": "Carrier de traslacion externo (pequeño) HYUNDAI R210-7",
+      "imageCount": 9
+    },
+    {
+      "id": 3471,
+      "nombre": "Carrier de traslacion interno (grande) KATO HD820-3",
+      "imageCount": 10
+    },
+    {
+      "id": 3481,
+      "nombre": "Motorreductor de Traslacion Caterpillar 312C",
+      "imageCount": 5
+    },
+    {
+      "id": 3491,
+      "nombre": "Motorreductor de Traslación Kobelco SK200-3/4",
+      "imageCount": 6
+    },
+    {
+      "id": 3498,
+      "nombre": "Reductor de giro KOBELCO SK210-6",
+      "imageCount": 31
+    },
+    {
+      "id": 3520,
+      "nombre": "Corona DOOSAN DX225",
+      "imageCount": 5
+    },
+    {
+      "id": 3528,
+      "nombre": "Corona HYUNDAI R210",
+      "imageCount": 5
+    },
+    {
+      "id": 3534,
+      "nombre": "Reductor de giro Hyundai R210-7",
+      "imageCount": 5
+    },
+    {
+      "id": 3542,
+      "nombre": "Reductor de giro CASE CX210",
+      "imageCount": 6
+    },
+    {
+      "id": 3549,
+      "nombre": "Motorreductor de Traslacion KOBELCO SK200-3/4",
+      "imageCount": 5
+    },
+    {
+      "id": 3562,
+      "nombre": "Bloque 6HK1",
+      "imageCount": 6
+    },
+    {
+      "id": 3572,
+      "nombre": "Carrier inferior Reductor Giro DOOSAN DX225 (Version 2)",
+      "imageCount": 7
+    },
+    {
+      "id": 3581,
+      "nombre": "Bloque 3064",
+      "imageCount": 8
+    },
+    {
+      "id": 3590,
+      "nombre": "Bloque 4HK1",
+      "imageCount": 6
+    },
+    {
+      "id": 3597,
+      "nombre": "Motor De Giro Hyundai R210-7",
+      "imageCount": 6
+    },
+    {
+      "id": 3607,
+      "nombre": "Motor De Giro Case CX210",
+      "imageCount": 6
+    },
+    {
+      "id": 3614,
+      "nombre": "Motor de Giro Ex200-5",
+      "imageCount": 6
+    },
+    {
+      "id": 3621,
+      "nombre": "Motor de Giro Kobelco Sk210-6",
+      "imageCount": 6
+    },
+    {
+      "id": 3628,
+      "nombre": "Motor de Giro Zaxis200",
+      "imageCount": 6
+    },
+    {
+      "id": 3633,
+      "nombre": "Tapa Valvula 6BG1",
+      "imageCount": 4
+    },
+    {
+      "id": 3641,
+      "nombre": "Tapa Valvula 6D34",
+      "imageCount": 5
+    },
+    {
+      "id": 3654,
+      "nombre": "Turbo Isuzu 4BD1",
+      "imageCount": 9
+    },
+    {
+      "id": 3704,
+      "nombre": "Carrier Externo (Pequeño) - Reductor de Traslación - Excavadora - Hyundai R210/220",
+      "imageCount": 4
+    },
+    {
+      "id": 3708,
+      "nombre": "Carrier Interno (Grande) - Reductor de Traslación - Excavadora - Hyundai R210/220",
+      "imageCount": 3
+    },
+    {
+      "id": 3719,
+      "nombre": "Carril Inferior HITACHI EX100",
+      "imageCount": 9
+    },
+    {
+      "id": 3724,
+      "nombre": "Carril Inferior CAT E120B",
+      "imageCount": 4
+    },
+    {
+      "id": 3731,
+      "nombre": "Carril Inferior DOOSAN DH200",
+      "imageCount": 6
+    },
+    {
+      "id": 3738,
+      "nombre": "Carril Inferior KOBELCO SK200-3",
+      "imageCount": 6
+    },
+    {
+      "id": 3746,
+      "nombre": "Carril Inferior HITACHI EX300-5/330",
+      "imageCount": 6
+    },
+    {
+      "id": 3757,
+      "nombre": "Carrier Traslacion (Grande) ZAXIS 330-1",
+      "imageCount": 10
+    },
+    {
+      "id": 3783,
+      "nombre": "Cadena Para Excavadora HITACHI EX300-5/ZX330/ZX270",
+      "imageCount": 2
+    },
+    {
+      "id": 3784,
+      "nombre": "Cadena Para Excavadora KOMATSU PC200-3",
+      "imageCount": 2
+    },
+    {
+      "id": 3785,
+      "nombre": "Cadena Para Excavadora HITACHI ZX200/EX200-5",
+      "imageCount": 2
+    },
+    {
+      "id": 3786,
+      "nombre": "Cadena Para Excavadora HITACHI EX100/EX120-5/ZX120",
+      "imageCount": 2
+    },
+    {
+      "id": 3787,
+      "nombre": "Cadena Para Excavadora HYUNDAI R210/R215/R220/R225",
+      "imageCount": 2
+    },
+    {
+      "id": 3788,
+      "nombre": "Cadena Para Excavadora KOBELCO SK200-3-4/SK210-6",
+      "imageCount": 2
+    },
+    {
+      "id": 3789,
+      "nombre": "Cadena Para Excavadora KOMATSU PC200-5",
+      "imageCount": 2
+    },
+    {
+      "id": 3790,
+      "nombre": "Cadena Para Excavadora DOOSAN DX225",
+      "imageCount": 2
+    },
+    {
+      "id": 3791,
+      "nombre": "Cadena Para Excavadora CATERPILLAR E200B",
+      "imageCount": 2
+    },
+    {
+      "id": 3802,
+      "nombre": "Rueda Guía (Tensora - Loca) CATERPILLAR E120B",
+      "imageCount": 2
+    },
+    {
+      "id": 3803,
+      "nombre": "Rueda Guia (Tensora - Loca) HITACHI EX200-6",
+      "imageCount": 2
+    },
+    {
+      "id": 3804,
+      "nombre": "Rueda Guía (Tensora - Loca) HITACHI EX200-2",
+      "imageCount": 2
+    },
+    {
+      "id": 3805,
+      "nombre": "Rueda Guía (Tensora - Loca) CATERPILLAR E200B",
+      "imageCount": 2
+    },
+    {
+      "id": 3806,
+      "nombre": "Rueda Guía (Tensora - Loca) HITACHI ZX300-5",
+      "imageCount": 2
+    },
+    {
+      "id": 3807,
+      "nombre": "Rueda Guía (Tensora - Loca) DOOSAN DH220-5",
+      "imageCount": 2
+    },
+    {
+      "id": 3808,
+      "nombre": "Rueda Guía (Tensora - Loca) KOBELCO SK200-3",
+      "imageCount": 2
+    },
+    {
+      "id": 3809,
+      "nombre": "Rueda Guía (Tensora - Loca) HITACHI EX100-5",
+      "imageCount": 2
+    },
+    {
+      "id": 3811,
+      "nombre": "Motor Isuzu 4HK1",
+      "imageCount": 1
+    },
+    {
+      "id": 3851,
+      "nombre": "Carrier Traslacion (Pequeño) Hitachi EX200-5",
+      "imageCount": 8
+    },
+    {
+      "id": 3852,
+      "nombre": "Carrier Traslacion (Mediano) Hitachi EX200-5",
+      "imageCount": 8
+    },
+    {
+      "id": 3853,
+      "nombre": "Carrier Traslacion (Grande) Hitachi EX200-5",
+      "imageCount": 11
+    },
+    {
+      "id": 3871,
+      "nombre": "Carrier Reductor Giro (Mediano) Hitachi Zaxis200-3",
+      "imageCount": 7
+    },
+    {
+      "id": 3873,
+      "nombre": "Carrier Reductor Giro (Pequeño) Hitachi Zaxis200-3",
+      "imageCount": 10
+    },
+    {
+      "id": 3883,
+      "nombre": "Carrier Traslacion (Mediano) Zaxis 330",
+      "imageCount": 9
+    },
+    {
+      "id": 3893,
+      "nombre": "Carrier Traslacion (Pequeño) Zaxis 330",
+      "imageCount": 9
+    },
+    {
+      "id": 3907,
+      "nombre": "Liner Kit Cummins QSB (6.7)",
+      "imageCount": 13
+    },
+    {
+      "id": 3915,
+      "nombre": "Corona de traslacion para excavadora hitachi EX200-5",
+      "imageCount": 7
+    },
+    {
+      "id": 3922,
+      "nombre": "Radiador De Aceite Ex200-5",
+      "imageCount": 6
+    },
+    {
+      "id": 3962,
+      "nombre": "Turbo 4BG1",
+      "imageCount": 9
+    }
+  ]
+}
