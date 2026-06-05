@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { parseImagenesValue } from '@/lib/imagenes';
+import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 import {
   CATEGORIAS_MENU,
   productoCoincideCategoriaPorNombre,
@@ -37,7 +38,13 @@ export default function ProductosPorCategoria() {
   const { slug } = useParams();
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [volverHref, setVolverHref] = useState('/productos');
+  const [volverHref] = useState(() => {
+    if (typeof window === 'undefined') {
+      return '/productos';
+    }
+    return sessionStorage.getItem('catalogoUrl') || '/productos';
+  });
+  const [categoriasConImagenError, setCategoriasConImagenError] = useState({});
   const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
 
  useEffect(() => {
@@ -50,14 +57,6 @@ export default function ProductosPorCategoria() {
       });
   }, [slug]);
   
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const savedUrl = sessionStorage.getItem('catalogoUrl');
-    if (savedUrl) {
-      setVolverHref(savedUrl);
-    }
-  }, []);
-
   const categoriaLabel = useMemo(() => {
     if (!slug) return '';
     const encontrada = CATEGORIAS_MENU.find(categoria => slugifyCategoria(categoria) === slug);
@@ -68,6 +67,13 @@ export default function ProductosPorCategoria() {
     () => productos.filter(producto => productoCoincideCategoriaPorNombre(producto, categoriaLabel)),
     [productos, categoriaLabel]
   );
+
+  const rutaImagenCategoria = useMemo(() => {
+    if (!slug) return '';
+    return `/categorias/${slug}.png`;
+  }, [slug]);
+
+  const imagenCategoriaError = Boolean(categoriasConImagenError[String(slug || '')]);
 
   if (cargando) {
     return (
@@ -116,53 +122,107 @@ export default function ProductosPorCategoria() {
         {productosFiltrados.length === 0 ? (
           <div className="text-center text-slate-500 py-20 text-xl">No se encontraron productos</div>
         ) : (
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {productosFiltrados.map((producto, index) => {
-              const imagen = obtenerImagenPrincipal(producto);
-              const delay = 160 + index * 70;
-              return (
-                <div
-                  key={producto.id}
-                  className="bg-white rounded-2xl border border-slate-200 hover:border-orange-400 transition-all overflow-hidden shadow-sm hover:shadow-md flex flex-col card-rise"
-                  style={{ animationDelay: `${delay}ms` }}
-                >
-                  {imagen ? (
+          <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr] items-start">
+            <aside className="flex flex-col gap-6 lg:sticky lg:top-28">
+              <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm card-rise" style={{ animationDelay: '120ms' }}>
+                <p className="text-[10px] uppercase tracking-[0.32em] text-slate-400 font-semibold">Categorias</p>
+                <ul className="mt-4 flex flex-col gap-2">
+                  {MENU_CATEGORIAS.map((categoria, index) => {
+                    const href = `/productos/categorias/${slugifyCategoria(categoria.nombre)}`;
+                    const activa = slugifyCategoria(categoria.nombre) === slug;
+                    return (
+                      <li key={categoria.nombre} className="rise-in" style={{ animationDelay: `${160 + index * 40}ms` }}>
+                        <Link
+                          href={href}
+                          className={`inline-flex w-full items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
+                            activa
+                              ? 'border-orange-300 bg-orange-50 text-orange-700'
+                              : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-orange-300 hover:text-slate-900'
+                          }`}
+                        >
+                          <span>{categoria.nombre}</span>
+                          <span className="text-orange-400">›</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-sm card-rise" style={{ animationDelay: '220ms' }}>
+                <div className="px-5 py-5 border-b border-slate-200">
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-slate-400 font-semibold">Categoria actual</p>
+                  <h2 className="mt-2 text-2xl font-bold text-slate-900">{categoriaLabel}</h2>
+                </div>
+                <div className="relative aspect-[4/3] bg-slate-100">
+                  {!imagenCategoriaError ? (
                     <img
-                      src={imagen}
-                      alt={producto.nombre}
-                      className="w-full h-48 object-contain bg-slate-100"
-                      onError={e => { e.currentTarget.src = placeholderImage; }}
+                      src={rutaImagenCategoria}
+                      alt={categoriaLabel}
+                      className="h-full w-full object-cover"
+                      onError={() => setCategoriasConImagenError(prev => ({ ...prev, [String(slug || '')]: true }))}
                     />
                   ) : (
-                    <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-5xl text-slate-400">⚙️</div>
-                  )}
-                  <div className="p-4 flex flex-col flex-1">
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      <span className="brand-pill">Categoria</span>
-                      <span className="text-xs font-semibold text-slate-600">{categoriaLabel}</span>
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center">
+                      <span className="text-4xl text-slate-300">🖼️</span>
+                      <p className="text-sm font-semibold text-slate-700">Aqui puedes poner la imagen de {categoriaLabel}</p>
+                      <p className="text-xs leading-relaxed text-slate-500">
+                        Crea el archivo en public/categorias/{slug}.png para que aparezca automaticamente en este bloque.
+                      </p>
                     </div>
-                    <h4 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{producto.nombre}</h4>
-                    {producto.marcas && <p className="text-slate-500 text-xs mb-3">🏷️ {producto.marcas}</p>}
-                    <div className="mt-auto flex flex-col gap-2">
-                      <Link
-                        href={'/productos/' + producto.id}
-                        className="btn-anim block w-full text-center bg-slate-900 hover:bg-slate-800 text-white text-sm py-2 rounded-lg transition-colors"
-                      >
-                        Ver detalle
-                      </Link>
-                      <a
-                        href={'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa: ' + producto.nombre)}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="btn-anim block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm py-2 rounded-lg transition-colors"
-                      >
-                        WhatsApp
-                      </a>
+                  )}
+                </div>
+              </div>
+            </aside>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {productosFiltrados.map((producto, index) => {
+                const imagen = obtenerImagenPrincipal(producto);
+                const delay = 160 + index * 70;
+                return (
+                  <div
+                    key={producto.id}
+                    className="bg-white rounded-2xl border border-slate-200 hover:border-orange-400 transition-all overflow-hidden shadow-sm hover:shadow-md flex flex-col card-rise"
+                    style={{ animationDelay: `${delay}ms` }}
+                  >
+                    {imagen ? (
+                      <img
+                        src={imagen}
+                        alt={producto.nombre}
+                        className="w-full h-48 object-contain bg-slate-100"
+                        onError={e => { e.currentTarget.src = placeholderImage; }}
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-5xl text-slate-400">⚙️</div>
+                    )}
+                    <div className="p-4 flex flex-col flex-1">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="brand-pill">Categoria</span>
+                        <span className="text-xs font-semibold text-slate-600">{categoriaLabel}</span>
+                      </div>
+                      <h4 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{producto.nombre}</h4>
+                      {producto.marcas && <p className="text-slate-500 text-xs mb-3">🏷️ {producto.marcas}</p>}
+                      <div className="mt-auto flex flex-col gap-2">
+                        <Link
+                          href={'/productos/' + producto.id}
+                          className="btn-anim block w-full text-center bg-slate-900 hover:bg-slate-800 text-white text-sm py-2 rounded-lg transition-colors"
+                        >
+                          Ver detalle
+                        </Link>
+                        <a
+                          href={'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa: ' + producto.nombre)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn-anim block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm py-2 rounded-lg transition-colors"
+                        >
+                          WhatsApp
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
