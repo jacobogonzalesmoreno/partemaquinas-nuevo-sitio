@@ -3,12 +3,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { parseImagenesValue } from '@/lib/imagenes';
-import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 import {
   CATEGORIAS_MENU,
   productoCoincideCategoriaPorNombre,
   slugifyCategoria,
 } from '@/lib/catalogo-categorias';
+
+const CATALOGO_URL_KEY = 'catalogoListadoUrl';
+const CATEGORIA_URL_KEY = 'catalogoCategoriaUrl';
+const CATEGORIA_SCROLL_KEY = 'catalogoCategoriaScroll';
 
 const parseImagenes = parseImagenesValue;
 
@@ -38,14 +41,20 @@ export default function ProductosPorCategoria() {
   const { slug } = useParams();
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [scrollRestaurado, setScrollRestaurado] = useState(false);
   const [volverHref] = useState(() => {
     if (typeof window === 'undefined') {
       return '/productos';
     }
-    return sessionStorage.getItem('catalogoUrl') || '/productos';
+    return sessionStorage.getItem(CATALOGO_URL_KEY) || '/productos';
   });
-  const [categoriasConImagenError, setCategoriasConImagenError] = useState({});
   const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
+
+  const guardarScrollCategoria = () => {
+    if (typeof window === 'undefined') return;
+    sessionStorage.setItem(CATEGORIA_URL_KEY, window.location.pathname + window.location.search);
+    sessionStorage.setItem(CATEGORIA_SCROLL_KEY, String(window.scrollY));
+  };
 
  useEffect(() => {
     if (!slug) return;
@@ -56,6 +65,33 @@ export default function ProductosPorCategoria() {
         setCargando(false);
       });
   }, [slug]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || cargando || scrollRestaurado) return;
+    const savedUrl = sessionStorage.getItem(CATEGORIA_URL_KEY);
+    const savedScroll = sessionStorage.getItem(CATEGORIA_SCROLL_KEY);
+    const currentUrl = window.location.pathname + window.location.search;
+    if (!savedUrl || !savedScroll || savedUrl !== currentUrl) {
+      return;
+    }
+
+    const scrollY = Number(savedScroll);
+    if (Number.isNaN(scrollY)) {
+      sessionStorage.removeItem(CATEGORIA_SCROLL_KEY);
+      return;
+    }
+
+    const restoreScroll = () => {
+      window.scrollTo({ top: scrollY, behavior: 'auto' });
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollY, behavior: 'auto' });
+        setScrollRestaurado(true);
+        sessionStorage.removeItem(CATEGORIA_SCROLL_KEY);
+      });
+    };
+
+    requestAnimationFrame(restoreScroll);
+  }, [cargando, scrollRestaurado]);
   
   const categoriaLabel = useMemo(() => {
     if (!slug) return '';
@@ -67,13 +103,6 @@ export default function ProductosPorCategoria() {
     () => productos.filter(producto => productoCoincideCategoriaPorNombre(producto, categoriaLabel)),
     [productos, categoriaLabel]
   );
-
-  const rutaImagenCategoria = useMemo(() => {
-    if (!slug) return '';
-    return `/categorias/${slug}.png`;
-  }, [slug]);
-
-  const imagenCategoriaError = Boolean(categoriasConImagenError[String(slug || '')]);
 
   if (cargando) {
     return (
@@ -122,59 +151,7 @@ export default function ProductosPorCategoria() {
         {productosFiltrados.length === 0 ? (
           <div className="text-center text-slate-500 py-20 text-xl">No se encontraron productos</div>
         ) : (
-          <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr] items-start">
-            <aside className="flex flex-col gap-6 lg:sticky lg:top-28">
-              <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm card-rise" style={{ animationDelay: '120ms' }}>
-                <p className="text-[10px] uppercase tracking-[0.32em] text-slate-400 font-semibold">Categorias</p>
-                <ul className="mt-4 flex flex-col gap-2">
-                  {MENU_CATEGORIAS.map((categoria, index) => {
-                    const href = `/productos/categorias/${slugifyCategoria(categoria.nombre)}`;
-                    const activa = slugifyCategoria(categoria.nombre) === slug;
-                    return (
-                      <li key={categoria.nombre} className="rise-in" style={{ animationDelay: `${160 + index * 40}ms` }}>
-                        <Link
-                          href={href}
-                          className={`inline-flex w-full items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold transition-all ${
-                            activa
-                              ? 'border-orange-300 bg-orange-50 text-orange-700'
-                              : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-orange-300 hover:text-slate-900'
-                          }`}
-                        >
-                          <span>{categoria.nombre}</span>
-                          <span className="text-orange-400">›</span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-sm card-rise" style={{ animationDelay: '220ms' }}>
-                <div className="px-5 py-5 border-b border-slate-200">
-                  <p className="text-[10px] uppercase tracking-[0.32em] text-slate-400 font-semibold">Categoria actual</p>
-                  <h2 className="mt-2 text-2xl font-bold text-slate-900">{categoriaLabel}</h2>
-                </div>
-                <div className="relative aspect-[4/3] bg-slate-100">
-                  {!imagenCategoriaError ? (
-                    <img
-                      src={rutaImagenCategoria}
-                      alt={categoriaLabel}
-                      className="h-full w-full object-cover"
-                      onError={() => setCategoriasConImagenError(prev => ({ ...prev, [String(slug || '')]: true }))}
-                    />
-                  ) : (
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center">
-                      <span className="text-4xl text-slate-300">🖼️</span>
-                      <p className="text-sm font-semibold text-slate-700">Aqui puedes poner la imagen de {categoriaLabel}</p>
-                      <p className="text-xs leading-relaxed text-slate-500">
-                        Crea el archivo en public/categorias/{slug}.png para que aparezca automaticamente en este bloque.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </aside>
-
+          <div className="mt-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {productosFiltrados.map((producto, index) => {
                 const imagen = obtenerImagenPrincipal(producto);
@@ -205,6 +182,7 @@ export default function ProductosPorCategoria() {
                       <div className="mt-auto flex flex-col gap-2">
                         <Link
                           href={'/productos/' + producto.id}
+                          onClick={guardarScrollCategoria}
                           className="btn-anim block w-full text-center bg-slate-900 hover:bg-slate-800 text-white text-sm py-2 rounded-lg transition-colors"
                         >
                           Ver detalle

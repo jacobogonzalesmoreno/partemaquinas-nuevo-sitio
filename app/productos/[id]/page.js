@@ -1,15 +1,23 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
 
+const CATEGORIA_URL_KEY = 'catalogoCategoriaUrl';
+
 export default function DetalleProducto() {
   const { id } = useParams();
+  const router = useRouter();
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [imagenActiva, setImagenActiva] = useState(0);
-  const [volverHref, setVolverHref] = useState('/productos');
+  const [volverHref] = useState(() => {
+    if (typeof window === 'undefined') {
+      return '/productos';
+    }
+    return sessionStorage.getItem(CATEGORIA_URL_KEY) || '/productos';
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -20,13 +28,6 @@ export default function DetalleProducto() {
         setCargando(false);
       });
   }, [id]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const savedUrl = sessionStorage.getItem('catalogoUrl');
-    if (savedUrl) setVolverHref(savedUrl);
-  }, []);
-
   if (cargando) return (
     <div className="min-h-screen bg-white flex items-center justify-center text-slate-500 text-xl">Cargando producto...</div>
   );
@@ -39,6 +40,10 @@ export default function DetalleProducto() {
   const whatsappUrl = 'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa: ' + producto.nombre);
   const descripcionCorta = producto.descripcion_corta || '';
   const descripcionCortaTexto = descripcionCorta.replace(/\\n/g, '\n');
+  const volverAtras = event => {
+    event.preventDefault();
+    router.push(volverHref);
+  };
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
@@ -46,9 +51,10 @@ export default function DetalleProducto() {
 
         <Link
           href={volverHref}
+          onClick={volverAtras}
           className="btn-anim inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:border-slate-400 hover:text-slate-900 mb-8"
         >
-          Volver al catalogo
+          Atras
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-4">

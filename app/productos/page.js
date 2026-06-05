@@ -1,97 +1,217 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
 import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
 import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
+const CATALOGO_URL_KEY = 'catalogoListadoUrl';
+const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
+
+const obtenerClasesTarjeta = nivel => {
+  if (nivel === 0) {
+    return {
+      wrapper: 'rounded-[28px]',
+      image: 'aspect-[16/10]',
+      padding: 'px-6 py-5',
+      title: 'text-2xl',
+      label: 'Categoria',
+      icon: 'h-11 w-11 text-xl',
+      cardTone: 'border-slate-200 bg-white',
+      imageTone: 'bg-slate-100',
+      labelTone: 'text-slate-400',
+    };
+  }
+
+  if (nivel === 1) {
+    return {
+      wrapper: 'rounded-[20px]',
+      image: 'aspect-[16/8]',
+      padding: 'px-4 py-3',
+      title: 'text-lg',
+      label: 'Subcategoria',
+      icon: 'h-9 w-9 text-base',
+      cardTone: 'border-orange-200 bg-orange-50/70',
+      imageTone: 'bg-orange-100/60',
+      labelTone: 'text-orange-500',
+    };
+  }
+
+  return {
+    wrapper: 'rounded-[18px]',
+    image: 'aspect-[5/4]',
+    padding: 'px-3.5 py-3',
+    title: 'text-base',
+    label: 'Subnivel',
+    icon: 'h-8 w-8 text-sm',
+    cardTone: 'border-sky-200 bg-sky-50/70',
+    imageTone: 'bg-sky-100/70',
+    labelTone: 'text-sky-600',
+  };
+};
+
+function TarjetaCategoria({ categoria, nivel, categoriasConImagenError, setCategoriasConImagenError, hrefCategoria, onNavigate }) {
+  const slug = slugifyCategoria(categoria.nombre);
+  const rutaImagen = `/categorias/${slug}.png`;
+  const tieneError = Boolean(categoriasConImagenError[slug]);
+  const clases = obtenerClasesTarjeta(nivel);
+
+  return (
+    <Link
+      href={hrefCategoria(categoria.nombre)}
+      onClick={onNavigate}
+      className={`group overflow-hidden border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-xl ${clases.wrapper} ${clases.cardTone}`}
+    >
+      <div className={`relative overflow-hidden ${clases.imageTone} ${clases.image}`}>
+        {!tieneError ? (
+          <img
+            src={rutaImagen}
+            alt={categoria.nombre}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={() => setCategoriasConImagenError(prev => ({ ...prev, [slug]: true }))}
+          />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[radial-gradient(circle_at_top,_rgba(251,146,60,0.18),_transparent_55%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] px-6 text-center">
+            <span className="text-4xl text-orange-300">🖼️</span>
+            <p className="text-base font-semibold text-slate-800">Imagen de {categoria.nombre}</p>
+            <p className="text-sm leading-relaxed text-slate-500">
+              Crea el archivo en public/categorias/{slug}.png para mostrar esta tarjeta con tu diseño.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className={`flex items-center justify-between gap-4 ${clases.padding}`}>
+        <div>
+          <p className={`text-[10px] font-semibold uppercase tracking-[0.32em] ${clases.labelTone}`}>{clases.label}</p>
+          <h3 className={`mt-2 font-bold text-slate-900 ${clases.title}`}>{categoria.nombre}</h3>
+        </div>
+        <span className={`inline-flex items-center justify-center rounded-full border border-orange-200 bg-orange-50 text-orange-500 transition-transform duration-300 group-hover:translate-x-1 ${clases.icon}`}>
+          ›
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+function BloqueCategorias({ items, nivel, categoriasConImagenError, setCategoriasConImagenError, hrefCategoria, onNavigate }) {
+  if (!items?.length) {
+    return null;
+  }
+
+  const columnas = nivel === 0
+    ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
+    : nivel === 1
+      ? 'grid-cols-2 lg:grid-cols-4'
+      : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5';
+
+  return (
+    <div className={`grid ${nivel === 0 ? 'gap-6' : 'gap-3'} ${columnas}`}>
+      {items.map(categoria => (
+        <TarjetaCategoria
+          key={`${nivel}-${categoria.nombre}`}
+          categoria={categoria}
+          nivel={nivel}
+          categoriasConImagenError={categoriasConImagenError}
+          setCategoriasConImagenError={setCategoriasConImagenError}
+          hrefCategoria={hrefCategoria}
+          onNavigate={onNavigate}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function Productos() {
-  const [productos, setProductos] = useState([]);
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const buscarInicial = searchParams.get('buscar') || '';
-  const [buscar, setBuscar] = useState(buscarInicial);
-  const [inputBuscar, setInputBuscar] = useState(buscarInicial);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState('');
-  const [categoriaActiva, setCategoriaActiva] = useState(null);
-  const [subcategoriaActiva, setSubcategoriaActiva] = useState(null);
-  const hideCategoriaTimer = useRef(null);
-  const hideSubcategoriaTimer = useRef(null);
-
-  useEffect(() => {
-    setBuscar(buscarInicial);
-    setInputBuscar(buscarInicial);
-  }, [buscarInicial]);
+  const [inputBuscar, setInputBuscar] = useState(() => buscarInicial);
+  const [categoriasConImagenError, setCategoriasConImagenError] = useState({});
+  const [productos, setProductos] = useState([]);
+  const [cargandoBusqueda, setCargandoBusqueda] = useState(() => Boolean(buscarInicial));
+  const [errorBusqueda, setErrorBusqueda] = useState('');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const savedUrl = sessionStorage.getItem('catalogoUrl');
-    const savedScroll = sessionStorage.getItem('catalogoScroll');
+    const savedUrl = sessionStorage.getItem(CATALOGO_URL_KEY);
+    const savedScroll = sessionStorage.getItem(CATALOGO_SCROLL_KEY);
     const currentUrl = window.location.pathname + window.location.search;
-    if (savedUrl && savedScroll && savedUrl === currentUrl) {
-      const scrollY = Number(savedScroll);
-      if (!Number.isNaN(scrollY)) {
-        window.scrollTo({ top: scrollY, behavior: 'auto' });
-      }
-      sessionStorage.removeItem('catalogoUrl');
-      sessionStorage.removeItem('catalogoScroll');
+    if (!savedUrl || !savedScroll || savedUrl !== currentUrl) {
+      return;
     }
+
+    const scrollY = Number(savedScroll);
+    if (Number.isNaN(scrollY)) {
+      sessionStorage.removeItem(CATALOGO_SCROLL_KEY);
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, behavior: 'auto' });
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollY, behavior: 'auto' });
+        sessionStorage.removeItem(CATALOGO_SCROLL_KEY);
+      });
+    });
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const handleVisibility = () => {
-      if (document.visibilityState === 'hidden') {
-        guardarScrollCatalogo();
-      }
-    };
-    window.addEventListener('pagehide', guardarScrollCatalogo);
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => {
-      window.removeEventListener('pagehide', guardarScrollCatalogo);
-      document.removeEventListener('visibilitychange', handleVisibility);
-    };
-  }, []);
+    let activo = true;
+    if (!buscarInicial) {
+      Promise.resolve().then(() => {
+        if (!activo) return;
+        setProductos([]);
+        setErrorBusqueda('');
+        setCargandoBusqueda(false);
+      });
+      return () => {
+        activo = false;
+      };
+    }
 
-  useEffect(() => {
-    setCargando(true);
-    setError('');
-    // ✅ Correcto
-const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&limit=1000' : '/api/productos?limit=1000';
-    fetch(url)
+    Promise.resolve().then(() => {
+      if (!activo) return;
+      setCargandoBusqueda(true);
+      setErrorBusqueda('');
+    });
+
+    fetch(`/api/productos?buscar=${encodeURIComponent(buscarInicial)}&limit=1000`)
       .then(res => res.json())
       .then(data => {
-        setProductos(data);
-        setCargando(false);
+        if (!activo) return;
+        setProductos(Array.isArray(data) ? data : []);
+        setCargandoBusqueda(false);
       })
       .catch(() => {
-        setError('No se pudo cargar productos.');
-        setCargando(false);
+        if (!activo) return;
+        setErrorBusqueda('No se pudo cargar la busqueda.');
+        setCargandoBusqueda(false);
       });
-  }, [buscar]);
+
+    return () => {
+      activo = false;
+    };
+  }, [buscarInicial]);
 
   const onSubmitBuscar = event => {
     event.preventDefault();
     const value = inputBuscar.trim();
-    setBuscar(value);
     router.push(resolverRutaBusquedaCatalogo(value));
   };
 
+  const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
+  const guardarScrollCatalogo = () => {
+    if (typeof window === 'undefined') return;
+    sessionStorage.setItem(CATALOGO_URL_KEY, window.location.pathname + window.location.search);
+    sessionStorage.setItem(CATALOGO_SCROLL_KEY, String(window.scrollY));
+  };
   const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
   const obtenerImagenPrincipal = producto => {
     const imagenes = getImagenesProducto(producto);
     return imagenes[0] || null;
   };
-
-  const guardarScrollCatalogo = () => {
-    if (typeof window === 'undefined') return;
-    sessionStorage.setItem('catalogoUrl', window.location.pathname + window.location.search);
-    sessionStorage.setItem('catalogoScroll', String(window.scrollY));
-  };
-
-  const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -119,133 +239,37 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-10">
-        {cargando ? (
-          <div className="text-center text-slate-500 py-20 text-xl">Cargando productos...</div>
-        ) : error ? (
-          <div className="text-center text-red-600 py-20 text-xl">{error}</div>
-        ) : productos.length === 0 ? (
-          <div className="text-center text-slate-500 py-20 text-xl">No se encontraron productos</div>
-        ) : (
-          <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-            <aside className="hidden lg:block relative z-20">
-              <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold">Categorias</p>
-                <ul className="mt-4 inline-flex flex-col gap-2 w-fit">
-                  {MENU_CATEGORIAS.map(categoria => {
-                    const submenuOffsetClass = categoria.nombre === 'Giro'
-                      ? 'left-[calc(100%+32px)]'
-                      : 'left-[calc(100%+16px)]';
-
-                    return (
-                      <li
-                        key={categoria.nombre}
-                        className="relative group w-fit z-10 hover:z-30"
-                        onMouseEnter={() => {
-                          if (hideCategoriaTimer.current) {
-                            clearTimeout(hideCategoriaTimer.current);
-                            hideCategoriaTimer.current = null;
-                          }
-                          setCategoriaActiva(categoria.nombre);
-                        }}
-                        onMouseLeave={() => {
-                          if (hideCategoriaTimer.current) {
-                            clearTimeout(hideCategoriaTimer.current);
-                          }
-                          hideCategoriaTimer.current = setTimeout(() => {
-                            setCategoriaActiva(null);
-                          }, 150);
-                        }}
-                      >
-                        <Link
-                          href={hrefCategoria(categoria.nombre)}
-                          onClick={guardarScrollCatalogo}
-                          className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit"
-                        >
-                          <span>{categoria.nombre}</span>
-                          {categoria.hijos && <span className="text-orange-400">›</span>}
-                        </Link>
-                        {categoria.hijos && (
-                          <div
-                            className={`absolute ${submenuOffsetClass} top-0 z-[60] w-56 transition-all duration-200 ease-out ${
-                              categoriaActiva === categoria.nombre
-                                ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
-                                : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
-                            }`}
-                          >
-                            <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-3">
-                              <ul className="space-y-1.5">
-                                {categoria.hijos.map(hijo => (
-                                  <li
-                                    key={hijo.nombre}
-                                    className="relative group/child z-10 hover:z-30"
-                                    onMouseEnter={() => {
-                                      if (hideSubcategoriaTimer.current) {
-                                        clearTimeout(hideSubcategoriaTimer.current);
-                                        hideSubcategoriaTimer.current = null;
-                                      }
-                                      setSubcategoriaActiva(hijo.nombre);
-                                    }}
-                                    onMouseLeave={() => {
-                                      if (hideSubcategoriaTimer.current) {
-                                        clearTimeout(hideSubcategoriaTimer.current);
-                                      }
-                                      hideSubcategoriaTimer.current = setTimeout(() => {
-                                        setSubcategoriaActiva(null);
-                                      }, 150);
-                                    }}
-                                  >
-                                    <Link
-                                      href={hrefCategoria(hijo.nombre)}
-                                      onClick={guardarScrollCatalogo}
-                                      className="inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[160px]"
-                                    >
-                                      <span>{hijo.nombre}</span>
-                                      {hijo.hijos && <span className="text-orange-400">›</span>}
-                                    </Link>
-                                    {hijo.hijos && (
-                                      <div
-                                        className={`absolute left-[calc(100%+16px)] top-0 z-[70] w-52 transition-all duration-200 ease-out ${
-                                          subcategoriaActiva === hijo.nombre
-                                            ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto'
-                                            : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
-                                        }`}
-                                      >
-                                        <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-3">
-                                          <ul className="space-y-1.5">
-                                            {hijo.hijos.map(nieto => (
-                                              <li key={nieto.nombre}>
-                                                <Link
-                                                  href={hrefCategoria(nieto.nombre)}
-                                                  onClick={guardarScrollCatalogo}
-                                                  className="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:text-slate-900 hover:border-orange-300 w-fit min-w-[150px]"
-                                                >
-                                                  {nieto.nombre}
-                                                </Link>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+        {buscarInicial ? (
+          cargandoBusqueda ? (
+            <div className="py-20 text-center text-xl text-slate-500">Buscando productos...</div>
+          ) : errorBusqueda ? (
+            <div className="py-20 text-center text-xl text-red-600">{errorBusqueda}</div>
+          ) : productos.length === 0 ? (
+            <div className="py-20 text-center text-xl text-slate-500">No se encontraron productos para &quot;{buscarInicial}&quot;.</div>
+          ) : (
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-orange-500 font-semibold">Busqueda por marca</p>
+                  <h2 className="mt-2 text-2xl font-bold text-slate-900">Resultados para {buscarInicial}</h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => router.push('/productos')}
+                  className="btn-anim rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900"
+                >
+                  Ver todas las categorias
+                </button>
               </div>
-            </aside>
 
-            <div className="flex flex-col gap-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {productos.map(producto => {
                   const imagen = obtenerImagenPrincipal(producto);
                   return (
-                    <div key={producto.id} className="bg-slate-50 rounded-2xl border border-slate-200 hover:border-orange-400 transition-all overflow-hidden shadow-sm hover:shadow-md flex flex-col">
+                    <div
+                      key={producto.id}
+                      className="bg-white rounded-2xl border border-slate-200 hover:border-orange-400 transition-all overflow-hidden shadow-sm hover:shadow-md flex flex-col"
+                    >
                       {imagen ? (
                         <img
                           src={imagen}
@@ -257,13 +281,14 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
                         <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-5xl text-slate-400">⚙️</div>
                       )}
                       <div className="p-4 flex flex-col flex-1">
-                        <h4 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{producto.nombre}</h4>
-                        {producto.marcas && <p className="text-slate-500 text-xs mb-3">🏷️ {producto.marcas}</p>}
+                        {producto.marcas && <p className="mb-2 text-xs font-semibold text-orange-500">Marca: {producto.marcas}</p>}
+                        <h3 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2">{producto.nombre}</h3>
+                        {producto.categorias && <p className="text-slate-500 text-xs mb-3">{producto.categorias}</p>}
                         <div className="mt-auto flex flex-col gap-2">
                           <Link
-                            href={'/productos/' + producto.id}
-                            className="btn-anim block w-full text-center bg-slate-900 hover:bg-slate-800 text-white text-sm py-2 rounded-lg transition-colors"
+                            href={`/productos/${producto.id}`}
                             onClick={guardarScrollCatalogo}
+                            className="btn-anim block w-full text-center bg-slate-900 hover:bg-slate-800 text-white text-sm py-2 rounded-lg transition-colors"
                           >
                             Ver detalle
                           </Link>
@@ -282,6 +307,68 @@ const url = buscar ? '/api/productos?buscar=' + encodeURIComponent(buscar) + '&l
                 })}
               </div>
             </div>
+          )
+        ) : (
+          <div className="flex flex-col gap-10">
+            {MENU_CATEGORIAS.map(categoria => {
+              return (
+                <section
+                  key={categoria.nombre}
+                  className="flex flex-col gap-5"
+                >
+                  <BloqueCategorias
+                    items={[categoria]}
+                    nivel={0}
+                    categoriasConImagenError={categoriasConImagenError}
+                    setCategoriasConImagenError={setCategoriasConImagenError}
+                    hrefCategoria={hrefCategoria}
+                    onNavigate={guardarScrollCatalogo}
+                  />
+
+                  {categoria.hijos?.length > 0 && (
+                    <div className="rounded-[24px] border border-orange-200 bg-gradient-to-b from-orange-50/80 to-white p-4 shadow-sm">
+                      <div className="mb-4 flex items-center gap-3 text-sm font-semibold text-orange-700">
+                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-orange-300 bg-white text-orange-500 shadow-sm">
+                          ↓
+                        </span>
+                        <span className="uppercase tracking-[0.24em] text-[11px]">Subcategorias de {categoria.nombre}</span>
+                      </div>
+                      <BloqueCategorias
+                        items={categoria.hijos}
+                        nivel={1}
+                        categoriasConImagenError={categoriasConImagenError}
+                        setCategoriasConImagenError={setCategoriasConImagenError}
+                        hrefCategoria={hrefCategoria}
+                        onNavigate={guardarScrollCatalogo}
+                      />
+
+                      {categoria.hijos.some(hijo => hijo.hijos?.length > 0) && (
+                        <div className="mt-5 flex flex-col gap-4">
+                          {categoria.hijos.filter(hijo => hijo.hijos?.length > 0).map(hijo => (
+                            <div key={`${categoria.nombre}-${hijo.nombre}`} className="rounded-[20px] border border-sky-200 bg-sky-50/80 p-3.5">
+                              <div className="mb-3 flex items-center gap-3 text-xs font-semibold text-sky-700">
+                                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-sky-300 bg-white text-sky-500 shadow-sm">
+                                  ↓
+                                </span>
+                                <span className="uppercase tracking-[0.22em]">Subnivel de {hijo.nombre}</span>
+                              </div>
+                              <BloqueCategorias
+                                items={hijo.hijos}
+                                nivel={2}
+                                categoriasConImagenError={categoriasConImagenError}
+                                setCategoriasConImagenError={setCategoriasConImagenError}
+                                hrefCategoria={hrefCategoria}
+                                onNavigate={guardarScrollCatalogo}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </section>
+              );
+            })}
           </div>
         )}
       </div>
