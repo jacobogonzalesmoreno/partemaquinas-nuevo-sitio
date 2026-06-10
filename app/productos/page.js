@@ -178,7 +178,7 @@ function ProductosInner() {
         const { resolverRutaBusquedaCatalogo } = await import('@/lib/catalogo-categorias');
         const resultados = await resolverRutaBusquedaCatalogo(buscarInicial);
         if (!activo) return;
-        setProductos(resultados || []);
+        setProductos(Array.isArray(resultados) ? resultados : (resultados?.productos ?? resultados?.data ?? []));
       } catch (e) {
         if (!activo) return;
         setErrorBusqueda('Error al buscar productos.');
@@ -261,7 +261,7 @@ function ProductosInner() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {productos.map(producto => {
+                {(Array.isArray(productos) ? productos : []).map(producto => {
                   const imagen = obtenerImagenPrincipal(producto);
                   return (
                     <div

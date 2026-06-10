@@ -1,22 +1,124 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-export default function Home() {
-  const [menuLateralAbierto, setMenuLateralAbierto] = useState(false);
-  const [tooltipVisible, setTooltipVisible] = useState(false);
-  const asideRef = useRef(null);
 
-  useEffect(() => {
-    if (!menuLateralAbierto) return;
-    const handleClickOutside = (e) => {
-      if (asideRef.current && !asideRef.current.contains(e.target)) {
-        setMenuLateralAbierto(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [menuLateralAbierto]);
+function SidebarTabs({ manualesPorMarca, mecanicos, aliados }) {
+  const [tab, setTab] = useState('manuales');
+
+  const tabs = [
+    { id: 'manuales', label: 'Manuales', count: manualesPorMarca.length },
+    { id: 'mecanicos', label: 'Mecanicos', count: mecanicos.length },
+    { id: 'aliados', label: 'Aliados', count: aliados.length },
+  ];
+
+  return (
+    <div className="flex flex-col flex-1 min-h-0">
+      {/* Tab bar */}
+      <div className="flex border-b border-slate-100 px-3 pt-3 gap-1 shrink-0">
+        {tabs.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`flex flex-col items-center px-3 py-2 rounded-t-xl text-xs font-semibold transition-all flex-1 border-b-2 ${
+              tab === t.id
+                ? 'bg-slate-900 text-white border-slate-900'
+                : 'text-slate-500 border-transparent hover:text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <span className="uppercase tracking-wide text-[10px]">{t.label}</span>
+            <span className={`text-sm font-bold mt-0.5 ${tab === t.id ? 'text-yellow-400' : 'text-slate-700'}`}>{t.count} items</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Content with internal scroll */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+
+        {tab === 'manuales' && (
+          <div className="p-4 flex flex-col gap-2">
+            <div className="mb-3">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Manuales</p>
+              <h4 className="text-base font-bold text-slate-900 mt-0.5">Biblioteca tecnica</h4>
+              <p className="text-xs text-slate-500 mt-1">Manuals y recursos por marca para diagnostico y referencias rapidas.</p>
+            </div>
+            {manualesPorMarca.map(item => (
+              <Link
+                key={item.nombre}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
+              >
+                <span className="flex flex-col">
+                  <span className="text-sm font-semibold text-slate-900">{item.nombre}</span>
+                  <span className="text-xs text-slate-400">Manual y documentacion de referencia</span>
+                </span>
+                <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-0.5 transition-transform whitespace-nowrap ml-2">Abrir ›</span>
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {tab === 'mecanicos' && (
+          <div className="p-4 flex flex-col gap-2">
+            <div className="mb-3">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Mecanicos</p>
+              <h4 className="text-base font-bold text-slate-900 mt-0.5">Red de confianza</h4>
+              <p className="text-xs text-slate-500 mt-1">Contactos directos para motor, hidraulica y mantenimientos especializados.</p>
+            </div>
+            {mecanicos.map(item => (
+              <a
+                key={item.nombre}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all block"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-slate-900">{item.nombre}</p>
+                    <p className="text-xs text-slate-400 mt-0.5">{item.especialidad}</p>
+                  </div>
+                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">WhatsApp</span>
+                </div>
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100">
+                  <span className="text-xs text-slate-500">{item.tel}</span>
+                  <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-0.5 transition-transform">Abrir chat ›</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {tab === 'aliados' && (
+          <div className="p-4 flex flex-col gap-2">
+            <div className="mb-3">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Aliados</p>
+              <h4 className="text-base font-bold text-slate-900 mt-0.5">Talleres de confianza</h4>
+              <p className="text-xs text-slate-500 mt-1">Empresas aliadas para servicios especializados y rectificacion.</p>
+            </div>
+            {aliados.map(item => (
+              <Link
+                key={item.nombre}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
+              >
+                <span className="text-sm font-semibold text-slate-900">{item.nombre}</span>
+                <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-0.5 transition-transform whitespace-nowrap ml-2">Abrir ›</span>
+              </Link>
+            ))}
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+export default function Home() {
 
   const marcas = [
     { nombre: 'Case', archivo: 'case.png', buscar: 'case' },
@@ -117,100 +219,24 @@ export default function Home() {
 
       {/* HERO */}
       <section className="relative bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-12">
-          <aside ref={asideRef} className="fixed left-0 top-40 z-30 flex flex-col gap-4 items-start w-[min(280px,calc(100vw-1rem))] max-h-[calc(100vh-3rem)] overflow-y-auto self-start">
-            <div className="relative"
-              onMouseEnter={() => setTooltipVisible(true)}
-              onMouseLeave={() => setTooltipVisible(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setMenuLateralAbierto(valor => !valor)}
-                className="inline-flex items-center justify-center w-10 h-10 rounded-xl border-2 border-yellow-400 bg-white shadow-md hover:bg-yellow-50 transition-all"
-                aria-label="Manuales, aliados y técnicos"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </svg>
-              </button>
-              {tooltipVisible && (
-                <div className="absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-slate-900 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-lg pointer-events-none" style={{animation: 'fadeIn 150ms ease-out'}}>
-                  Manuales, aliados y técnicos
-                  <span className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-slate-900" />
-                </div>
-              )}
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-12">
+          <div className="flex gap-6 items-start">
+          <aside className="hidden lg:flex flex-col w-[300px] shrink-0 sticky top-24 h-[calc(100vh-7rem)] rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden" style={{animation: 'slideDown 200ms ease-out'}}>
+            {/* Header */}
+            <div className="px-5 pt-5 pb-4 border-b border-slate-100">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold mb-1">Red de soporte</p>
+              <h3 className="text-lg font-bold text-slate-900">Aliados y mecanicos</h3>
+              <p className="text-xs text-slate-500 mt-1">Un acceso rapido a contactos, talleres y manuales sin salir del inicio.</p>
             </div>
-
-            {menuLateralAbierto && (
-              <div className="w-full flex flex-col gap-4" style={{animation: "slideDown 200ms ease-out"}}>
-                <div className="rounded-3xl border-2 border-yellow-400 bg-white shadow-lg overflow-hidden">
-                  <div className="px-5 py-4 border-b border-yellow-200 bg-yellow-50">
-                    <p className="text-[10px] uppercase tracking-[0.35em] text-slate-900 font-semibold">Manuales por marca</p>
-                  </div>
-                  <div className="p-4 flex flex-col gap-2">
-                    {manualesPorMarca.map(item => (
-                      <Link
-                        key={item.nombre}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
-                      >
-                        <span>{item.nombre}</span>
-                        <span className="text-yellow-500 group-hover:translate-x-0.5 transition-transform">›</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="rounded-3xl border-2 border-yellow-400 bg-white shadow-lg overflow-hidden">
-                  <div className="px-5 py-4 border-b border-yellow-200 bg-yellow-50">
-                    <p className="text-[10px] uppercase tracking-[0.35em] text-slate-900 font-semibold">Mecánicos</p>
-                  </div>
-                  <div className="p-4 flex flex-col gap-2">
-                    {mecanicos.map(item => (
-                      <a
-                        key={item.nombre}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
-                      >
-                        <span className="flex flex-col">
-                          <span className="font-semibold">{item.nombre}</span>
-                          <span className="text-xs text-slate-500">{item.especialidad}</span>
-                        </span>
-                        <span className="text-xs text-green-600 font-medium group-hover:translate-x-0.5 transition-transform">{item.tel}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="rounded-3xl border-2 border-yellow-400 bg-white shadow-lg overflow-hidden">
-                  <div className="px-5 py-4 border-b border-yellow-200 bg-yellow-50">
-                    <p className="text-[10px] uppercase tracking-[0.35em] text-slate-900 font-semibold">Aliados</p>
-                  </div>
-                  <div className="p-4 flex flex-col gap-2">
-                    {aliados.map(item => (
-                      <Link
-                        key={item.nombre}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
-                      >
-                        <span>{item.nombre}</span>
-                        <span className="text-yellow-500 group-hover:translate-x-0.5 transition-transform">›</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+            <SidebarTabs
+              manualesPorMarca={manualesPorMarca}
+              mecanicos={mecanicos}
+              aliados={aliados}
+            />
           </aside>
 
+          {/* CONTENIDO PRINCIPAL */}
+          <div className="flex-1 min-w-0">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
             <div className="flex flex-col gap-6">
               <p className="text-xs uppercase tracking-[0.4em] text-orange-500 font-semibold">ParteMaquinas</p>
@@ -253,6 +279,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+          </div>
           </div>
         </div>
       </section>
