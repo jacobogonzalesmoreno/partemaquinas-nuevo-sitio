@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  experimental: {
+    outputFileTracingExcludes: {
+      '/api/upload': [
+        './node_modules/**/*',
+      ],
+    },
+  },
 };
 
 export default nextConfig;
