@@ -1,7 +1,4 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { randomUUID } from 'crypto';
 import { requireRole } from '@/lib/auth';
 import { getSecurityEnv } from '@/lib/env';
 
@@ -34,20 +31,47 @@ export async function POST(request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const originalName = file.name || 'upload';
-    const ext = path.extname(originalName);
-    const baseName = path
-      .basename(originalName, ext)
-      .replace(/[^a-zA-Z0-9._-]/g, '')
-      .slice(0, 60) || 'archivo';
-    const fileName = `${Date.now()}-${randomUUID()}-${baseName}${ext}`;
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    const base64 = buffer.toString('base64');
+    const mimeType = file.type;
+    const dataUri = `data:${mimeType};base64,${base64}`;
 
-    await fs.mkdir(uploadDir, { recursive: true });
-    await fs.writeFile(path.join(uploadDir, fileName), buffer);
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-    return NextResponse.json({ url: `/uploads/${fileName}` });
+    const timestamp = Math.floor(Date.now() / 1000);
+    const folder = 'partemaquinas';
+
+    // Firma la peticion
+    const crypto = await import('crypto');
+    const signString = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+    const signature = crypto
+      .createHash('sha256')
+      .update(signString)
+      .digest('hex');
+
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', dataUri);
+    uploadFormData.append('api_key', apiKey);
+    uploadFormData.append('timestamp', timestamp.toString());
+    uploadFormData.append('signature', signature);
+    uploadFormData.append('folder', folder);
+
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      { method: 'POST', body: uploadFormData }
+    );
+
+    if (!response.ok) {
+      const err = await response.json();
+      return NextResponse.json({ error: err.error?.message || 'Error Cloudinary' }, { status: 500 });
+    }
+
+    const data = await response.json();
+    return NextResponse.json({ url: data.secure_url });
+
   } catch (error) {
+    console.error('Upload error:', error);
     return NextResponse.json({ error: 'No se pudo subir el archivo.' }, { status: 500 });
   }
 }
