@@ -3,9 +3,7 @@ import Link from 'next/link';
 
 export default function Contacto() {
   const asesores = [
-    { nombre: 'Asesor comercial 1', telefono: '573163293151', area: 'Cotizaciones y referencias' },
-    { nombre: 'Asesor comercial 2', telefono: '573108948217', area: 'Seguimiento de pedidos' },
-    { nombre: 'Asesor comercial 3', telefono: '573104526096', area: 'Atencion general y soporte' },
+    { nombre: 'Asesor comercial', telefono: '573163293151', area: 'Cotizaciones y referencias' },
   ];
 
   const direccion = 'Colombia, Antioquia, Medellin, Carrera 65 #28-27, Barrio trinidad';
