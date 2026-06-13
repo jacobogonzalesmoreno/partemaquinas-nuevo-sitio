@@ -4,6 +4,7 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import BotonWhatsapp from '@/components/BotonWhattsapp';
 import PageTransition from '@/components/PageTransition';
+import { Analytics } from '@vercel/analytics/react';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
         <PageTransition>{children}</PageTransition>
         <Footer />
         <BotonWhatsapp />
+        <Analytics />
       </body>
     </html>
   );
