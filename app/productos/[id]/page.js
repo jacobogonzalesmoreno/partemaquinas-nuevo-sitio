@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
 
 const CATEGORIA_URL_KEY = 'catalogoCategoriaUrl';
+const PLACEHOLDER_IMG = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
 
 export default function DetalleProducto() {
   const { id } = useParams();
@@ -12,6 +13,8 @@ export default function DetalleProducto() {
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [imagenActiva, setImagenActiva] = useState(0);
+  const [erroresImagen, setErroresImagen] = useState({});
+  const carruselRef = useRef(null);
   const [volverHref] = useState(() => {
     if (typeof window === 'undefined') {
       return '/productos';
@@ -28,6 +31,23 @@ export default function DetalleProducto() {
         setCargando(false);
       });
   }, [id]);
+
+  // Sincroniza el indice activo cuando el usuario hace scroll/swipe en el carrusel movil
+  const onScrollCarrusel = () => {
+    const el = carruselRef.current;
+    if (!el) return;
+    const index = Math.round(el.scrollLeft / el.clientWidth);
+    setImagenActiva(prev => (prev === index ? prev : index));
+  };
+
+  const irAImagen = index => {
+    setImagenActiva(index);
+    const el = carruselRef.current;
+    if (el) {
+      el.scrollTo({ left: index * el.clientWidth, behavior: 'smooth' });
+    }
+  };
+
   if (cargando) return (
     <div className="min-h-screen bg-white flex items-center justify-center text-slate-500 text-xl">Cargando producto...</div>
   );
@@ -45,6 +65,12 @@ export default function DetalleProducto() {
     router.push(volverHref);
   };
 
+  const marcarError = index => {
+    setErroresImagen(prev => (prev[index] ? prev : { ...prev, [index]: true }));
+  };
+
+  const srcDe = index => (erroresImagen[index] ? PLACEHOLDER_IMG : imagenes[index]);
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <div className="max-w-5xl mx-auto px-6 py-12">
@@ -61,37 +87,86 @@ export default function DetalleProducto() {
 
           {/* GALERIA */}
           <div className="flex flex-col gap-3">
-            <div className="w-full h-80 bg-gray-100 rounded-xl border border-gray-200 overflow-hidden">
+
+            {/* Carrusel movil: swipe horizontal con scroll-snap */}
+            <div className="md:hidden">
               {imagenes.length > 0 ? (
-                <img
-                  src={imagenes[imagenActiva]}
-                  alt={producto.nombre}
-                  className="w-full h-full object-contain bg-gray-100"
-                  onError={e => { e.currentTarget.style.display = 'none'; }}
-                />
+                <div
+                  ref={carruselRef}
+                  onScroll={onScrollCarrusel}
+                  className="flex w-full overflow-x-auto snap-x snap-mandatory rounded-xl border border-gray-200 bg-gray-100"
+                  style={{ scrollbarWidth: 'none' }}
+                >
+                  {imagenes.map((_, index) => (
+                    <div
+                      key={index}
+                      className="snap-center shrink-0 w-full h-80 flex items-center justify-center"
+                    >
+                      <img
+                        src={srcDe(index)}
+                        alt={producto.nombre + ' imagen ' + (index + 1)}
+                        className="w-full h-full object-contain"
+                        onError={() => marcarError(index)}
+                      />
+                    </div>
+                  ))}
+                </div>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-7xl">X</div>
+                <div className="w-full h-80 bg-gray-100 rounded-xl border border-gray-200 flex items-center justify-center text-7xl">
+                  <img src={PLACEHOLDER_IMG} alt={producto.nombre} className="w-24 h-24 object-contain opacity-60" />
+                </div>
+              )}
+
+              {imagenes.length > 1 && (
+                <div className="flex justify-center gap-2 mt-3">
+                  {imagenes.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => irAImagen(index)}
+                      aria-label={'Ir a imagen ' + (index + 1)}
+                      className={`h-2.5 rounded-full transition-all ${imagenActiva === index ? 'w-6 bg-yellow-400' : 'w-2.5 bg-gray-300'}`}
+                    />
+                  ))}
+                </div>
               )}
             </div>
 
-            {imagenes.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
-                {imagenes.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setImagenActiva(index)}
-                    className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${imagenActiva === index ? 'border-yellow-400' : 'border-gray-300 hover:border-gray-400'}`}
-                  >
-                    <img
-                      src={img}
-                      alt={'imagen ' + (index + 1)}
-                      className="w-full h-full object-contain bg-gray-100"
-                      onError={e => { e.currentTarget.style.display = 'none'; }}
-                    />
-                  </button>
-                ))}
+            {/* Galeria desktop: imagen grande + thumbnails (igual que antes) */}
+            <div className="hidden md:flex md:flex-col gap-3">
+              <div className="w-full h-80 bg-gray-100 rounded-xl border border-gray-200 overflow-hidden">
+                {imagenes.length > 0 ? (
+                  <img
+                    src={srcDe(imagenActiva)}
+                    alt={producto.nombre}
+                    className="w-full h-full object-contain bg-gray-100"
+                    onError={() => marcarError(imagenActiva)}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <img src={PLACEHOLDER_IMG} alt={producto.nombre} className="w-24 h-24 object-contain opacity-60" />
+                  </div>
+                )}
               </div>
-            )}
+
+              {imagenes.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {imagenes.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setImagenActiva(index)}
+                      className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${imagenActiva === index ? 'border-yellow-400' : 'border-gray-300 hover:border-gray-400'}`}
+                    >
+                      <img
+                        src={srcDe(index)}
+                        alt={'imagen ' + (index + 1)}
+                        className="w-full h-full object-contain bg-gray-100"
+                        onError={() => marcarError(index)}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* INFO */}
