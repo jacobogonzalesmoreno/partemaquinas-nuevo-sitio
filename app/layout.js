@@ -1,4 +1,5 @@
 import './globals.css';
+import Script from 'next/script';
 import { IBM_Plex_Sans } from 'next/font/google';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <Footer />
         <BotonWhatsapp />
         <Analytics />
+        <Script src="//code.tidio.co/ik3zg1kybelonasjdzw8q5wxqbwt9htr.js" strategy="afterInteractive" />
       </body>
     </html>
   );
