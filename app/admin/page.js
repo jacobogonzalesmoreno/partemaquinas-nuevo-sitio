@@ -68,6 +68,11 @@ export default function AdminPage() {
   const [selectedImagenIndex, setSelectedImagenIndex] = useState(0);
   const [replaceIndex, setReplaceIndex] = useState(null);
   const replaceInputRef = useRef(null);
+  const [camaraAbierta, setCamaraAbierta] = useState(false);
+  const [camaraParaReemplazar, setCamaraParaReemplazar] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
 
   useEffect(() => {
     let active = true;
@@ -509,6 +514,49 @@ export default function AdminPage() {
     }
   };
 
+  const abrirCamara = async (paraReemplazar = false) => {
+    setCamaraParaReemplazar(paraReemplazar);
+    setCamaraAbierta(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch {
+      setError('No se pudo acceder a la camara. Verifica los permisos.');
+      setCamaraAbierta(false);
+    }
+  };
+
+  const cerrarCamara = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setCamaraAbierta(false);
+  };
+
+  const tomarFoto = async () => {
+    if (!videoRef.current || !canvasRef.current) return;
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    cerrarCamara();
+
+    canvas.toBlob(async blob => {
+      if (!blob) return;
+      const file = new File([blob], `foto-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      if (camaraParaReemplazar) {
+        await handleReplaceImagen(file);
+      } else {
+        await handleUpload([file]);
+      }
+    }, 'image/jpeg', 0.92);
+  };
+
   const getFieldKind = field => {
     if (field === 'imagenes') return 'images';
     if (TEXTAREA_FIELDS.has(field)) return 'textarea';
@@ -779,6 +827,17 @@ export default function AdminPage() {
                         </button>
                         <button
                           type="button"
+                          onClick={() => {
+                            setReplaceIndex(selectedImagenIndex);
+                            abrirCamara(true);
+                          }}
+                          className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
+                          disabled={subiendo}
+                        >
+                          📷 Foto
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => handleRemoveImagenAt(selectedImagenIndex)}
                           className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300"
                           disabled={subiendo}
@@ -844,6 +903,14 @@ export default function AdminPage() {
                           >
                             Agregar imagenes
                           </label>
+                          <button
+                            type="button"
+                            onClick={() => abrirCamara(false)}
+                            disabled={subiendo}
+                            className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60"
+                          >
+                            📷 Tomar foto
+                          </button>
                           {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
                         </div>
                         <input
@@ -1005,6 +1072,43 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {camaraAbierta && (
+        <div className="fixed inset-0 z-[100] flex items-start justify-center bg-slate-900/80 backdrop-blur-sm px-4" style={{paddingTop: '70px'}}>
+          <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+              <p className="text-sm font-semibold text-slate-800">📷 Tomar foto</p>
+              <button
+                type="button"
+                onClick={cerrarCamara}
+                className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:border-orange-300"
+              >
+                Cancelar
+              </button>
+            </div>
+            <div className="relative bg-black">
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className="w-full"
+                style={{maxHeight: '380px', objectFit: 'cover'}}
+              />
+            </div>
+            <div className="px-4 py-3 flex justify-center">
+              <button
+                type="button"
+                onClick={tomarFoto}
+                className="btn-anim rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-400"
+              >
+                📸 Capturar
+              </button>
+            </div>
+          </div>
+          <canvas ref={canvasRef} className="hidden" />
+        </div>
+      )}
     </main>
   );
 }
