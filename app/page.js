@@ -1,125 +1,244 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Space_Grotesk, DM_Sans } from 'next/font/google';
+
+/* ── Fuentes ───────────────────────────────────────────── */
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
+
+/* ── Hooks personalizados ──────────────────────────────── */
+
+function useCountUp(end, duration = 1400) {
+  const [count, setCount] = useState(0);
+  const [go, setGo] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setGo(true); obs.disconnect(); } }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!go) return;
+    let t0 = null;
+    const step = (ts) => {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / duration, 1);
+      setCount(Math.floor((1 - Math.pow(1 - p, 3)) * end));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [go, end, duration]);
+  return [count, ref];
+}
+
+function useInView(threshold = 0.12) {
+  const ref = useRef(null);
+  const [v, setV] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setV(true); obs.disconnect(); } }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, v];
+}
+
+function useScrollProgress() {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    const h = () => { const t = document.documentElement.scrollHeight - window.innerHeight; setP(t > 0 ? window.scrollY / t : 0); };
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return p;
+}
+
+/* ── Iconos SVG ────────────────────────────────────────── */
+
+function IconShield({ c = 'w-6 h-6' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>;
+}
+function IconWrench({ c = 'w-6 h-6' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>;
+}
+function IconTruck({ c = 'w-6 h-6' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>;
+}
+function IconChat({ c = 'w-6 h-6' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>;
+}
+function IconSearch({ c = 'w-5 h-5' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>;
+}
+function IconArrow({ c = 'w-4 h-4' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>;
+}
+function IconMenu({ c = 'w-6 h-6' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>;
+}
+function IconX({ c = 'w-6 h-6' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>;
+}
+function IconWhatsApp({ c = 'w-5 h-5' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>;
+}
+function IconPhone({ c = 'w-4 h-4' }) {
+  return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>;
+}
+
+/* ── Wrapper de animación al scroll ────────────────────── */
+
+function Reveal({ children, className = '', delay = 0 }) {
+  const [ref, v] = useInView(0.08);
+  return (
+    <div ref={ref} className={className} style={{ opacity: v ? 1 : 0, transform: v ? 'translateY(0)' : 'translateY(28px)', transition: `opacity 0.6s cubic-bezier(.22,1,.36,1) ${delay}ms, transform 0.6s cubic-bezier(.22,1,.36,1) ${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+
+/* ── Sidebar con tabs ──────────────────────────────────── */
 
 function SidebarTabs({ manualesPorMarca, mecanicos, aliados }) {
   const [tab, setTab] = useState('manuales');
-
   const tabs = [
     { id: 'manuales', label: 'Manuales', count: manualesPorMarca.length },
     { id: 'mecanicos', label: 'Mecanicos', count: mecanicos.length },
     { id: 'aliados', label: 'Aliados', count: aliados.length },
   ];
 
+  const tabContent = {
+    manuales: (
+      <div className="p-4 flex flex-col gap-2">
+        <div className="mb-3">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Manuales</p>
+          <h4 className="text-base font-bold text-slate-900 mt-0.5">Biblioteca tecnica</h4>
+          <p className="text-xs text-slate-500 mt-1">Manuales y recursos por marca para diagnostico y referencias rapidas.</p>
+        </div>
+        {manualesPorMarca.map((item, i) => (
+          <Link key={item.nombre} href={item.url} target="_blank" rel="noopener noreferrer"
+            className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-orange-500"
+            style={{ animationDelay: `${i * 40}ms` }}>
+            <span className="flex flex-col">
+              <span className="text-sm font-semibold text-slate-900">{item.nombre}</span>
+              <span className="text-[11px] text-slate-400">Documentacion de referencia</span>
+            </span>
+            <span className="text-orange-500 group-hover:translate-x-1 transition-transform duration-200"><IconArrow /></span>
+          </Link>
+        ))}
+      </div>
+    ),
+    mecanicos: (
+      <div className="p-4 flex flex-col gap-2">
+        <div className="mb-3">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Mecanicos</p>
+          <h4 className="text-base font-bold text-slate-900 mt-0.5">Red de confianza</h4>
+          <p className="text-xs text-slate-500 mt-1">Contactos directos para motor, hidraulica y mantenimiento especializado.</p>
+        </div>
+        {mecanicos.map((item, i) => (
+          <a key={item.nombre} href={item.url} target="_blank" rel="noopener noreferrer"
+            className="group rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-200 block focus-visible:outline-2 focus-visible:outline-orange-500"
+            style={{ animationDelay: `${i * 40}ms` }}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-slate-900">{item.nombre}</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">{item.especialidad}</p>
+              </div>
+              <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5 flex items-center gap-1"><IconWhatsApp c="w-3 h-3" />WhatsApp</span>
+            </div>
+            <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100">
+              <span className="text-xs text-slate-500 flex items-center gap-1.5"><IconPhone c="w-3.5 h-3.5" />{item.tel}</span>
+              <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-1 transition-transform duration-200 flex items-center gap-0.5">Abrir chat <IconArrow c="w-3 h-3" /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    ),
+    aliados: (
+      <div className="p-4 flex flex-col gap-2">
+        <div className="mb-3">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Aliados</p>
+          <h4 className="text-base font-bold text-slate-900 mt-0.5">Talleres de confianza</h4>
+          <p className="text-xs text-slate-500 mt-1">Empresas aliadas para servicios especializados y rectificacion.</p>
+        </div>
+        {aliados.map((item, i) => (
+          <Link key={item.nombre} href={item.url} target="_blank" rel="noopener noreferrer"
+            className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-orange-500"
+            style={{ animationDelay: `${i * 40}ms` }}>
+            <span className="text-sm font-semibold text-slate-900">{item.nombre}</span>
+            <span className="text-orange-500 group-hover:translate-x-1 transition-transform duration-200"><IconArrow /></span>
+          </Link>
+        ))}
+      </div>
+    ),
+  };
+
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      {/* Tab bar */}
       <div className="flex border-b border-slate-100 px-3 pt-3 gap-1 shrink-0">
         {tabs.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`flex flex-col items-center px-3 py-2 rounded-t-xl text-xs font-semibold transition-all flex-1 border-b-2 ${
-              tab === t.id
-                ? 'bg-slate-900 text-white border-slate-900'
-                : 'text-slate-500 border-transparent hover:text-slate-700 hover:bg-slate-50'
-            }`}
-          >
-            <span className="uppercase tracking-wide text-[10px]">{t.label}</span>
-            <span className={`text-sm font-bold mt-0.5 ${tab === t.id ? 'text-yellow-400' : 'text-slate-700'}`}>{t.count} items</span>
+          <button key={t.id} onClick={() => setTab(t.id)}
+            className={`flex flex-col items-center px-3 py-2.5 rounded-t-xl text-xs font-semibold transition-all duration-200 flex-1 border-b-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 ${
+              tab === t.id ? 'bg-slate-900 text-white border-slate-900' : 'text-slate-500 border-transparent hover:text-slate-700 hover:bg-slate-50'
+            }`}>
+            <span className="uppercase tracking-widest text-[10px]">{t.label}</span>
+            <span className={`text-sm font-bold mt-0.5 ${tab === t.id ? 'text-yellow-400' : 'text-slate-700'}`}>{t.count}</span>
           </button>
         ))}
       </div>
-
-      {/* Content with internal scroll */}
-      <div className="flex-1 overflow-y-auto min-h-0">
-
-        {tab === 'manuales' && (
-          <div className="p-4 flex flex-col gap-2">
-            <div className="mb-3">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Manuales</p>
-              <h4 className="text-base font-bold text-slate-900 mt-0.5">Biblioteca tecnica</h4>
-              <p className="text-xs text-slate-500 mt-1">Manuals y recursos por marca para diagnostico y referencias rapidas.</p>
-            </div>
-            {manualesPorMarca.map(item => (
-              <Link
-                key={item.nombre}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
-              >
-                <span className="flex flex-col">
-                  <span className="text-sm font-semibold text-slate-900">{item.nombre}</span>
-                  <span className="text-xs text-slate-400">Manual y documentacion de referencia</span>
-                </span>
-                <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-0.5 transition-transform whitespace-nowrap ml-2">Abrir ›</span>
-              </Link>
-            ))}
-          </div>
-        )}
-
-        {tab === 'mecanicos' && (
-          <div className="p-4 flex flex-col gap-2">
-            <div className="mb-3">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Mecanicos</p>
-              <h4 className="text-base font-bold text-slate-900 mt-0.5">Red de confianza</h4>
-              <p className="text-xs text-slate-500 mt-1">Contactos directos para motor, hidraulica y mantenimientos especializados.</p>
-            </div>
-            {mecanicos.map(item => (
-              <a
-                key={item.nombre}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all block"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">{item.nombre}</p>
-                    <p className="text-xs text-slate-400 mt-0.5">{item.especialidad}</p>
-                  </div>
-                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">WhatsApp</span>
-                </div>
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100">
-                  <span className="text-xs text-slate-500">{item.tel}</span>
-                  <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-0.5 transition-transform">Abrir chat ›</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-
-        {tab === 'aliados' && (
-          <div className="p-4 flex flex-col gap-2">
-            <div className="mb-3">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Aliados</p>
-              <h4 className="text-base font-bold text-slate-900 mt-0.5">Talleres de confianza</h4>
-              <p className="text-xs text-slate-500 mt-1">Empresas aliadas para servicios especializados y rectificacion.</p>
-            </div>
-            {aliados.map(item => (
-              <Link
-                key={item.nombre}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 hover:border-yellow-400 hover:bg-yellow-50 transition-all"
-              >
-                <span className="text-sm font-semibold text-slate-900">{item.nombre}</span>
-                <span className="text-xs font-semibold text-orange-500 group-hover:translate-x-0.5 transition-transform whitespace-nowrap ml-2">Abrir ›</span>
-              </Link>
-            ))}
-          </div>
-        )}
-
+      <div className="flex-1 overflow-y-auto min-h-0 custom-scroll">
+        <div key={tab} className="animate-tab-in">{tabContent[tab]}</div>
       </div>
     </div>
   );
 }
 
+/* ── Drawer móvil ──────────────────────────────────────── */
+
+function MobileDrawer({ manualesPorMarca, mecanicos, aliados }) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; return () => { document.body.style.overflow = ''; }; }, [open]);
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)} aria-label="Abrir panel de soporte"
+        className="lg:hidden fixed bottom-6 right-6 z-40 w-14 h-14 rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/30 flex items-center justify-center hover:bg-slate-800 active:scale-95 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
+        <IconMenu />
+      </button>
+      <div className={`lg:hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setOpen(false)} />
+      <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out max-h-[85vh] flex flex-col ${open ? 'translate-y-0' : 'translate-y-full'}`}>
+        <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-slate-100 shrink-0">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Red de soporte</p>
+            <h3 className="text-lg font-bold text-slate-900">Aliados y mecanicos</h3>
+          </div>
+          <button onClick={() => setOpen(false)} aria-label="Cerrar panel" className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
+            <IconX />
+          </button>
+        </div>
+        <SidebarTabs manualesPorMarca={manualesPorMarca} mecanicos={mecanicos} aliados={aliados} />
+      </div>
+    </>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAGINA PRINCIPAL
+   ══════════════════════════════════════════════════════════ */
+
 export default function Home() {
 
+  const scrollProgress = useScrollProgress();
+  const [stat1, ref1] = useCountUp(390);
+  const [stat2, ref2] = useCountUp(24, 1000);
+
+  /* ── Datos ─────────────────────────────────────────── */
   const marcas = [
     { nombre: 'Case', archivo: 'case.png', buscar: 'case' },
     { nombre: 'Caterpillar', archivo: 'Caterpillar-Logo-1989-present.png', buscar: 'caterpillar' },
@@ -139,30 +258,12 @@ export default function Home() {
     { nombre: 'Shibaura', archivo: 'shibaura-logo-png_seeklogo-278990.png', buscar: 'shibaura' },
     { nombre: 'Volvo', archivo: 'volvo.png', buscar: 'volvo' },
   ];
-  
 
   const sellos = [
-    {
-      imagen: '/sellos/garantias.png',
-      icono: '🛡️',
-      titulo: 'Garantía 30 días',
-      descripcion: 'Cobertura por falla de fabrica en nuestros equipos.',
-    },
-    {
-      icono: '🔧',
-      titulo: 'Garantía 60 días',
-      descripcion: 'Si tu excavadora presenta fallas, asumimos los costos y te brindamos los repuestos necesarios.',
-    },
-    {
-      icono: '🚚',
-      titulo: 'Envíos Colombia, Ecuador y Venezuela',
-      descripcion: 'Enviamos a todo Colombia y en casos especiales a Ecuador y Venezuela.',
-    },
-    {
-      icono: '💬',
-      titulo: 'Somos una solución',
-      descripcion: 'Ayudamos y vendemos. Asesoría técnica especializada por WhatsApp.',
-    },
+    { icono: <IconShield c="w-7 h-7" />, titulo: 'Garantia 30 dias', descripcion: 'Cobertura por falla de fabrica en nuestros equipos.' },
+    { icono: <IconWrench c="w-7 h-7" />, titulo: 'Garantia 60 dias', descripcion: 'Si tu excavadora presenta fallas, asumimos costos y repuestos necesarios.' },
+    { icono: <IconTruck c="w-7 h-7" />, titulo: 'Envios internacionales', descripcion: 'Enviamos a todo Colombia, Ecuador y Venezuela.' },
+    { icono: <IconChat c="w-7 h-7" />, titulo: 'Somos una solucion', descripcion: 'Ayudamos y vendemos. Asesoria tecnica especializada por WhatsApp.' },
   ];
 
   const manualesPorMarca = [
@@ -187,168 +288,255 @@ export default function Home() {
   ];
 
   const aliados = [
-    { nombre: 'Rectificadora H&M', url: 'https://wa.me/573146820296', externo: true },
-    { nombre: 'JMM Hidraulicos', url: 'https://www.jmmhidraulicos.com/', externo: true },
+    { nombre: 'Rectificadora H&M', url: 'https://wa.me/573146820296' },
+    { nombre: 'JMM Hidraulicos', url: 'https://www.jmmhidraulicos.com/' },
   ];
 
+  /* ── Busqueda de marcas ────────────────────────────── */
+  const [busqueda, setBusqueda] = useState('');
+  const marcasFiltradas = useMemo(() => {
+    if (!busqueda.trim()) return marcas;
+    const q = busqueda.toLowerCase();
+    return marcas.filter(m => m.nombre.toLowerCase().includes(q));
+  }, [busqueda]);
+
+  /* ── Render ────────────────────────────────────────── */
   return (
     <>
       <style>{`
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-8px); }
+        :root {
+          --font-display: ${spaceGrotesk.style.fontFamily}, sans-serif;
+          --font-body: ${dmSans.style.fontFamily}, sans-serif;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); }
+
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .animate-tab-in { animation: tabIn 280ms cubic-bezier(.22,1,.36,1) forwards; }
+        @keyframes tabIn {
+          from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        .animate-tab-in > * {
+          opacity: 0;
+          animation: itemIn 300ms cubic-bezier(.22,1,.36,1) forwards;
+        }
+        @keyframes itemIn {
+          from { opacity: 0; transform: translateX(-8px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-card-pattern {
+          background-image:
+            radial-gradient(circle at 20% 80%, rgba(234,88,12,0.12) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(234,88,12,0.08) 0%, transparent 50%),
+            repeating-linear-gradient(135deg, transparent, transparent 20px, rgba(255,255,255,0.015) 20px, rgba(255,255,255,0.015) 21px);
+        }
+
+        .brand-card { position: relative; overflow: hidden; }
+        .brand-card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          opacity: 0;
+          transition: opacity 0.3s;
+          background: radial-gradient(circle at 50% 50%, rgba(234,88,12,0.06), transparent 70%);
+          pointer-events: none;
+        }
+        .brand-card:hover::after { opacity: 1; }
+
+        /* Banner: sombra interior sutil para dar profundidad sin recortar */
+        .banner-wrap {
+          box-shadow: 0 4px 24px -4px rgba(15,23,42,0.10), 0 1px 4px rgba(15,23,42,0.06);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+          html { scroll-behavior: auto; }
         }
       `}</style>
-      <main className="min-h-screen bg-slate-50 text-slate-900">
-      <section className="bg-white border-b border-slate-200">
-        <div className="px-4 py-4 sm:px-6 sm:py-5">
-          <Image
-            src="/banners/ChatGPT%20Image%204%20jun%202026,%2010_33_29%20p.m..png"
-            alt="Banner principal"
-            width={1600}
-            height={420}
-            className="w-full h-auto rounded-3xl border border-slate-200 bg-white shadow-lg shadow-slate-300/30"
-            priority
-          />
+
+      <div className={`${spaceGrotesk.variable} ${dmSans.variable}`}>
+
+        {/* Barra de progreso de scroll */}
+        <div className="fixed top-0 left-0 right-0 z-50 h-[3px] bg-transparent" aria-hidden="true">
+          <div className="h-full bg-gradient-to-r from-orange-500 to-yellow-400 transition-[width] duration-100 ease-out" style={{ width: `${scrollProgress * 100}%` }} />
         </div>
-      </section>
 
-      {/* HERO */}
-      <section className="relative bg-white border-b border-slate-200">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-12">
-          <div className="flex gap-6 items-start">
-          <aside className="hidden lg:flex flex-col w-[300px] shrink-0 sticky top-24 h-[calc(100vh-7rem)] rounded-3xl border border-slate-200 bg-white shadow-xl overflow-hidden" style={{animation: 'slideDown 200ms ease-out'}}>
-            {/* Header */}
-            <div className="px-5 pt-5 pb-4 border-b border-slate-100">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold mb-1">Red de soporte</p>
-              <h3 className="text-lg font-bold text-slate-900">Aliados y mecanicos</h3>
-              <p className="text-xs text-slate-500 mt-1">Un acceso rapido a contactos, talleres y manuales sin salir del inicio.</p>
-            </div>
-            <SidebarTabs
-              manualesPorMarca={manualesPorMarca}
-              mecanicos={mecanicos}
-              aliados={aliados}
-            />
-          </aside>
+        <main className="min-h-screen bg-slate-50 text-slate-900">
 
-          {/* CONTENIDO PRINCIPAL */}
-          <div className="flex-1 min-w-0 flex flex-col gap-10">
-
-            {/* Hero text + card */}
-            <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
-              <div className="flex flex-col gap-6">
-                <p className="text-xs uppercase tracking-[0.4em] text-orange-500 font-semibold">ParteMaquinas</p>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
-                  Somos una solución: Ayudamos y vendemos
-                </h1>
-                <p className="text-slate-600 text-lg leading-relaxed">
-                  Catalogo especializado con asesoria rapida para excavadoras, cargadores y equipos industriales.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/productos"
-                    className="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors"
-                  >
-                    Ver catalogo
-                  </Link>
-                  <Link
-                    href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-6 py-3 transition-colors"
-                  >
-                    <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={30} height={30} />
-                    Hablar con un asesor
-                  </Link>
-                </div>
-              </div>
-              <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-xl shadow-slate-300/40">
-                <p className="text-sm uppercase tracking-[0.2em] text-orange-300">Cobertura nacional</p>
-                <h2 className="text-2xl font-semibold mt-3">Cotiza en minutos</h2>
-                <p className="text-slate-200 mt-3 leading-relaxed">
-                  Gestionamos repuestos originales y alternativos con trazabilidad clara y envio seguro.
-                </p>
-                <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    <p className="text-orange-300 font-semibold">+390</p>
-                    <p className="text-slate-200">Referencias activas</p>
-                  </div>
-                  <div className="rounded-2xl bg-white/10 p-4">
-                    <p className="text-orange-300 font-semibold">24/7</p>
-                    <p className="text-slate-200">Atencion WhatsApp</p>
-                  </div>
-                </div>
+          {/* ── Banner ───────────────────────────────── */}
+          <section className="bg-white border-b border-slate-200">
+            <div className="px-4 py-4 sm:px-6 sm:py-5">
+              <div className="banner-wrap rounded-2xl overflow-hidden">
+                <Image
+                  src="/banners/ChatGPT%20Image%204%20jun%202026,%2010_33_29%20p.m..png"
+                  alt="Banner principal"
+                  width={1600}
+                  height={420}
+                  className="w-full h-auto"
+                  priority
+                />
               </div>
             </div>
+          </section>
 
-            {/* Sellos inline */}
-            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-              {sellos.map(sello => (
-                <div
-                  key={sello.titulo}
-                  className="bg-slate-50 rounded-2xl border border-slate-200 p-5 hover:border-orange-300 hover:shadow-md transition-all flex flex-col gap-2"
-                >
-                  <span className="text-2xl">{sello.icono}</span>
-                  <p className="text-sm font-bold text-slate-900">{sello.titulo}</p>
-                  <p className="text-xs text-slate-500 leading-relaxed">{sello.descripcion}</p>
+          {/* ── Hero + Sidebar ───────────────────────── */}
+          <section className="bg-white border-b border-slate-200">
+            <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-12">
+              <div className="flex gap-6 items-start">
+
+                {/* Sidebar desktop */}
+                <aside className="hidden lg:flex flex-col w-[300px] shrink-0 sticky top-24 h-[calc(100vh-7rem)] rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-300/30 overflow-hidden">
+                  <div className="px-5 pt-5 pb-4 border-b border-slate-100">
+                    <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold mb-1">Red de soporte</p>
+                    <h3 className="text-lg font-bold text-slate-900">Aliados y mecanicos</h3>
+                    <p className="text-xs text-slate-500 mt-1">Acceso rapido a contactos, talleres y manuales.</p>
+                  </div>
+                  <SidebarTabs manualesPorMarca={manualesPorMarca} mecanicos={mecanicos} aliados={aliados} />
+                </aside>
+
+                {/* Contenido principal */}
+                <div className="flex-1 min-w-0 flex flex-col gap-10">
+
+                  {/* Texto hero + tarjeta de stats */}
+                  <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
+                    <Reveal>
+                      <div className="flex flex-col gap-6">
+                        <p className="text-xs uppercase tracking-[0.4em] text-orange-500 font-semibold">ParteMaquinas</p>
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]" style={{ fontFamily: 'var(--font-display)' }}>
+                          Somos una solucion:{' '}
+                          <span className="text-orange-500">Ayudamos</span> y vendemos
+                        </h1>
+                        <p className="text-slate-600 text-lg leading-relaxed">
+                          Catalogo especializado con asesoria rapida para excavadoras, cargadores y equipos industriales.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                          <Link href="/productos"
+                            className="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
+                            Ver catalogo
+                          </Link>
+                          <Link href="/contacto"
+                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
+                            <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={30} height={30} />
+                            Hablar con un asesor
+                          </Link>
+                        </div>
+                      </div>
+                    </Reveal>
+
+                    <Reveal delay={120}>
+                      <div className="bg-slate-900 text-white rounded-3xl p-8 shadow-xl shadow-slate-300/40  relative overflow-hidden">
+                        <div className="relative z-10">
+                          <p className="text-sm uppercase tracking-[0.2em] text-yellow-300">Cobertura nacional</p>
+                          <h2 className="text-2xl font-semibold mt-3">Cotiza en minutos</h2>
+                          <p className="text-slate-200 mt-3 leading-relaxed">
+                            Gestionamos repuestos originales y alternativos con trazabilidad clara y envio seguro.
+                          </p>
+                          <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
+                            <div ref={ref1} className="rounded-2xl bg-white/10 p-4">
+                              <p className="text-yellow-400 font-bold text-2xl" style={{ fontFamily: 'var(--font-display)' }}>+{stat1}</p>
+                              <p className="text-slate-200 text-xs mt-1">Referencias activas</p>
+                            </div>
+                            <div ref={ref2} className="rounded-2xl bg-white/10 p-4">
+                              <p className="text-yellow-400 font-bold text-2xl" style={{ fontFamily: 'var(--font-display)' }}>{stat2}/7</p>
+                              <p className="text-slate-200 text-xs mt-1">Atencion WhatsApp</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Reveal>
+                  </div>
+
+                  {/* Sellos */}
+                  <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                    {sellos.map((sello, i) => (
+                      <Reveal key={sello.titulo} delay={i * 80}>
+                        <div className="group bg-slate-50 rounded-2xl border border-slate-200 p-5 hover:border-orange-300 hover:shadow-md hover:shadow-slate-200/50 transition-all duration-300 flex flex-col gap-2 h-full">
+                          <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 text-orange-500 flex items-center justify-center group-hover:bg-orange-100 group-hover:scale-105 transition-all duration-300">
+                            {sello.icono}
+                          </div>
+                          <p className="text-sm font-bold text-slate-900">{sello.titulo}</p>
+                          <p className="text-xs text-slate-500 leading-relaxed">{sello.descripcion}</p>
+                        </div>
+                      </Reveal>
+                    ))}
+                  </div>
+
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Marcas ────────────────────────────────── */}
+          <section className="max-w-6xl mx-auto px-6 py-14 border-t border-slate-200">
+            <Reveal>
+              <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">Marcas principales</h2>
+                  <p className="text-slate-600 mt-1">Selecciona tu marca y encuentra el repuesto ideal.</p>
+                </div>
+                <Link href="/productos" className="text-orange-500 font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all duration-200">
+                  Ir al catalogo <IconArrow c="w-4 h-4" />
+                </Link>
+              </div>
+            </Reveal>
+
+            
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              {marcasFiltradas.map((marca, i) => (
+                <Reveal key={marca.nombre} delay={Math.min(i * 40, 400)}>
+                  <Link href={`/productos?buscar=${encodeURIComponent(marca.buscar)}`}
+                    className="brand-card group rounded-2xl border border-slate-200 bg-white p-4 text-center shadow-sm hover:shadow-md hover:border-orange-300 transition-all duration-300 block focus-visible:outline-2 focus-visible:outline-orange-500">
+                    <div className="h-16 rounded-xl bg-slate-100 group-hover:bg-yellow-50/60 flex items-center justify-center transition-colors duration-300">
+                      <Image src={`/marcas/${marca.archivo}`} alt={marca.nombre} width={120} height={64} className="max-h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+                    </div>
+                    <p className="mt-3 text-sm font-semibold text-slate-700 group-hover:text-slate-900 transition-colors">{marca.nombre}</p>
+                  </Link>
+                </Reveal>
               ))}
             </div>
 
-          </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MARCAS */}
-      <section className="max-w-6xl mx-auto px-6 py-14 border-t border-slate-200">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900">Marcas principales</h2>
-            <p className="text-slate-600">Selecciona tu marca y encuentra el repuesto ideal.</p>
-          </div>
-          <Link href="/productos" className="text-orange-500 font-semibold">Ir al catalogo →</Link>
-        </div>
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {marcas.map(marca => (
-            <Link
-              key={marca.nombre}
-              href={`/productos?buscar=${encodeURIComponent(marca.buscar)}`}
-              className="group rounded-2xl border border-slate-200 bg-white p-4 text-center text-sm font-semibold text-slate-700 shadow-sm hover:shadow-md hover:border-orange-300 transition-all"
-            >
-              <div className="h-16 rounded-xl bg-slate-100 flex items-center justify-center">
-                <Image
-                  src={`/marcas/${marca.archivo}`}
-                  alt={marca.nombre}
-                  width={120}
-                  height={64}
-                  className="max-h-12 w-auto object-contain"
-                />
+            {marcasFiltradas.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-400 text-sm">No se encontraron marcas para &ldquo;{busqueda}&rdquo;</p>
+                <button onClick={() => setBusqueda('')} className="mt-2 text-orange-500 text-sm font-semibold hover:underline">Limpiar busqueda</button>
               </div>
-              <p className="mt-3">{marca.nombre}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
+            )}
+          </section>
 
-      {/* CTA */}
-      <section className="bg-white border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <h3 className="text-2xl font-bold text-slate-900">Listo para cotizar?</h3>
-            <p className="text-slate-600">Recibe respuesta rapida con un asesor experto.</p>
-          </div>
-          <Link
-            href="/contacto"
-            className="inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 transition-colors"
-          >
-            Contactar ahora
-          </Link>
-        </div>
-      </section>
-    </main>
+          {/* ── CTA ───────────────────────────────────── */}
+          <Reveal>
+            <section className="bg-white border-t border-slate-200">
+              <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900">Listo para cotizar?</h3>
+                  <p className="text-slate-600">Recibe respuesta rapida con un asesor experto.</p>
+                </div>
+                <Link href="/contacto"
+                  className="inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
+                  Contactar ahora
+                </Link>
+              </div>
+            </section>
+          </Reveal>
+
+        </main>
+
+        {/* Drawer móvil */}
+        <MobileDrawer manualesPorMarca={manualesPorMarca} mecanicos={mecanicos} aliados={aliados} />
+
+      </div>
     </>
   );
 }

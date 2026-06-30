@@ -14,64 +14,66 @@ const querySchema = z.object({
 });
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const parsedQuery = querySchema.safeParse({
-    buscar: searchParams.get('buscar') || undefined,
-    categoria: searchParams.get('categoria') || undefined,
-    limit: searchParams.get('limit') || undefined,
-    page: searchParams.get('page') || undefined,
-    offset: searchParams.get('offset') || undefined,
-  });
+  try {
+    const { searchParams } = new URL(request.url);
+    const parsedQuery = querySchema.safeParse({
+      buscar: searchParams.get('buscar') || undefined,
+      categoria: searchParams.get('categoria') || undefined,
+      limit: searchParams.get('limit') || undefined,
+      page: searchParams.get('page') || undefined,
+      offset: searchParams.get('offset') || undefined,
+    });
 
-  if (!parsedQuery.success) {
-    return NextResponse.json({ error: 'Parametros invalidos.' }, { status: 400 });
-  }
+    if (!parsedQuery.success) {
+      return NextResponse.json({ error: 'Parametros invalidos.' }, { status: 400 });
+    }
 
-  const { buscar, categoria, limit: parsedLimit, page: parsedPage, offset: parsedOffset } = parsedQuery.data;
-  const limit = parsedLimit ?? 100;
+    const { buscar, categoria, limit: parsedLimit, page: parsedPage, offset: parsedOffset } = parsedQuery.data;
+    const limit = parsedLimit ?? 100;
 
-  let offset = 0;
-  if (Number.isFinite(parsedOffset)) {
-    offset = parsedOffset;
-  } else {
-    if (Number.isFinite(parsedPage) && parsedPage > 1) {
+    let offset = 0;
+    if (Number.isFinite(parsedOffset)) {
+      offset = parsedOffset;
+    } else if (Number.isFinite(parsedPage) && parsedPage > 1) {
       offset = (parsedPage - 1) * limit;
     }
-  }
 
-  let whereClause = ' WHERE 1=1';
-  const params = [];
+    let whereClause = ' WHERE 1=1';
+    const params = [];
 
-  if (buscar) {
-    whereClause += ' AND (LOWER(nombre) LIKE ? OR LOWER(descripcion_corta) LIKE ? OR LOWER(categorias) LIKE ? OR LOWER(marcas) LIKE ?)';
-    const buscarLower = `%${buscar.toLowerCase()}%`;
-    params.push(buscarLower, buscarLower, buscarLower, buscarLower);
-  }
+    if (buscar) {
+      whereClause += ' AND (LOWER(nombre) LIKE ? OR LOWER(descripcion_corta) LIKE ? OR LOWER(categorias) LIKE ? OR LOWER(marcas) LIKE ?)';
+      const buscarLower = `%${buscar.toLowerCase()}%`;
+      params.push(buscarLower, buscarLower, buscarLower, buscarLower);
+    }
 
-  if (categoria) {
-    const listQuery = `SELECT * FROM productos${whereClause} ORDER BY nombre ASC`;
-    const [rows] = await db.query(listQuery, params);
-    const filtered = rows.filter(row => productoCoincideCategoriaPorNombre(row, categoria));
-    const total = filtered.length;
-    const paged = filtered.slice(offset, offset + limit);
-    const response = NextResponse.json(paged);
+    if (categoria) {
+      const listQuery = `SELECT * FROM productos${whereClause} ORDER BY nombre ASC`;
+      const [rows] = await db.query(listQuery, params);
+      const filtered = rows.filter(row => productoCoincideCategoriaPorNombre(row, categoria));
+      const total = filtered.length;
+      const paged = filtered.slice(offset, offset + limit);
+      const response = NextResponse.json(paged);
+      response.headers.set('X-Total-Count', String(total));
+      return response;
+    }
+
+    const countQuery = `SELECT COUNT(*) AS total FROM productos${whereClause}`;
+    const listQuery = `SELECT * FROM productos${whereClause} ORDER BY nombre ASC LIMIT ? OFFSET ?`;
+
+    const [countRows] = await db.query(countQuery, params);
+    const total = countRows?.[0]?.total ?? 0;
+
+    const listParams = [...params, limit, offset];
+    const [rows] = await db.query(listQuery, listParams);
+    const response = NextResponse.json(rows);
     response.headers.set('X-Total-Count', String(total));
     return response;
+  } catch (error) {
+    console.error('Error en GET /api/productos:', error);
+    return NextResponse.json({ error: 'No se pudo obtener los productos.' }, { status: 500 });
   }
-
-  const countQuery = `SELECT COUNT(*) AS total FROM productos${whereClause}`;
-  const listQuery = `SELECT * FROM productos${whereClause} ORDER BY nombre ASC LIMIT ? OFFSET ?`;
-
-  const [countRows] = await db.query(countQuery, params);
-  const total = countRows?.[0]?.total ?? 0;
-
-  const listParams = [...params, limit, offset];
-  const [rows] = await db.query(listQuery, listParams);
-  const response = NextResponse.json(rows);
-  response.headers.set('X-Total-Count', String(total));
-  return response;
 }
-
 export async function POST(request) {
   try {
     const auth = requireRole(request, 'editor');

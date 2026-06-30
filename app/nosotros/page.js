@@ -121,7 +121,7 @@ export default function Nosotros() {
           <div className="reveal-up stagger-1 flex flex-col gap-5 pt-1">
             <div className="border-b border-slate-200 pb-5">
               <p className="text-sm uppercase tracking-[0.22em] text-orange-500 font-semibold">ParteMaquinas</p>
-              <h2 className="mt-3 text-2xl font-semibold text-slate-900">Mas que vender, orientamos cada compra</h2>
+              <h2 className="mt-3 text-2xl font-semibold text-slate-900">Más que vender, Orientamos cada compra</h2>
               <p className="mt-3 text-slate-600 leading-relaxed">
                 Sabemos que el valor de un proveedor no esta solo en tener una pieza disponible, sino en ayudar a confirmar que esa pieza realmente resuelve la necesidad del cliente.
               </p>

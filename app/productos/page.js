@@ -1,11 +1,12 @@
 'use client';
 import { Suspense } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
 import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
 import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
+import { generarSugerencias, crearDebounce } from '@/lib/busqueda-tolerante';
 
 const CATALOGO_URL_KEY = 'catalogoListadoUrl';
 const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
@@ -131,6 +132,68 @@ function ProductosInner() {
   const [productos, setProductos] = useState([]);
   const [cargandoBusqueda, setCargandoBusqueda] = useState(() => Boolean(buscarInicial));
   const [errorBusqueda, setErrorBusqueda] = useState('');
+  const [sugerenciasVacio, setSugerenciasVacio] = useState([]);
+
+  // --- Autocomplete del buscador de productos ---
+  const searchInputRef = useRef(null);
+  const abortRef = useRef(null);
+  const [sugerenciasCats, setSugerenciasCats] = useState([]);
+  const [sugerenciasProds, setSugerenciasProds] = useState([]);
+  const [cargandoSugerencias, setCargandoSugerencias] = useState(false);
+  const [sugerenciaActiva, setSugerenciaActiva] = useState(-1);
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
+
+  // Sugerencias de categorías (client-side, instantáneo)
+  useEffect(() => {
+    if (!inputBuscar || inputBuscar.length < 2) {
+      setSugerenciasCats([]);
+      return;
+    }
+    const cats = generarSugerencias(inputBuscar, MENU_CATEGORIAS, 4);
+    setSugerenciasCats(cats);
+  }, [inputBuscar]);
+
+  // Sugerencias de productos (API, debounced 250ms)
+  useEffect(() => {
+    if (abortRef.current) abortRef.current.abort();
+    if (!inputBuscar || inputBuscar.length < 2) {
+      setSugerenciasProds([]);
+      setCargandoSugerencias(false);
+      setMostrarSugerencias(false);
+      return;
+    }
+    abortRef.current = new AbortController();
+    setCargandoSugerencias(true);
+    setMostrarSugerencias(true);
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/buscar?q=${encodeURIComponent(inputBuscar)}&limit=5`, {
+          signal: abortRef.current.signal,
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        setSugerenciasProds(data.productos || []);
+      } catch (e) {
+        if (e.name !== 'AbortError') setSugerenciasProds([]);
+      } finally {
+        setCargandoSugerencias(false);
+      }
+    }, 250);
+    return () => { clearTimeout(timer); if (abortRef.current) abortRef.current.abort(); };
+  }, [inputBuscar]);
+
+  // Cerrar sugerencias al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = e => {
+      if (searchInputRef.current && !searchInputRef.current.closest('[data-search-wrapper]')) {
+        setMostrarSugerencias(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const totalSugerencias = sugerenciasCats.length + sugerenciasProds.length;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -162,6 +225,7 @@ function ProductosInner() {
         setProductos([]);
         setErrorBusqueda('');
         setCargandoBusqueda(false);
+        setSugerenciasVacio([]);
       });
       return () => { activo = false; };
     }
@@ -175,13 +239,33 @@ function ProductosInner() {
     const timeout = setTimeout(async () => {
       if (!activo) return;
       try {
-        const { resolverRutaBusquedaCatalogo } = await import('@/lib/catalogo-categorias');
-        const resultados = await resolverRutaBusquedaCatalogo(buscarInicial);
+        // --- Buscar productos reales via API ---
+        const res = await fetch(`/api/buscar?q=${encodeURIComponent(buscarInicial)}&limit=20`);
         if (!activo) return;
-        setProductos(Array.isArray(resultados) ? resultados : (resultados?.productos ?? resultados?.data ?? []));
+
+        if (res.ok) {
+          const data = await res.json();
+          if (!activo) return;
+          const productosObtenidos = data.productos || [];
+
+          setProductos(productosObtenidos);
+
+          // Si no hay resultados, generar sugerencias
+          if (productosObtenidos.length === 0) {
+            const sugerencias = generarSugerencias(buscarInicial, MENU_CATEGORIAS, 5);
+            if (activo) setSugerenciasVacio(sugerencias);
+          } else {
+            if (activo) setSugerenciasVacio([]);
+          }
+        } else {
+          if (activo) {
+            setErrorBusqueda('Error al buscar productos.');
+            setProductos([]);
+          }
+        }
       } catch (e) {
         if (!activo) return;
-        setErrorBusqueda('Error al buscar productos.');
+        setErrorBusqueda('Error al conectar con el servidor.');
       } finally {
         if (activo) setCargandoBusqueda(false);
       }
@@ -192,8 +276,11 @@ function ProductosInner() {
 
   const onSubmitBuscar = e => {
     e.preventDefault();
-    if (inputBuscar.trim()) {
-      router.push(`/productos?buscar=${encodeURIComponent(inputBuscar.trim())}`);
+    const valor = inputBuscar.trim();
+    if (valor) {
+      // Usar el resolver con tolerancia para dirigir a la mejor ruta
+      const ruta = resolverRutaBusquedaCatalogo(valor);
+      router.push(ruta);
     } else {
       router.push('/productos');
     }
@@ -224,15 +311,100 @@ function ProductosInner() {
           >
             Volver al inicio
           </button>
-          <form onSubmit={onSubmitBuscar} className="flex-1">
-            <input
-              type="text"
-              placeholder="Buscar producto, marca o referencia..."
-              value={inputBuscar}
-              onChange={e => setInputBuscar(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl bg-slate-50 text-slate-900 border border-slate-300 focus:outline-none focus:border-orange-400 text-lg shadow-sm"
-            />
-          </form>
+          <div className="flex-1 relative" data-search-wrapper>
+            <form onSubmit={onSubmitBuscar} className="flex-1">
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Buscar producto, marca o referencia..."
+                value={inputBuscar}
+                onChange={e => { setInputBuscar(e.target.value); setSugerenciaActiva(-1); }}
+                onFocus={() => { if (inputBuscar.length >= 2) setMostrarSugerencias(true); }}
+                onKeyDown={e => {
+                  if (!mostrarSugerencias || totalSugerencias === 0) return;
+                  if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    setSugerenciaActiva(prev => Math.min(prev + 1, totalSugerencias - 1));
+                  } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    setSugerenciaActiva(prev => Math.max(prev - 1, -1));
+                  } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    setMostrarSugerencias(false);
+                    searchInputRef.current?.blur();
+                  } else if (e.key === 'Enter') {
+                    if (sugerenciaActiva >= 0 && sugerenciaActiva < sugerenciasCats.length) {
+                      e.preventDefault();
+                      router.push(sugerenciasCats[sugerenciaActiva].href);
+                      setMostrarSugerencias(false);
+                    } else if (sugerenciaActiva >= sugerenciasCats.length) {
+                      e.preventDefault();
+                      const prod = sugerenciasProds[sugerenciaActiva - sugerenciasCats.length];
+                      router.push(`/productos/${prod.id}`);
+                      setMostrarSugerencias(false);
+                    }
+                  }
+                }}
+                className="w-full px-5 py-3 rounded-xl bg-slate-50 text-slate-900 border border-slate-300 focus:outline-none focus:border-orange-400 text-lg shadow-sm"
+              />
+            </form>
+
+            {/* Dropdown autocomplete */}
+            {mostrarSugerencias && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0 || cargandoSugerencias) && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-slate-200 shadow-2xl z-50 max-h-[420px] overflow-y-auto">
+                {sugerenciasCats.length > 0 && (
+                  <div className="border-b border-slate-100">
+                    <p className="px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-slate-400 font-semibold">Categorias</p>
+                    {sugerenciasCats.map((sug, i) => (
+                      <Link
+                        key={`cat-${i}`}
+                        href={sug.href}
+                        onClick={() => setMostrarSugerencias(false)}
+                        className={`flex items-center gap-3 px-4 py-2.5 transition-colors ${sugerenciaActiva === i ? 'bg-orange-50' : 'hover:bg-orange-50'}`}
+                      >
+                        <span className="text-orange-400 text-sm flex-shrink-0">📁</span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-slate-800 truncate">{sug.texto}</p>
+                          {sug.textoCompleto !== sug.texto && <p className="text-xs text-slate-400 truncate">{sug.textoCompleto}</p>}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                {sugerenciasProds.length > 0 && (
+                  <div>
+                    <p className="px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-slate-400 font-semibold">Productos</p>
+                    {sugerenciasProds.map((prod, i) => {
+                      const idx = sugerenciasCats.length + i;
+                      return (
+                        <Link
+                          key={`prod-${prod.id}`}
+                          href={`/productos/${prod.id}`}
+                          onClick={() => setMostrarSugerencias(false)}
+                          className={`flex items-center gap-3 px-4 py-2.5 transition-colors ${sugerenciaActiva === idx ? 'bg-orange-50' : 'hover:bg-orange-50'}`}
+                        >
+                          {prod.imagen ? (
+                            <img src={prod.imagen} alt={prod.nombre} className="w-10 h-10 rounded-lg object-cover bg-slate-100 flex-shrink-0" />
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-sm flex-shrink-0">⚙️</div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-slate-800 truncate">{prod.nombre}</p>
+                            <p className="text-xs text-slate-400 truncate">{prod.marcas || ''}{prod.marcas && prod.sku ? ' · ' : ''}{prod.sku || ''}</p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {cargandoSugerencias && sugerenciasProds.length === 0 && (
+                  <div className="px-4 py-3 text-sm text-slate-400 text-center">Buscando productos...</div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -243,13 +415,54 @@ function ProductosInner() {
           ) : errorBusqueda ? (
             <div className="py-20 text-center text-xl text-red-600">{errorBusqueda}</div>
           ) : productos.length === 0 ? (
-            <div className="py-20 text-center text-xl text-slate-500">No se encontraron productos para &quot;{buscarInicial}&quot;.</div>
+            <div className="py-20 flex flex-col items-center gap-6">
+              <div className="text-center">
+                <p className="text-xl text-slate-500 mb-2">
+                  No se encontraron productos para &quot;{buscarInicial}&quot;
+                </p>
+                <p className="text-sm text-slate-400">
+                  Intenta con otro término, revisa la ortografía o explora las categorías.
+                </p>
+              </div>
+
+              {/* --- Sugerencias "¿Quizás quisiste decir...?" --- */}
+              {sugerenciasVacio.length > 0 && (
+                <div className="w-full max-w-lg">
+                  <p className="text-sm font-semibold text-slate-500 mb-3 text-center">
+                    Quizás quisiste buscar en estas categorías:
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {sugerenciasVacio.map(sug => (
+                      <Link
+                        key={sug.href}
+                        href={sug.href}
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-orange-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md hover:text-slate-900"
+                      >
+                        <span>{sug.texto}</span>
+                        {sug.textoCompleto !== sug.texto && (
+                          <span className="text-xs text-slate-400">({sug.textoCompleto})</span>
+                        )}
+                        <span className="text-orange-400 text-xs">→</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => router.push('/productos')}
+                className="btn-anim mt-2 rounded-xl border border-slate-300 px-6 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900"
+              >
+                Ver todas las categorías
+              </button>
+            </div>
           ) : (
             <div className="flex flex-col gap-6">
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.32em] text-orange-500 font-semibold">Busqueda por marca</p>
-                  <h2 className="mt-2 text-2xl font-bold text-slate-900">Resultados para {buscarInicial}</h2>
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-orange-500 font-semibold">Resultados de búsqueda</p>
+                  <h2 className="mt-2 text-2xl font-bold text-slate-900">Resultados para &quot;{buscarInicial}&quot;</h2>
                 </div>
                 <button
                   type="button"
