@@ -27,7 +27,6 @@ export async function GET(request) {
     const queryNormalizada = normalizarQueryBusqueda(q);
 
     // --- Paso 1: Filtrado SQL con LIKE (generoso) ---
-    // Separar en tokens y crear condiciones LIKE para cada uno
     const tokens = normalizarClave(queryNormalizada)
       .split(/\s+/)
       .filter(t => t.length >= 2);
@@ -37,13 +36,11 @@ export async function GET(request) {
     }
 
     // Construir cláusula WHERE con LIKE para cada token
-    // Busca en: nombre, sku, marcas, categorias, etiquetas, palabra_clave
     const likeConditions = [];
     const likeParams = [];
 
     for (const token of tokens) {
       const likePattern = `%${token}%`;
-      // Para cada token, buscar en múltiples campos (OR entre campos, AND entre tokens)
       const tokenConditions = [
         'LOWER(p.nombre) LIKE LOWER(?)',
         'LOWER(p.sku) LIKE LOWER(?)',
@@ -59,7 +56,6 @@ export async function GET(request) {
       }
     }
 
-    // AND entre tokens = todos los tokens deben aparecer en algún campo
     const whereClause = likeConditions.join(' AND ');
 
     const sql = `
@@ -81,7 +77,7 @@ export async function GET(request) {
     const [candidatos] = await db.execute(sql, likeParams);
 
     if (!candidatos || candidatos.length === 0) {
-      // Fallback: buscar con solo el primer token (más generoso)
+      // Fallback: buscar con solo el primer token
       if (tokens.length > 1) {
         const firstToken = tokens[0];
         const fallbackPattern = `%${firstToken}%`;
@@ -128,12 +124,19 @@ export async function GET(request) {
 }
 
 /**
- * Rankea productos usando fuzzy scoring.
- * Combina múltiples campos del producto para calcular la puntuación.
+ * Rankea productos usando fuzzy scoring con bonificación para motores completos.
+ * Los motores tienen nombres más cortos (ej: "Motor Komatsu 6BG1") vs sus partes
+ * (ej: "Bomba de inyeccion para motor Komatsu 6BG1"). Se aplica un bonus
+ * inversamente proporcional a la longitud del nombre.
  */
 function rankearProductos(query, productos, limit) {
+  // Calcular la longitud promedio de los nombres candidatos
+  const longitudes = productos.map(p => (p.nombre || '').length);
+  const promedioLongitud = longitudes.length > 0
+    ? longitudes.reduce((a, b) => a + b, 0) / longitudes.length
+    : 50;
+
   const scored = productos.map(p => {
-    // Construir texto compuesto con todos los campos buscables
     const textoBuscable = [
       p.nombre || '',
       p.sku || '',
@@ -145,6 +148,25 @@ function rankearProductos(query, productos, limit) {
     ].join(' ');
 
     const { puntuacion, tipo } = puntuarCoincidencia(query, textoBuscable);
+
+    // Bonus por nombre corto: los motores completos suelen tener nombres
+    // más concisos ("Motor Marca Modelo" vs "Parte para Motor Marca Modelo")
+    const nombreLen = (p.nombre || '').length;
+    let bonusNombreCorto = 0;
+    if (nombreLen > 0 && nombreLen < promedioLongitud) {
+      // Cuanto más corto respecto al promedio, mayor el bonus
+      const ratio = promedioLongitud / Math.max(nombreLen, 1);
+      // Ratio de 1.0 = promedio, 2.0 = la mitad del promedio
+      // Bonus máximo de +15 para nombres muy cortos
+      bonusNombreCorto = Math.min(15, Math.max(0, (ratio - 1) * 15));
+    }
+
+    // Bonus extra si el nombre empieza con "Motor" y es corto (motor completo)
+    const nombreNorm = (p.nombre || '').toLowerCase().trim();
+    let bonusMotorDirecto = 0;
+    if (nombreNorm.startsWith('motor') && nombreLen < promedioLongitud * 0.8) {
+      bonusMotorDirecto = 10;
+    }
 
     // Extraer primera imagen si existe
     const imagenes = (p.imagenes || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -158,7 +180,7 @@ function rankearProductos(query, productos, limit) {
       categorias: p.categorias || '',
       marcas: p.marcas || '',
       imagen,
-      puntuacion,
+      puntuacion: puntuacion + bonusNombreCorto + bonusMotorDirecto,
       tipo,
     };
   });
