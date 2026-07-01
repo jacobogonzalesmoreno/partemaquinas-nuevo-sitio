@@ -407,7 +407,7 @@ export default function AdminPage() {
   };
 
   const handleEliminar = async producto => {
-    if (!producto?.id) return;
+    if (producto?.id === undefined || producto?.id === null) return;
     const ok = window.confirm(`Eliminar ${producto.nombre || 'producto'}?`);
     if (!ok) return;
 
