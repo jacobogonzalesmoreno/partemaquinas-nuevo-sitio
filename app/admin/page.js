@@ -808,7 +808,7 @@ export default function AdminPage() {
                 </button>
               </div>
 
-              {editId && (
+              {(
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
