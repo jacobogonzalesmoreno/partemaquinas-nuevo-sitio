@@ -1,14 +1,18 @@
 'use client';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Space_Grotesk, DM_Sans } from 'next/font/google';
+import { generarSugerencias, crearDebounce } from '@/lib/busqueda-tolerante';
+import { resolverRutaBusquedaCatalogo } from '@/lib/catalogo-categorias';
+import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
-/* ── Fuentes ───────────────────────────────────────────── */
+/* -- Fuentes --------------------------------------------- */
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
 
-/* ── Hooks personalizados ──────────────────────────────── */
+/* -- Hooks personalizados -------------------------------- */
 
 function useCountUp(end, duration = 1400) {
   const [count, setCount] = useState(0);
@@ -58,7 +62,7 @@ function useScrollProgress() {
   return p;
 }
 
-/* ── Iconos SVG ────────────────────────────────────────── */
+/* -- Iconos SVG ------------------------------------------ */
 
 function IconShield({ c = 'w-6 h-6' }) {
   return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>;
@@ -91,7 +95,7 @@ function IconPhone({ c = 'w-4 h-4' }) {
   return <svg className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>;
 }
 
-/* ── Wrapper de animación al scroll ────────────────────── */
+/* -- Wrapper de animación al scroll ---------------------- */
 
 function Reveal({ children, className = '', delay = 0 }) {
   const [ref, v] = useInView(0.08);
@@ -102,7 +106,7 @@ function Reveal({ children, className = '', delay = 0 }) {
   );
 }
 
-/* ── Sidebar con tabs ──────────────────────────────────── */
+/* -- Sidebar con tabs ------------------------------------ */
 
 function SidebarTabs({ manualesPorMarca, mecanicos, aliados }) {
   const [tab, setTab] = useState('manuales');
@@ -198,7 +202,7 @@ function SidebarTabs({ manualesPorMarca, mecanicos, aliados }) {
   );
 }
 
-/* ── Drawer móvil ──────────────────────────────────────── */
+/* -- Drawer móvil ---------------------------------------- */
 
 function MobileDrawer({ manualesPorMarca, mecanicos, aliados }) {
   const [open, setOpen] = useState(false);
@@ -238,7 +242,7 @@ export default function Home() {
   const [stat1, ref1] = useCountUp(390);
   const [stat2, ref2] = useCountUp(24, 1000);
 
-  /* ── Datos ─────────────────────────────────────────── */
+  /* -- Datos ------------------------------------------- */
   const marcas = [
     { nombre: 'Case', archivo: 'case.png', buscar: 'case' },
     { nombre: 'Caterpillar', archivo: 'Caterpillar-Logo-1989-present.png', buscar: 'caterpillar' },
@@ -292,7 +296,107 @@ export default function Home() {
     { nombre: 'JMM Hidraulicos', url: 'https://www.jmmhidraulicos.com/' },
   ];
 
-  /* ── Busqueda de marcas ────────────────────────────── */
+  /* -- Buscador inteligente --------------------------- */
+  const router = useRouter();
+  const [inputBuscar, setInputBuscar] = useState('');
+  const [sugerenciasCats, setSugerenciasCats] = useState([]);
+  const [sugerenciasProds, setSugerenciasProds] = useState([]);
+  const [cargandoProds, setCargandoProds] = useState(false);
+  const [sugerenciaActiva, setSugerenciaActiva] = useState(-1);
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
+  const searchRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const abortRef = useRef(null);
+
+  const totalSugerencias = sugerenciasCats.length + sugerenciasProds.length + 1;
+
+  const actualizarSugerenciasCats = useCallback(query => {
+    if (!query || query.trim().length < 1) { setSugerenciasCats([]); return; }
+    setSugerenciasCats(generarSugerencias(query, MENU_CATEGORIAS, 4));
+  }, []);
+
+  const debouncedCats = useRef(crearDebounce(actualizarSugerenciasCats, 150)).current;
+
+  const buscarProductosAPI = useCallback(async (query) => {
+    if (!query || query.trim().length < 2) { setSugerenciasProds([]); setCargandoProds(false); return; }
+    if (abortRef.current) abortRef.current.abort();
+    abortRef.current = new AbortController();
+    setCargandoProds(true);
+    try {
+      const res = await fetch(`/api/buscar?q=${encodeURIComponent(query.trim())}&limit=5`, { signal: abortRef.current.signal });
+      if (!res.ok) { setSugerenciasProds([]); return; }
+      const data = await res.json();
+      setSugerenciasProds(data.productos || []);
+    } catch (err) {
+      if (err.name !== 'AbortError') setSugerenciasProds([]);
+    } finally { setCargandoProds(false); }
+  }, []);
+
+  const debouncedProds = useRef(crearDebounce(buscarProductosAPI, 250)).current;
+
+  useEffect(() => {
+    return () => { debouncedCats.cancel(); debouncedProds.cancel(); if (abortRef.current) abortRef.current.abort(); };
+  }, [debouncedCats, debouncedProds]);
+
+  useEffect(() => {
+    const handler = e => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) { setMostrarSugerencias(false); setSugerenciaActiva(-1); }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && dropdownRef.current.contains(e.target)) return;
+      setMostrarSugerencias(false); setSugerenciaActiva(-1);
+    };
+    window.addEventListener('scroll', handler, true);
+    return () => window.removeEventListener('scroll', handler, true);
+  }, []);
+
+  const onChangeInput = e => {
+    const val = e.target.value;
+    setInputBuscar(val);
+    setSugerenciaActiva(-1);
+    debouncedCats(val);
+    debouncedProds(val);
+    if (val.trim().length >= 2) setMostrarSugerencias(true);
+    else setMostrarSugerencias(false);
+  };
+
+  const cerrarDropdown = () => {
+    setMostrarSugerencias(false); setSugerenciaActiva(-1);
+    debouncedCats.cancel(); debouncedProds.cancel();
+    if (abortRef.current) abortRef.current.abort();
+  };
+
+  const onSubmitBuscar = e => {
+    e?.preventDefault(); cerrarDropdown();
+    if (inputBuscar.trim()) {
+      const ruta = resolverRutaBusquedaCatalogo(inputBuscar.trim());
+      setInputBuscar(''); router.push(ruta);
+    } else { router.push('/productos'); }
+  };
+
+  const onKeyDownInput = e => {
+    const haySugerencias = mostrarSugerencias && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0 || cargandoProds);
+    if (!haySugerencias) return;
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); setSugerenciaActiva(prev => (prev + 1) % totalSugerencias); break;
+      case 'ArrowUp': e.preventDefault(); setSugerenciaActiva(prev => (prev - 1 + totalSugerencias) % totalSugerencias); break;
+      case 'Escape': cerrarDropdown(); break;
+      case 'Enter': {
+        e.preventDefault(); const idx = sugerenciaActiva;
+        if (idx >= 0 && idx < sugerenciasCats.length) { cerrarDropdown(); setInputBuscar(''); router.push(sugerenciasCats[idx].href); return; }
+        const prodIdx = idx - sugerenciasCats.length;
+        if (prodIdx >= 0 && prodIdx < sugerenciasProds.length) { cerrarDropdown(); setInputBuscar(''); router.push(`/productos/${sugerenciasProds[prodIdx].id}`); return; }
+        cerrarDropdown(); onSubmitBuscar(e); break;
+      }
+    }
+  };
+
+  /* -- Busqueda de marcas ------------------------------ */
   const [busqueda, setBusqueda] = useState('');
   const marcasFiltradas = useMemo(() => {
     if (!busqueda.trim()) return marcas;
@@ -300,7 +404,7 @@ export default function Home() {
     return marcas.filter(m => m.nombre.toLowerCase().includes(q));
   }, [busqueda]);
 
-  /* ── Render ────────────────────────────────────────── */
+  /* -- Render ------------------------------------------ */
   return (
     <>
       <style>{`
@@ -374,7 +478,7 @@ export default function Home() {
 
         <main className="min-h-screen bg-slate-50 text-slate-900">
 
-          {/* ── Banner ───────────────────────────────── */}
+          {/* -- Banner --------------------------------- */}
           <section className="bg-white border-b border-slate-200">
             <div className="px-4 py-4 sm:px-6 sm:py-5">
               <div className="banner-wrap rounded-2xl overflow-hidden">
@@ -390,7 +494,111 @@ export default function Home() {
             </div>
           </section>
 
-          {/* ── Hero + Sidebar ───────────────────────── */}
+          {/* -- Buscador inteligente -------------------- */}
+          <section className="relative z-10 bg-slate-50 border-b border-slate-200">
+            <div className="max-w-2xl mx-auto px-6 py-10">
+              <Reveal>
+                <div className="text-center mb-5">
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900" style={{ fontFamily: 'var(--font-display)' }}>Que producto estas buscando?</h2>
+                  <p className="text-slate-500 mt-2">Escribe el nombre, marca, referencia o modelo y encuentra el repuesto.</p>
+                </div>
+                <form onSubmit={onSubmitBuscar} className="relative" ref={searchRef}>
+                  <div className="relative">
+                    <IconSearch c="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Ej: motor komatsu 6BG1, bomba inyeccion, filtro hidraulico..."
+                      value={inputBuscar}
+                      onChange={onChangeInput}
+                      onKeyDown={onKeyDownInput}
+                      onFocus={() => { if (inputBuscar.trim().length >= 2 && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0)) setMostrarSugerencias(true); }}
+                      className="w-full pl-12 pr-5 py-4 rounded-2xl bg-white text-slate-900 border border-slate-200 focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 text-base shadow-sm shadow-slate-200/50 transition-all"
+                      autoComplete="off"
+                    />
+                  </div>
+                  {mostrarSugerencias && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0 || cargandoProds) && (
+                    <div
+                      ref={dropdownRef}
+                      className="absolute left-0 top-full z-[100] mt-2 w-full rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-300/40 overflow-hidden"
+                      onScroll={e => e.stopPropagation()}
+                    >
+                      <ul className="py-1 max-h-[55vh] overflow-y-auto">
+                        {sugerenciasCats.length > 0 && (
+                          <li><p className="px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 bg-slate-50/80">Categorias</p></li>
+                        )}
+                        {sugerenciasCats.map((sug, i) => {
+                          const isActive = sugerenciaActiva === i;
+                          return (
+                            <li key={`cat-${sug.href}`}>
+                              <button type="button"
+                                className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${isActive ? 'bg-orange-50 text-slate-900' : 'text-slate-700 hover:bg-slate-50'}`}
+                                onMouseDown={e => { e.preventDefault(); cerrarDropdown(); setInputBuscar(''); router.push(sug.href); }}
+                                onMouseEnter={() => setSugerenciaActiva(i)}>
+                                <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-slate-100 text-slate-400 shrink-0">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium truncate">{sug.texto}</p>
+                                  {sug.textoCompleto !== sug.texto && <p className="text-[11px] text-slate-400 truncate">{sug.textoCompleto}</p>}
+                                </div>
+                                <span className={`text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${sug.nivel === 0 ? 'bg-amber-100 text-amber-700' : 'bg-orange-100 text-orange-600'}`}>{sug.tipo}</span>
+                              </button>
+                            </li>
+                          );
+                        })}
+                        {sugerenciasCats.length > 0 && (sugerenciasProds.length > 0 || cargandoProds) && <li className="border-t border-slate-100" />}
+                        {sugerenciasProds.length > 0 || cargandoProds ? (
+                          <li><p className="px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 bg-slate-50/80">Productos</p></li>
+                        ) : null}
+                        {cargandoProds && sugerenciasProds.length === 0 && (
+                          <li><div className="px-4 py-5 text-center text-sm text-slate-400">Buscando productos...</div></li>
+                        )}
+                        {sugerenciasProds.map((prod, i) => {
+                          const thisIndex = sugerenciasCats.length + i;
+                          const isActive = sugerenciaActiva === thisIndex;
+                          return (
+                            <li key={`prod-${prod.id}`}>
+                              <button type="button"
+                                className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${isActive ? 'bg-orange-50 text-slate-900' : 'text-slate-700 hover:bg-slate-50'}`}
+                                onMouseDown={e => { e.preventDefault(); cerrarDropdown(); setInputBuscar(''); router.push(`/productos/${prod.id}`); }}
+                                onMouseEnter={() => setSugerenciaActiva(thisIndex)}>
+                                {prod.imagen ? (
+                                  <img src={prod.imagen} alt="" className="h-10 w-10 rounded-lg object-cover bg-slate-100 border border-slate-200 shrink-0" />
+                                ) : (
+                                  <span className="flex items-center justify-center h-10 w-10 rounded-lg bg-slate-100 border border-slate-200 text-slate-400 text-lg shrink-0">&#9881;</span>
+                                )}
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium truncate">{prod.nombre}</p>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    {prod.sku && <span className="text-[10px] font-mono text-slate-400">{prod.sku}</span>}
+                                    {prod.marcas && <span className="text-[10px] text-orange-500 font-medium">{prod.marcas}</span>}
+                                  </div>
+                                </div>
+                                <span className="text-orange-400 text-xs shrink-0">&#8594;</span>
+                              </button>
+                            </li>
+                          );
+                        })}
+                        <li className="border-t border-slate-100">
+                          <button type="button"
+                            className={`w-full text-left px-4 py-3 flex items-center gap-3 text-sm transition-colors ${sugerenciaActiva === totalSugerencias - 1 ? 'bg-orange-50 text-slate-900' : 'text-slate-500 hover:bg-slate-50'}`}
+                            onMouseDown={e => { e.preventDefault(); onSubmitBuscar(e); }}
+                            onMouseEnter={() => setSugerenciaActiva(totalSugerencias - 1)}>
+                            <span className="flex items-center justify-center h-8 w-8 rounded-lg bg-slate-100 text-slate-400 shrink-0">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </span>
+                            <span>Buscar &quot;{inputBuscar.trim()}&quot; en todos los productos</span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </form>
+              </Reveal>
+            </div>
+          </section>
+
+          {/* -- Hero + Sidebar ------------------------- */}
           <section className="bg-white border-b border-slate-200">
             <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-12">
               <div className="flex gap-6 items-start">
@@ -477,7 +685,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* ── Marcas ────────────────────────────────── */}
+          {/* -- Marcas ---------------------------------- */}
           <section className="max-w-6xl mx-auto px-6 py-14 border-t border-slate-200">
             <Reveal>
               <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
@@ -515,7 +723,7 @@ export default function Home() {
             )}
           </section>
 
-          {/* ── CTA ───────────────────────────────────── */}
+          {/* -- CTA ------------------------------------- */}
           <Reveal>
             <section className="bg-white border-t border-slate-200">
               <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
