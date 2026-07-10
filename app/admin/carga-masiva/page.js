@@ -21,6 +21,50 @@ const normalizar = texto =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
+const comprimirImagen = (file, maxDim = 1600, calidad = 0.82) =>
+  new Promise(resolve => {
+    if (!file.type.startsWith('image/') || file.type === 'image/gif') {
+      resolve(file);
+      return;
+    }
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = () => {
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          blob => {
+            if (!blob) {
+              resolve(file);
+              return;
+            }
+            resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+          },
+          'image/jpeg',
+          calidad
+        );
+      };
+      img.onerror = () => resolve(file);
+      img.src = reader.result;
+    };
+    reader.onerror = () => resolve(file);
+    reader.readAsDataURL(file);
+  });
+
 const sugerirCategorias = nombre => {
   const nombreNorm = normalizar(nombre);
   if (!nombreNorm.trim()) return [];
@@ -135,16 +179,37 @@ export default function CargaMasivaPage() {
     setLotes(prev => prev.filter(l => l.id !== id));
   };
 
-  const subirUnaImagen = async file => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const res = await fetch('/api/upload', { method: 'POST', body: formData });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      throw new Error(data.error || 'Error al subir imagen');
+  const subirUnaImagen = async (file, intentos = 3) => {
+    const comprimido = await comprimirImagen(file);
+    for (let intento = 1; intento <= intentos; intento++) {
+      try {
+        const formData = new FormData();
+        formData.append('file', comprimido);
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || 'Error al subir imagen');
+        }
+        const data = await res.json();
+        return data.url;
+      } catch (err) {
+        if (intento === intentos) throw err;
+        await new Promise(r => setTimeout(r, 800 * intento));
+      }
     }
-    const data = await res.json();
-    return data.url;
+  };
+
+  const subirEnLotes = async (archivos, concurrencia = 3) => {
+    const urls = new Array(archivos.length);
+    let indice = 0;
+    const trabajadores = Array.from({ length: Math.min(concurrencia, archivos.length) }, async () => {
+      while (indice < archivos.length) {
+        const i = indice++;
+        urls[i] = await subirUnaImagen(archivos[i]);
+      }
+    });
+    await Promise.all(trabajadores);
+    return urls;
   };
 
   const crearTodos = async () => {
@@ -155,11 +220,7 @@ export default function CargaMasivaPage() {
 
     for (const lote of lotes) {
       try {
-        const urls = [];
-        for (const archivo of lote.archivos) {
-          const url = await subirUnaImagen(archivo);
-          urls.push(url);
-        }
+        const urls = await subirEnLotes(lote.archivos);
         const res = await fetch('/api/productos', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -175,7 +236,7 @@ export default function CargaMasivaPage() {
         }
         resultados.push({ nombre: lote.nombre, ok: true });
       } catch (err) {
-        resultados.push({ nombre: lote.nombre, ok: false, error: err.message });
+        resultados.push({ nombre: lote.nombre, ok: false, error: err.message || 'Fallo de conexion.' });
       }
     }
 
