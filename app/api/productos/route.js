@@ -82,6 +82,7 @@ export async function POST(request) {
     const schema = await getProductosSchema();
     const validation = validateWritablePayload(body, schema);
     if (!validation.ok) {
+      console.error('Validacion invalida al crear producto:', validation.errors, 'body:', body);
       return NextResponse.json({ error: 'Datos invalidos.', details: validation.errors }, { status: 400 });
     }
     const writableSchema = schema.filter(column => column.name !== 'id');
@@ -99,6 +100,7 @@ export async function POST(request) {
     const [result] = await db.query(query, values);
     return NextResponse.json({ id: result.insertId });
   } catch (error) {
-    return NextResponse.json({ error: 'No se pudo crear el producto.' }, { status: 500 });
+    console.error('Error creando producto:', error, 'mensaje:', error?.message, 'sqlMessage:', error?.sqlMessage);
+    return NextResponse.json({ error: 'No se pudo crear el producto.', detalle: error?.sqlMessage || error?.message }, { status: 500 });
   }
 }
