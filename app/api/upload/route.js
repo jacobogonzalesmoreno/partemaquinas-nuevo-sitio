@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireRole } from '@/lib/auth';
 import { getSecurityEnv } from '@/lib/env';
+import crypto from 'crypto';
 
 export const maxDuration = 60;
 
@@ -45,7 +46,6 @@ export async function POST(request) {
     const folder = 'partemaquinas';
 
     // Firma la peticion
-    const crypto = await import('crypto');
     const signString = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
     const signature = crypto
       .createHash('sha256')
