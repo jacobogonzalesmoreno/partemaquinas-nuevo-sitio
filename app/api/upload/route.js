@@ -3,8 +3,6 @@ import { requireRole } from '@/lib/auth';
 import { getSecurityEnv } from '@/lib/env';
 import crypto from 'crypto';
 
-export const maxDuration = 60;
-
 export async function POST(request) {
   try {
     const auth = requireRole(request, 'editor');
