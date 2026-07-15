@@ -834,7 +834,7 @@ export default function AdminPage() {
                           className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
                           disabled={subiendo}
                         >
-                          ­ƒôÀ Foto
+                          📷 Foto
                         </button>
                         <button
                           type="button"
@@ -909,7 +909,7 @@ export default function AdminPage() {
                             disabled={subiendo}
                             className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60"
                           >
-                            ­ƒôÀ Tomar foto
+                            📷 Tomar foto
                           </button>
                           {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
                         </div>
@@ -1077,7 +1077,7 @@ export default function AdminPage() {
         <div className="fixed inset-0 z-[100] flex items-start justify-center bg-slate-900/80 backdrop-blur-sm px-4" style={{paddingTop: '70px'}}>
           <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-              <p className="text-sm font-semibold text-slate-800">­ƒôÀ Tomar foto</p>
+              <p className="text-sm font-semibold text-slate-800">📷 Tomar foto</p>
               <button
                 type="button"
                 onClick={cerrarCamara}
