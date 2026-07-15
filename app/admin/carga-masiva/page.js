@@ -199,7 +199,7 @@ export default function CargaMasivaPage() {
     }
   };
 
-  const subirEnLotes = async (archivos, concurrencia = 3) => {
+  const subirEnLotes = async (archivos, concurrencia = 1) => {
     const urls = new Array(archivos.length);
     let indice = 0;
     const trabajadores = Array.from({ length: Math.min(concurrencia, archivos.length) }, async () => {

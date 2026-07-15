@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireRole } from '@/lib/auth';
 import { getSecurityEnv } from '@/lib/env';
 
+export const maxDuration = 60;
 
 export async function POST(request) {
   try {
