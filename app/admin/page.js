@@ -732,7 +732,7 @@ export default function AdminPage() {
                                 onError={event => { event.currentTarget.style.display = 'none'; }}
                               />
                             ) : (
-                              <span className="text-xl text-slate-300">ÔÜÖ´©Å</span>
+                              <span className="text-xl text-slate-300">⚙️</span>
                             )}
                           </div>
                           <div>
@@ -857,7 +857,7 @@ export default function AdminPage() {
                             onError={event => { event.currentTarget.style.display = 'none'; }}
                           />
                         ) : (
-                          <span className="text-3xl text-slate-300">ÔÜÖ´©Å</span>
+                          <span className="text-3xl text-slate-300">⚙️</span>
                         )}
                       </div>
                       <div className="flex flex-col gap-2">
