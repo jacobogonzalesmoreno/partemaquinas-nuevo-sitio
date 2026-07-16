@@ -482,7 +482,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-3">
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm">
             <Image
-              src="/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png"
+              src="/logo/logo-partemaquinas.png"
               alt="ParteMaquinas"
               width={32}
               height={32}
