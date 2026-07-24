@@ -1,5 +1,5 @@
 ﻿'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { normalizeImagenesText, parseImagenesValue, getImagenesProducto } from '@/lib/imagenes';
 import { normalizeCategoriasText, parseCategoriasValue, normalizeCategoriaKey } from '@/lib/categorias';
 import { MENU_CATEGORIAS_FLAT } from '@/lib/menu-categorias';
@@ -35,15 +35,28 @@ const buildEmptyForm = fields =>
     return acc;
   }, {});
 
+// ===== HELPERS MAQUINARIA =====
+function parseImagenesMaquinaria(imagenes) {
+  if (!imagenes) return [];
+  if (Array.isArray(imagenes)) return imagenes.filter(Boolean);
+  return imagenes.split(/[,\n]+/).map(s => s.trim()).filter(Boolean);
+}
+
+function formatearPrecioAdmin(valor) {
+  if (valor === null || valor === undefined || valor === '') return '';
+  const num = Number(valor);
+  if (!Number.isFinite(num)) return '';
+  return num.toLocaleString('es-CO');
+}
+
+// ============================================================
+// COMPONENTE PRINCIPAL
+// ============================================================
 export default function AdminPage() {
-  const [schema, setSchema] = useState([]);
-  const [productos, setProductos] = useState([]);
-  const [categoriasAdmin, setCategoriasAdmin] = useState([]);
-  const [cargandoSchema, setCargandoSchema] = useState(true);
-  const [cargandoProductos, setCargandoProductos] = useState(true);
-  const [guardando, setGuardando] = useState(false);
-  const [guardandoCategoria, setGuardandoCategoria] = useState(false);
-  const [subiendo, setSubiendo] = useState(false);
+  // --- Tabs ---
+  const [tabActiva, setTabActiva] = useState('productos');
+
+  // --- Auth (compartido) ---
   const [autenticado, setAutenticado] = useState(false);
   const [validandoSesion, setValidandoSesion] = useState(true);
   const [usuario, setUsuario] = useState('');
@@ -52,6 +65,16 @@ export default function AdminPage() {
   const [mostrarLogin, setMostrarLogin] = useState(false);
   const [loginShake, setLoginShake] = useState(false);
   const [loginErrorFlash, setLoginErrorFlash] = useState(false);
+
+  // --- Productos (estado original) ---
+  const [schema, setSchema] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [categoriasAdmin, setCategoriasAdmin] = useState([]);
+  const [cargandoSchema, setCargandoSchema] = useState(true);
+  const [cargandoProductos, setCargandoProductos] = useState(true);
+  const [guardando, setGuardando] = useState(false);
+  const [guardandoCategoria, setGuardandoCategoria] = useState(false);
+  const [subiendo, setSubiendo] = useState(false);
   const [error, setError] = useState('');
   const [aviso, setAviso] = useState('');
   const [toast, setToast] = useState('');
@@ -74,6 +97,19 @@ export default function AdminPage() {
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
 
+  // --- Maquinaria (nuevo) ---
+  const [maquinariaItems, setMaquinariaItems] = useState([]);
+  const [cargandoMaquinaria, setCargandoMaquinaria] = useState(false);
+  const [editMaquinariaId, setEditMaquinariaId] = useState(null);
+  const [formMaquinaria, setFormMaquinaria] = useState({
+    nombre: '', descripcion: '', precio: '', imagenes: '', estado: 'disponible',
+  });
+  const [subiendoMaquinaria, setSubiendoMaquinaria] = useState(false);
+  const uploadRefMaquinaria = useRef(null);
+
+  // ============================================================
+  // AUTH
+  // ============================================================
   useEffect(() => {
     let active = true;
     let isAuth = false;
@@ -96,9 +132,7 @@ export default function AdminPage() {
           setCargandoProductos(false);
         }
       });
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
@@ -115,7 +149,6 @@ export default function AdminPage() {
     event.preventDefault();
     setCargandoLogin(true);
     setError('');
-
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -145,24 +178,14 @@ export default function AdminPage() {
     setAutenticado(false);
   };
 
-  const columnMap = useMemo(
-    () => new Map(schema.map(column => [column.name, column])),
-    [schema]
-  );
+  // ============================================================
+  // PRODUCTOS (todo el codigo original)
+  // ============================================================
+  const columnMap = useMemo(() => new Map(schema.map(column => [column.name, column])), [schema]);
   const columnNames = useMemo(() => schema.map(column => column.name), [schema]);
-  const priceFields = useMemo(
-    () => columnNames.filter(name => name.toLowerCase().includes('precio')),
-    [columnNames]
-  );
-  const stockFields = useMemo(
-    () => columnNames.filter(name => name.toLowerCase().includes('stock')),
-    [columnNames]
-  );
-
-  const categoriasSeleccionadas = useMemo(
-    () => parseCategoriasValue(form.categorias),
-    [form.categorias]
-  );
+  const priceFields = useMemo(() => columnNames.filter(name => name.toLowerCase().includes('precio')), [columnNames]);
+  const stockFields = useMemo(() => columnNames.filter(name => name.toLowerCase().includes('stock')), [columnNames]);
+  const categoriasSeleccionadas = useMemo(() => parseCategoriasValue(form.categorias), [form.categorias]);
 
   const categoriasDisponibles = useMemo(() => {
     const items = [...categoriasAdmin, ...categoriasSeleccionadas];
@@ -172,46 +195,17 @@ export default function AdminPage() {
       if (!trimmed) return;
       const key = normalizeCategoriaKey(trimmed);
       if (!key) return;
-      if (!map.has(key)) {
-        map.set(key, trimmed);
-      }
+      if (!map.has(key)) map.set(key, trimmed);
     });
     return Array.from(map.values()).sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
   }, [categoriasAdmin, categoriasSeleccionadas]);
 
-  const categoriasSeleccionadasKeys = useMemo(
-    () => new Set(categoriasSeleccionadas.map(item => normalizeCategoriaKey(item))),
-    [categoriasSeleccionadas]
-  );
+  const categoriasSeleccionadasKeys = useMemo(() => new Set(categoriasSeleccionadas.map(item => normalizeCategoriaKey(item))), [categoriasSeleccionadas]);
 
-  const primaryFields = useMemo(
-    () => unique([
-      'nombre',
-      'sku',
-      'marcas',
-      'categorias',
-      ...priceFields,
-      ...stockFields,
-      'descripcion_corta',
-      'descripcion',
-      'imagenes',
-    ]),
-    [priceFields, stockFields]
-  );
-
-  const visibleFields = useMemo(
-    () => primaryFields.filter(name => columnNames.includes(name)),
-    [primaryFields, columnNames]
-  );
-  const extraFields = useMemo(
-    () => columnNames.filter(name => !visibleFields.includes(name) && !EXCLUDED_FIELDS.has(name)),
-    [columnNames, visibleFields]
-  );
-  const editableFields = useMemo(
-    () => [...visibleFields, ...extraFields],
-    [visibleFields, extraFields]
-  );
-
+  const primaryFields = useMemo(() => unique(['nombre', 'sku', 'marcas', 'categorias', ...priceFields, ...stockFields, 'descripcion_corta', 'descripcion', 'imagenes']), [priceFields, stockFields]);
+  const visibleFields = useMemo(() => primaryFields.filter(name => columnNames.includes(name)), [primaryFields, columnNames]);
+  const extraFields = useMemo(() => columnNames.filter(name => !visibleFields.includes(name) && !EXCLUDED_FIELDS.has(name)), [columnNames, visibleFields]);
+  const editableFields = useMemo(() => [...visibleFields, ...extraFields], [visibleFields, extraFields]);
   const priceColumn = priceFields[0] || null;
   const totalPaginas = Math.max(1, Math.ceil(totalProductos / LIMITE));
   const cargando = cargandoSchema || cargandoProductos;
@@ -229,6 +223,7 @@ export default function AdminPage() {
       setCargandoSchema(false);
     }
   };
+
   const loadCategorias = async () => {
     setCategoriasAdmin(MENU_CATEGORIAS_FLAT);
   };
@@ -239,25 +234,17 @@ export default function AdminPage() {
       const params = new URLSearchParams();
       params.set('limit', String(LIMITE));
       params.set('page', String(pageValue || 1));
-      if (searchValue) {
-        params.set('buscar', searchValue);
-      }
-      if (categoriaValue) {
-        params.set('categoria', categoriaValue);
-      }
+      if (searchValue) params.set('buscar', searchValue);
+      if (categoriaValue) params.set('categoria', categoriaValue);
       const res = await fetch(`/api/productos?${params.toString()}`);
       if (!res.ok) throw new Error('No se pudo cargar el listado.');
       const data = await res.json();
       const headerTotal = Number(res.headers.get('X-Total-Count'));
-      const total = Number.isFinite(headerTotal)
-        ? headerTotal
-        : (Array.isArray(data) ? data.length : 0);
+      const total = Number.isFinite(headerTotal) ? headerTotal : (Array.isArray(data) ? data.length : 0);
       setTotalProductos(total);
       setProductos(Array.isArray(data) ? data : []);
       const nextTotalPaginas = Math.max(1, Math.ceil(total / LIMITE));
-      if (pageValue > nextTotalPaginas) {
-        setPagina(nextTotalPaginas);
-      }
+      if (pageValue > nextTotalPaginas) setPagina(nextTotalPaginas);
     } catch (err) {
       setError(err.message || 'No se pudo cargar el listado.');
     } finally {
@@ -284,30 +271,18 @@ export default function AdminPage() {
 
   useEffect(() => {
     const imagenes = parseImagenes(form.imagenes);
-    if (imagenes.length === 0) {
-      setSelectedImagenIndex(0);
-      return;
-    }
-    if (selectedImagenIndex >= imagenes.length) {
-      setSelectedImagenIndex(0);
-    }
+    if (imagenes.length === 0) { setSelectedImagenIndex(0); return; }
+    if (selectedImagenIndex >= imagenes.length) setSelectedImagenIndex(0);
   }, [form.imagenes, selectedImagenIndex]);
 
   const handleEdit = producto => {
     const next = {};
     editableFields.forEach(field => {
       const value = producto?.[field];
-      if (field === 'imagenes') {
-        next[field] = normalizeImagenesText(value);
-        return;
-      }
-      if (Array.isArray(value)) {
-        next[field] = value.join(',');
-      } else if (value === null || value === undefined) {
-        next[field] = '';
-      } else {
-        next[field] = String(value);
-      }
+      if (field === 'imagenes') { next[field] = normalizeImagenesText(value); return; }
+      if (Array.isArray(value)) next[field] = value.join(',');
+      else if (value === null || value === undefined) next[field] = '';
+      else next[field] = String(value);
     });
     setEditId(String(producto.id));
     setForm(next);
@@ -335,17 +310,9 @@ export default function AdminPage() {
     setCategoria(event.target.value);
   };
 
-  const handlePaginaAnterior = () => {
-    setPagina(prev => Math.max(1, prev - 1));
-  };
-
-  const handlePaginaSiguiente = () => {
-    setPagina(prev => Math.min(totalPaginas, prev + 1));
-  };
-
-  const handleFieldChange = (field, value) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-  };
+  const handlePaginaAnterior = () => setPagina(prev => Math.max(1, prev - 1));
+  const handlePaginaSiguiente = () => setPagina(prev => Math.min(totalPaginas, prev + 1));
+  const handleFieldChange = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
   const handleToggleCategoriaProducto = categoriaValue => {
     const actuales = parseCategoriasValue(form.categorias);
@@ -360,43 +327,19 @@ export default function AdminPage() {
     setGuardando(true);
     setAviso('');
     setError('');
-
     try {
       const payload = {};
-      editableFields.forEach(field => {
-        if (field in form) {
-          payload[field] = form[field];
-        }
-      });
-      if ('imagenes' in payload) {
-        payload.imagenes = normalizeImagenesText(payload.imagenes);
-      }
-
+      editableFields.forEach(field => { if (field in form) payload[field] = form[field]; });
+      if ('imagenes' in payload) payload.imagenes = normalizeImagenesText(payload.imagenes);
       const url = editId ? `/api/productos/${editId}` : '/api/productos';
       const method = editId ? 'PUT' : 'POST';
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'No se pudo guardar el producto.');
-      }
-
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'No se pudo guardar el producto.'); }
       const data = await res.json().catch(() => ({}));
-      if (!editId && data?.id) {
-        setEditId(String(data.id));
-      }
+      if (!editId && data?.id) setEditId(String(data.id));
       const message = editId ? 'Producto actualizado.' : 'Producto creado.';
       setAviso(message);
-      if (editId) {
-        setToast(message);
-        setToastVisible(true);
-        setTimeout(() => setToastVisible(false), 2000);
-        setTimeout(() => setToast(''), 2300);
-      }
+      if (editId) { setToast(message); setToastVisible(true); setTimeout(() => setToastVisible(false), 2000); setTimeout(() => setToast(''), 2300); }
       loadProductos(buscar, categoria, pagina);
       loadCategorias();
     } catch (err) {
@@ -410,19 +353,11 @@ export default function AdminPage() {
     if (producto?.id === undefined || producto?.id === null) return;
     const ok = window.confirm(`Eliminar ${producto.nombre || 'producto'}?`);
     if (!ok) return;
-
     try {
       setError('');
-      const res = await fetch(`/api/productos/${producto.id}`, {
-        method: 'DELETE',
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'No se pudo eliminar el producto.');
-      }
-      if (editId === String(producto.id)) {
-        resetForm();
-      }
+      const res = await fetch(`/api/productos/${producto.id}`, { method: 'DELETE' });
+      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'No se pudo eliminar el producto.'); }
+      if (editId === String(producto.id)) resetForm();
       loadProductos(buscar, categoria, pagina);
       loadCategorias();
     } catch (err) {
@@ -434,28 +369,17 @@ export default function AdminPage() {
     if (!files || files.length === 0) return;
     setSubiendo(true);
     setError('');
-
     try {
       const actuales = parseImagenes(form.imagenes);
       const nuevas = [];
-
       for (const file of Array.from(files)) {
         const formData = new FormData();
         formData.append('file', file);
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || 'No se pudo subir una imagen.');
-        }
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'No se pudo subir una imagen.'); }
         const data = await res.json();
-        if (data?.url) {
-          nuevas.push(data.url);
-        }
+        if (data?.url) nuevas.push(data.url);
       }
-
       const combined = unique([...actuales, ...nuevas]);
       handleFieldChange('imagenes', combined.join(', '));
     } catch (err) {
@@ -470,34 +394,25 @@ export default function AdminPage() {
     if (index < 0 || index >= actuales.length) return;
     const filtered = actuales.filter((_, idx) => idx !== index);
     handleFieldChange('imagenes', filtered.join(', '));
-    if (index === selectedImagenIndex) {
-      setSelectedImagenIndex(0);
-    }
+    if (index === selectedImagenIndex) setSelectedImagenIndex(0);
   };
 
   const handleReplaceImagen = async file => {
     if (!file) return;
     setSubiendo(true);
     setError('');
-
     try {
       const formData = new FormData();
       formData.append('file', file);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'No se pudo subir la imagen.');
-      }
+      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'No se pudo subir la imagen.'); }
       const data = await res.json();
       const url = data?.url;
       if (!url) throw new Error('Respuesta invalida de subida.');
-
       const actuales = parseImagenes(form.imagenes);
       const index = replaceIndex ?? selectedImagenIndex;
-      if (actuales.length === 0) {
-        handleFieldChange('imagenes', url);
-        setSelectedImagenIndex(0);
-      } else if (index >= 0 && index < actuales.length) {
+      if (actuales.length === 0) { handleFieldChange('imagenes', url); setSelectedImagenIndex(0); }
+      else if (index >= 0 && index < actuales.length) {
         const next = [...actuales];
         next[index] = url;
         handleFieldChange('imagenes', next.join(', '));
@@ -508,9 +423,7 @@ export default function AdminPage() {
     } finally {
       setSubiendo(false);
       setReplaceIndex(null);
-      if (replaceInputRef.current) {
-        replaceInputRef.current.value = '';
-      }
+      if (replaceInputRef.current) replaceInputRef.current.value = '';
     }
   };
 
@@ -520,9 +433,7 @@ export default function AdminPage() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
+      if (videoRef.current) videoRef.current.srcObject = stream;
     } catch {
       setError('No se pudo acceder a la camara. Verifica los permisos.');
       setCamaraAbierta(false);
@@ -530,10 +441,7 @@ export default function AdminPage() {
   };
 
   const cerrarCamara = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
+    if (streamRef.current) { streamRef.current.getTracks().forEach(track => track.stop()); streamRef.current = null; }
     setCamaraAbierta(false);
   };
 
@@ -545,15 +453,11 @@ export default function AdminPage() {
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);
     cerrarCamara();
-
     canvas.toBlob(async blob => {
       if (!blob) return;
       const file = new File([blob], `foto-${Date.now()}.jpg`, { type: 'image/jpeg' });
-      if (camaraParaReemplazar) {
-        await handleReplaceImagen(file);
-      } else {
-        await handleUpload([file]);
-      }
+      if (camaraParaReemplazar) await handleReplaceImagen(file);
+      else await handleUpload([file]);
     }, 'image/jpeg', 0.92);
   };
 
@@ -563,48 +467,177 @@ export default function AdminPage() {
     const column = columnMap.get(field);
     const type = (column?.type || '').toLowerCase();
     if (type.includes('text') || type.includes('blob')) return 'textarea';
-    if (type.includes('int') || type.includes('decimal') || type.includes('float') || type.includes('double')) {
-      return 'number';
-    }
+    if (type.includes('int') || type.includes('decimal') || type.includes('float') || type.includes('double')) return 'number';
     return 'text';
   };
 
   const getNumberStep = field => {
     const column = columnMap.get(field);
     const type = (column?.type || '').toLowerCase();
-    if (type.includes('decimal') || type.includes('float') || type.includes('double')) {
-      return '0.01';
-    }
+    if (type.includes('decimal') || type.includes('float') || type.includes('double')) return '0.01';
     return '1';
   };
 
+  // ============================================================
+  // MAQUINARIA (nuevo)
+  // ============================================================
+  const cargarMaquinaria = async () => {
+    setCargandoMaquinaria(true);
+    try {
+      const res = await fetch('/api/maquinaria');
+      if (!res.ok) throw new Error('Error al cargar maquinaria');
+      const data = await res.json();
+      setMaquinariaItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setCargandoMaquinaria(false);
+    }
+  };
+
+  useEffect(() => {
+    if (autenticado && tabActiva === 'maquinaria') cargarMaquinaria();
+  }, [autenticado, tabActiva]);
+
+  const resetFormMaquinaria = () => {
+    setEditMaquinariaId(null);
+    setFormMaquinaria({ nombre: '', descripcion: '', precio: '', imagenes: '', estado: 'disponible' });
+    setAviso('');
+    setError('');
+  };
+
+  const handleEditMaquinaria = (item) => {
+    setEditMaquinariaId(String(item.id));
+    setFormMaquinaria({
+      nombre: item.nombre || '',
+      descripcion: item.descripcion || '',
+      precio: item.precio || '',
+      imagenes: item.imagenes || '',
+      estado: item.estado || 'disponible',
+    });
+    setAviso('');
+    setError('');
+  };
+
+  const handleGuardarMaquinaria = async (e) => {
+    e.preventDefault();
+    setError('');
+    setAviso('');
+    if (!formMaquinaria.nombre.trim()) { setError('El nombre es obligatorio.'); return; }
+    const payload = {
+      nombre: formMaquinaria.nombre.trim(),
+      descripcion: formMaquinaria.descripcion || null,
+      precio: formMaquinaria.precio ? Number(formMaquinaria.precio) : null,
+      imagenes: formMaquinaria.imagenes || null,
+      estado: formMaquinaria.estado || 'disponible',
+    };
+    try {
+      const url = editMaquinariaId ? `/api/maquinaria/${editMaquinariaId}` : '/api/maquinaria';
+      const method = editMaquinariaId ? 'PUT' : 'POST';
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'Error al guardar.'); }
+      setAviso(editMaquinariaId ? 'Equipo actualizado.' : 'Equipo creado.');
+      resetFormMaquinaria();
+      cargarMaquinaria();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEliminarMaquinaria = async (item) => {
+    if (!window.confirm(`Eliminar "${item.nombre}"?`)) return;
+    try {
+      const res = await fetch(`/api/maquinaria/${item.id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Error al eliminar.');
+      setAviso('Equipo eliminado.');
+      if (editMaquinariaId === String(item.id)) resetFormMaquinaria();
+      cargarMaquinaria();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleUploadMaquinaria = async (files) => {
+    if (!files || files.length === 0) return;
+    setSubiendoMaquinaria(true);
+    setError('');
+    const actuales = parseImagenesMaquinaria(formMaquinaria.imagenes);
+    const nuevas = [];
+    try {
+      for (const file of Array.from(files)) {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('/api/upload', { method: 'POST', body: fd });
+        if (!res.ok) throw new Error('Error subiendo imagen');
+        const data = await res.json();
+        if (data?.url) nuevas.push(data.url);
+      }
+      const combined = [...new Set([...actuales, ...nuevas])];
+      setFormMaquinaria(prev => ({ ...prev, imagenes: combined.join(', ') }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubiendoMaquinaria(false);
+    }
+  };
+
+  const imagenesPreviewMaquinaria = parseImagenesMaquinaria(formMaquinaria.imagenes);
+
+  // ============================================================
+  // RENDER
+  // ============================================================
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-8 relative">
-        <div className="flex flex-col gap-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-orange-500 font-semibold">Panel</p>
-          <h1 className="text-3xl font-bold">Administracion de productos</h1>
-          <p className="text-slate-600">Agrega productos, edita precios y sube fotos.</p>
+
+        {/* Header + Tabs */}
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs uppercase tracking-[0.3em] text-orange-500 font-semibold">Panel</p>
+            <h1 className="text-3xl font-bold">Administracion</h1>
+          </div>
+
+          {/* Tabs */}
+          {autenticado && !validandoSesion && (
+            <div className="flex items-center gap-2 border-b border-slate-200">
+              <button
+                type="button"
+                onClick={() => { setTabActiva('productos'); setError(''); setAviso(''); }}
+                className={`inline-flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${
+                  tabActiva === 'productos'
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                Productos
+              </button>
+              <button
+                type="button"
+                onClick={() => { setTabActiva('maquinaria'); setError(''); setAviso(''); }}
+                className={`inline-flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${
+                  tabActiva === 'maquinaria'
+                    ? 'border-sky-500 text-sky-600'
+                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                Maquinaria
+              </button>
+            </div>
+          )}
         </div>
 
+        {/* Validando sesion */}
         {validandoSesion ? (
           <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
             Validando sesion...
           </div>
         ) : !autenticado ? (
+          /* Login */
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-md px-4">
-            <div
-              className={`relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl transition-all duration-300 ease-out ${
-                mostrarLogin
-                  ? 'opacity-100 scale-100 translate-y-0'
-                  : 'opacity-0 scale-95 translate-y-3'
-              } ${loginShake ? 'login-shake' : ''}`}
-            >
-              <div
-                className={`pointer-events-none absolute inset-0 rounded-3xl border border-orange-200/50 transition-all duration-300 ${
-                  mostrarLogin ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
+            <div className={`relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl transition-all duration-300 ease-out ${mostrarLogin ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-3'} ${loginShake ? 'login-shake' : ''}`}>
+              <div className={`pointer-events-none absolute inset-0 rounded-3xl border border-orange-200/50 transition-all duration-300 ${mostrarLogin ? 'opacity-100' : 'opacity-0'}`} />
               <div className="mb-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-orange-500 font-semibold">Acceso</p>
                 <h2 className="text-2xl font-semibold text-slate-900">Iniciar sesion</h2>
@@ -613,497 +646,362 @@ export default function AdminPage() {
               <form onSubmit={handleLogin} className="flex flex-col gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500">Usuario</label>
-                  <input
-                    type="text"
-                    value={usuario}
-                    onChange={event => setUsuario(event.target.value)}
-                    placeholder="Usuario"
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                  />
+                  <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Usuario" className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500">Contrasena</label>
-                  <input
-                    type="password"
-                    value={clave}
-                    onChange={event => setClave(event.target.value)}
-                    placeholder="Contrasena"
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                  />
+                  <input type="password" value={clave} onChange={e => setClave(e.target.value)} placeholder="Contrasena" className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                 </div>
-                <button
-                  type="submit"
-                  disabled={cargandoLogin}
-                  className={`btn-anim mt-2 inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60 ${
-                    loginShake ? 'login-shake-button' : ''
-                  } ${
-                    loginErrorFlash ? 'login-error' : ''
-                  }`}
-                >
+                <button type="submit" disabled={cargandoLogin} className={`btn-anim mt-2 inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60 ${loginShake ? 'login-shake-button' : ''} ${loginErrorFlash ? 'login-error' : ''}`}>
                   {cargandoLogin ? 'Ingresando...' : 'Ingresar'}
                 </button>
               </form>
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 flex items-center justify-between">
-            <span>Sesion activa</span>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
-            >
-              Cerrar sesion
-            </button>
-          </div>
-        )}
-
-        {error && (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
-        {aviso && (
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            {aviso}
-          </div>
-        )}
-
-        {autenticado && !validandoSesion && (
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                  <h2 className="text-xl font-semibold">Listado</h2>
-                  <p className="text-sm text-slate-500">Mostrando {productos.length} de {totalProductos} productos</p>
-                </div>
-                <p className="text-xs text-slate-500">Pagina {pagina} de {totalPaginas}</p>
-              </div>
-              <form onSubmit={handleSubmitBuscar} className="flex flex-col lg:flex-row gap-2">
-                <input
-                  value={busqueda}
-                  onChange={event => setBusqueda(event.target.value)}
-                  placeholder="Buscar por nombre, marca o categoria"
-                  className="w-full lg:w-64 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                />
-                <select
-                  value={categoria}
-                  onChange={handleCategoriaChange}
-                  className="w-full lg:w-56 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                >
-                  <option value="">Todas las categorias</option>
-                  {categoriasAdmin.map(item => (
-                    <option key={item} value={item}>{item}</option>
-                  ))}
-                </select>
-                <button
-                  type="submit"
-                  className="btn-anim rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-                >
-                  Buscar
-                </button>
-              </form>
+          /* Autenticado */
+          <>
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 flex items-center justify-between">
+              <span>Sesion activa</span>
+              <button type="button" onClick={handleLogout} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300">
+                Cerrar sesion
+              </button>
             </div>
 
-            {cargando ? (
-              <div className="py-10 text-center text-slate-500">Cargando productos...</div>
-            ) : (
-              <div className="flex flex-col gap-3">
-                {productos.map(producto => {
-                  const previewUrl = getImagenesProducto(producto)[0];
-                  return (
-                    <div
-                      key={producto.id}
-                      className={`rounded-2xl border p-4 flex flex-col gap-3 transition-shadow ${
-                        editId === String(producto.id)
-                          ? 'border-orange-300 bg-orange-50/40'
-                          : 'border-slate-200 bg-white'
-                      }`}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                        <div className="flex items-start gap-3">
-                          <div className="h-14 w-14 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center">
-                            {previewUrl ? (
-                              <img
-                                src={previewUrl}
-                                alt={producto.nombre}
-                                className="h-full w-full object-cover"
-                                onError={event => { event.currentTarget.style.display = 'none'; }}
-                              />
-                            ) : (
-                              <span className="text-xl text-slate-300">⚙️</span>
-                            )}
-                          </div>
-                          <div>
-                            <p className="text-sm text-slate-400">ID {producto.id}</p>
-                            <h3 className="text-base font-semibold text-slate-900">{producto.nombre}</h3>
-                            {producto.sku && <p className="text-xs text-slate-500">SKU: {producto.sku}</p>}
-                            {priceColumn && producto[priceColumn] && (
-                              <p className="text-xs text-slate-500">{toLabel(priceColumn)}: {producto[priceColumn]}</p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => handleEdit(producto)}
-                            className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300"
-                          >
-                            Editar
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleEliminar(producto)}
-                            className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:border-red-300"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
+            {error && (
+              <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+            {aviso && (
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                {aviso}
+              </div>
+            )}
+
+            {/* ==================== TAB PRODUCTOS ==================== */}
+            {tabActiva === 'productos' && (
+              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                {/* Listado Productos */}
+                <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-semibold">Listado</h2>
+                        <p className="text-sm text-slate-500">Mostrando {productos.length} de {totalProductos} productos</p>
                       </div>
+                      <p className="text-xs text-slate-500">Pagina {pagina} de {totalPaginas}</p>
                     </div>
-                  );
-                })}
-                {productos.length === 0 && (
-                  <div className="py-10 text-center text-slate-500">No hay productos con ese filtro.</div>
-                )}
-              </div>
-            )}
-            {!cargando && (
-              <div className="flex items-center justify-between pt-2">
-                <button
-                  type="button"
-                  onClick={handlePaginaAnterior}
-                  disabled={pagina <= 1}
-                  className="btn-anim inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-50"
-                >
-                  {'<'} Anterior
-                </button>
-                <span className="text-sm text-slate-500">Pagina {pagina} de {totalPaginas}</span>
-                <button
-                  type="button"
-                  onClick={handlePaginaSiguiente}
-                  disabled={pagina >= totalPaginas}
-                  className="btn-anim inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-50"
-                >
-                  Siguiente {'>'}
-                </button>
-              </div>
-            )}
-          </section>
+                    <form onSubmit={handleSubmitBuscar} className="flex flex-col lg:flex-row gap-2">
+                      <input value={busqueda} onChange={e => setBusqueda(e.target.value)} placeholder="Buscar por nombre, marca o categoria" className="w-full lg:w-64 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                      <select value={categoria} onChange={handleCategoriaChange} className="w-full lg:w-56 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400">
+                        <option value="">Todas las categorias</option>
+                        {categoriasAdmin.map(item => <option key={item} value={item}>{item}</option>)}
+                      </select>
+                      <button type="submit" className="btn-anim rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Buscar</button>
+                    </form>
+                  </div>
 
-          <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-            <form onSubmit={handleGuardar} className="flex flex-col gap-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-semibold">{editId ? 'Editar producto' : 'Nuevo producto'}</h2>
-                  <p className="text-xs text-slate-500">{editId ? `ID ${editId}` : 'Completa los datos principales'}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300"
-                >
-                  Nuevo
-                </button>
-              </div>
+                  {cargando ? (
+                    <div className="py-10 text-center text-slate-500">Cargando productos...</div>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      {productos.map(producto => {
+                        const previewUrl = getImagenesProducto(producto)[0];
+                        return (
+                          <div key={producto.id} className={`rounded-2xl border p-4 flex flex-col gap-3 transition-shadow ${editId === String(producto.id) ? 'border-orange-300 bg-orange-50/40' : 'border-slate-200 bg-white'}`}>
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                              <div className="flex items-start gap-3">
+                                <div className="h-14 w-14 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center">
+                                  {previewUrl ? (
+                                    <img src={previewUrl} alt={producto.nombre} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                  ) : (
+                                    <span className="text-xl text-slate-300">⚙️</span>
+                                  )}
+                                </div>
+                                <div>
+                                  <p className="text-sm text-slate-400">ID {producto.id}</p>
+                                  <h3 className="text-base font-semibold text-slate-900">{producto.nombre}</h3>
+                                  {producto.sku && <p className="text-xs text-slate-500">SKU: {producto.sku}</p>}
+                                  {priceColumn && producto[priceColumn] && <p className="text-xs text-slate-500">{toLabel(priceColumn)}: {producto[priceColumn]}</p>}
+                                </div>
+                              </div>
+                              <div className="flex gap-2">
+                                <button type="button" onClick={() => handleEdit(producto)} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300">Editar</button>
+                                <button type="button" onClick={() => handleEliminar(producto)} className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:border-red-300">Eliminar</button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {productos.length === 0 && <div className="py-10 text-center text-slate-500">No hay productos con ese filtro.</div>}
+                    </div>
+                  )}
+                  {!cargando && (
+                    <div className="flex items-center justify-between pt-2">
+                      <button type="button" onClick={handlePaginaAnterior} disabled={pagina <= 1} className="btn-anim inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-50">{'<'} Anterior</button>
+                      <span className="text-sm text-slate-500">Pagina {pagina} de {totalPaginas}</span>
+                      <button type="button" onClick={handlePaginaSiguiente} disabled={pagina >= totalPaginas} className="btn-anim inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-50">Siguiente {'>'}</button>
+                    </div>
+                  )}
+                </section>
 
-              {(
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="flex flex-col gap-3">
+                {/* Formulario Productos */}
+                <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+                  <form onSubmit={handleGuardar} className="flex flex-col gap-5">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs uppercase tracking-[0.28em] text-slate-400 font-semibold">Imagenes</p>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setReplaceIndex(selectedImagenIndex);
-                            replaceInputRef.current?.click();
-                          }}
-                          className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
-                          disabled={subiendo}
-                        >
-                          Reemplazar
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setReplaceIndex(selectedImagenIndex);
-                            abrirCamara(true);
-                          }}
-                          className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300"
-                          disabled={subiendo}
-                        >
-                          📷 Foto
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveImagenAt(selectedImagenIndex)}
-                          className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300"
-                          disabled={subiendo}
-                        >
-                          Quitar
-                        </button>
+                      <div>
+                        <h2 className="text-xl font-semibold">{editId ? 'Editar producto' : 'Nuevo producto'}</h2>
+                        <p className="text-xs text-slate-500">{editId ? `ID ${editId}` : 'Completa los datos principales'}</p>
                       </div>
+                      <button type="button" onClick={resetForm} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300">Nuevo</button>
                     </div>
 
-                    <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
-                      <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
-                        {parseImagenes(form.imagenes)[selectedImagenIndex] ? (
-                          <img
-                            src={parseImagenes(form.imagenes)[selectedImagenIndex]}
-                            alt={form.nombre || 'Producto'}
-                            className="h-full w-full object-cover"
-                            onError={event => { event.currentTarget.style.display = 'none'; }}
-                          />
-                        ) : (
-                          <span className="text-3xl text-slate-300">⚙️</span>
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
-                          {parseImagenes(form.imagenes).length === 0 && (
-                            <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>
-                          )}
-                          {parseImagenes(form.imagenes).map((url, index) => (
-                            <button
-                              key={`${url}-${index}`}
-                              type="button"
-                              onClick={() => setSelectedImagenIndex(index)}
-                              className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${
-                                index === selectedImagenIndex
-                                  ? 'border-orange-400 bg-orange-50'
-                                  : 'border-slate-200 bg-white hover:border-orange-300'
-                              }`}
-                            >
-                              <img
-                                src={url}
-                                alt="Miniatura"
-                                className="h-full w-full object-cover"
-                                onError={event => { event.currentTarget.style.display = 'none'; }}
-                              />
-                            </button>
-                          ))}
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs uppercase tracking-[0.28em] text-slate-400 font-semibold">Imagenes</p>
+                          <div className="flex items-center gap-2">
+                            <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); replaceInputRef.current?.click(); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>Reemplazar</button>
+                            <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); abrirCamara(true); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>📷 Foto</button>
+                            <button type="button" onClick={() => handleRemoveImagenAt(selectedImagenIndex)} className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300" disabled={subiendo}>Quitar</button>
+                          </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <input
-                            id="admin-imagenes-upload"
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={event => {
-                              handleUpload(event.target.files);
-                              event.target.value = '';
-                            }}
-                            className="hidden"
-                          />
-                          <label
-                            htmlFor="admin-imagenes-upload"
-                            className="btn-anim inline-flex items-center justify-center rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-400"
-                          >
-                            Agregar imagenes
-                          </label>
-                          <button
-                            type="button"
-                            onClick={() => abrirCamara(false)}
-                            disabled={subiendo}
-                            className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60"
-                          >
-                            📷 Tomar foto
-                          </button>
-                          {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
+                        <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
+                          <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
+                            {parseImagenes(form.imagenes)[selectedImagenIndex] ? (
+                              <img src={parseImagenes(form.imagenes)[selectedImagenIndex]} alt={form.nombre || 'Producto'} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                            ) : (
+                              <span className="text-3xl text-slate-300">⚙️</span>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
+                              {parseImagenes(form.imagenes).length === 0 && <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>}
+                              {parseImagenes(form.imagenes).map((url, index) => (
+                                <button key={`${url}-${index}`} type="button" onClick={() => setSelectedImagenIndex(index)} className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${index === selectedImagenIndex ? 'border-orange-400 bg-orange-50' : 'border-slate-200 bg-white hover:border-orange-300'}`}>
+                                  <img src={url} alt="Miniatura" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                </button>
+                              ))}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <input id="admin-imagenes-upload" type="file" accept="image/*" multiple onChange={e => { handleUpload(e.target.files); e.target.value = ''; }} className="hidden" />
+                              <label htmlFor="admin-imagenes-upload" className="btn-anim inline-flex items-center justify-center rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-400">Agregar imagenes</label>
+                              <button type="button" onClick={() => abrirCamara(false)} disabled={subiendo} className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60">📷 Tomar foto</button>
+                              {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
+                            </div>
+                            <input ref={replaceInputRef} type="file" accept="image/*" onChange={e => handleReplaceImagen(e.target.files?.[0])} className="hidden" />
+                          </div>
                         </div>
-                        <input
-                          ref={replaceInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={event => handleReplaceImagen(event.target.files?.[0])}
-                          className="hidden"
-                        />
                       </div>
                     </div>
-                  </div>
-                </div>
-              )}
 
-              {visibleFields.map(field => {
-                const kind = getFieldKind(field);
-                if (kind === 'images') {
-                  return null;
-                }
-
-                if (field === 'categorias') {
-                  return (
-                    <div key={field} className="flex flex-col gap-3">
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
-                        <span className="text-xs text-slate-400">
-                          {categoriasSeleccionadas.length} seleccionadas
-                        </span>
-                      </div>
-                      {categoriasDisponibles.length > 0 ? (
-                        <div className="flex flex-wrap gap-2">
-                          {categoriasDisponibles.map(item => {
-                            const key = normalizeCategoriaKey(item);
-                            const isActive = categoriasSeleccionadasKeys.has(key);
-                            return (
-                              <button
-                                key={item}
-                                type="button"
-                                onClick={() => handleToggleCategoriaProducto(item)}
-                                className={`btn-anim rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
-                                  isActive
-                                    ? 'border-orange-400 bg-orange-50 text-orange-700'
-                                    : 'border-slate-200 bg-white text-slate-700 hover:border-orange-300'
-                                }`}
-                                aria-pressed={isActive}
-                              >
-                                {item}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <p className="text-xs text-slate-500">No hay categorias registradas.</p>
-                      )}
-                      <input
-                        type="text"
-                        value={form[field] || ''}
-                        onChange={event => handleFieldChange(field, event.target.value)}
-                        onBlur={event => handleFieldChange(field, normalizeCategoriasText(event.target.value))}
-                        placeholder="Separadas por coma"
-                        className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                      />
-                    </div>
-                  );
-                }
-
-                if (kind === 'textarea') {
-                  return (
-                    <div key={field} className="flex flex-col gap-2">
-                      <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
-                      <textarea
-                        rows={field === 'descripcion' ? 6 : 3}
-                        value={form[field] || ''}
-                        onChange={event => handleFieldChange(field, event.target.value)}
-                        className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                      />
-                    </div>
-                  );
-                }
-
-                return (
-                  <div key={field} className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
-                    <input
-                      type={kind}
-                      step={kind === 'number' ? getNumberStep(field) : undefined}
-                      value={form[field] || ''}
-                      onChange={event => handleFieldChange(field, event.target.value)}
-                      className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                    />
-                  </div>
-                );
-              })}
-
-              {extraFields.length > 0 && (
-                <details className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <summary className="cursor-pointer text-sm font-semibold text-slate-700">Otros campos</summary>
-                  <div className="mt-4 grid gap-4">
-                    {extraFields.map(field => {
+                    {visibleFields.map(field => {
                       const kind = getFieldKind(field);
+                      if (kind === 'images') return null;
+                      if (field === 'categorias') {
+                        return (
+                          <div key={field} className="flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                              <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
+                              <span className="text-xs text-slate-400">{categoriasSeleccionadas.length} seleccionadas</span>
+                            </div>
+                            {categoriasDisponibles.length > 0 ? (
+                              <div className="flex flex-wrap gap-2">
+                                {categoriasDisponibles.map(item => {
+                                  const key = normalizeCategoriaKey(item);
+                                  const isActive = categoriasSeleccionadasKeys.has(key);
+                                  return (
+                                    <button key={item} type="button" onClick={() => handleToggleCategoriaProducto(item)} className={`btn-anim rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${isActive ? 'border-orange-400 bg-orange-50 text-orange-700' : 'border-slate-200 bg-white text-slate-700 hover:border-orange-300'}`} aria-pressed={isActive}>{item}</button>
+                                  );
+                                })}
+                              </div>
+                            ) : <p className="text-xs text-slate-500">No hay categorias registradas.</p>}
+                            <input type="text" value={form[field] || ''} onChange={e => handleFieldChange(field, e.target.value)} onBlur={e => handleFieldChange(field, normalizeCategoriasText(e.target.value))} placeholder="Separadas por coma" className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                          </div>
+                        );
+                      }
                       if (kind === 'textarea') {
                         return (
                           <div key={field} className="flex flex-col gap-2">
                             <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
-                            <textarea
-                              rows={3}
-                              value={form[field] || ''}
-                              onChange={event => handleFieldChange(field, event.target.value)}
-                              className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                            />
+                            <textarea rows={field === 'descripcion' ? 6 : 3} value={form[field] || ''} onChange={e => handleFieldChange(field, e.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                           </div>
                         );
                       }
                       return (
                         <div key={field} className="flex flex-col gap-2">
                           <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
-                          <input
-                            type={kind}
-                            step={kind === 'number' ? getNumberStep(field) : undefined}
-                            value={form[field] || ''}
-                            onChange={event => handleFieldChange(field, event.target.value)}
-                            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
-                          />
+                          <input type={kind} step={kind === 'number' ? getNumberStep(field) : undefined} value={form[field] || ''} onChange={e => handleFieldChange(field, e.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                         </div>
                       );
                     })}
-                  </div>
-                </details>
-              )}
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  type="submit"
-                  disabled={guardando}
-                  className="btn-anim rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
-                >
-                  {guardando ? 'Guardando...' : editId ? 'Guardar cambios' : 'Crear producto'}
-                </button>
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="btn-anim rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-orange-300"
-                >
-                  Limpiar
-                </button>
+                    {extraFields.length > 0 && (
+                      <details className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                        <summary className="cursor-pointer text-sm font-semibold text-slate-700">Otros campos</summary>
+                        <div className="mt-4 grid gap-4">
+                          {extraFields.map(field => {
+                            const kind = getFieldKind(field);
+                            if (kind === 'textarea') {
+                              return (
+                                <div key={field} className="flex flex-col gap-2">
+                                  <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
+                                  <textarea rows={3} value={form[field] || ''} onChange={e => handleFieldChange(field, e.target.value)} className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                                </div>
+                              );
+                            }
+                            return (
+                              <div key={field} className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold text-slate-700">{toLabel(field)}</label>
+                                <input type={kind} step={kind === 'number' ? getNumberStep(field) : undefined} value={form[field] || ''} onChange={e => handleFieldChange(field, e.target.value)} className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button type="submit" disabled={guardando} className="btn-anim rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60">{guardando ? 'Guardando...' : editId ? 'Guardar cambios' : 'Crear producto'}</button>
+                      <button type="button" onClick={resetForm} className="btn-anim rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-orange-300">Limpiar</button>
+                    </div>
+                    {toast && (
+                      <div className={`rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 shadow-lg transition-all duration-300 ${toastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>{toast}</div>
+                    )}
+                  </form>
+                </section>
               </div>
-              {toast && (
-                <div
-                  className={`rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 shadow-lg transition-all duration-300 ${
-                    toastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-                  }`}
-                >
-                  {toast}
-                </div>
-              )}
-            </form>
-          </section>
-          </div>
+            )}
+
+            {/* ==================== TAB MAQUINARIA ==================== */}
+            {tabActiva === 'maquinaria' && (
+              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                {/* Listado Maquinaria */}
+                <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-semibold">Equipos registrados</h2>
+                      <p className="text-sm text-slate-500">{maquinariaItems.length} {maquinariaItems.length === 1 ? 'equipo' : 'equipos'}</p>
+                    </div>
+                  </div>
+                  {cargandoMaquinaria ? (
+                    <div className="py-10 text-center text-slate-500">Cargando...</div>
+                  ) : maquinariaItems.length === 0 ? (
+                    <div className="py-10 text-center text-slate-500">No hay equipos registrados.</div>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      {maquinariaItems.map(item => {
+                        const imgs = parseImagenesMaquinaria(item.imagenes);
+                        return (
+                          <div key={item.id} className={`rounded-2xl border p-4 flex flex-col sm:flex-row gap-4 transition-shadow ${editMaquinariaId === String(item.id) ? 'border-sky-300 bg-sky-50/40' : 'border-slate-200 bg-white'}`}>
+                            <div className="h-16 w-16 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                              {imgs[0] ? (
+                                <img src={imgs[0]} alt="" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                              ) : (
+                                <span className="text-xl text-slate-300">⚙️</span>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs text-slate-400">ID {item.id}</p>
+                              <h3 className="text-base font-semibold text-slate-900 truncate">{item.nombre}</h3>
+                              {item.precio && <p className="text-xs text-sky-600 font-semibold">${Number(item.precio).toLocaleString('es-CO')}</p>}
+                              <span className={`inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${item.estado === 'disponible' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : item.estado === 'vendido' ? 'bg-red-100 text-red-700 border-red-200' : 'bg-amber-100 text-amber-700 border-amber-200'}`}>
+                                {item.estado}
+                              </span>
+                            </div>
+                            <div className="flex sm:flex-col gap-2">
+                              <button onClick={() => handleEditMaquinaria(item)} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-sky-300">Editar</button>
+                              <button onClick={() => handleEliminarMaquinaria(item)} className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:border-red-300">Eliminar</button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
+
+                {/* Formulario Maquinaria */}
+                <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+                  <form onSubmit={handleGuardarMaquinaria} className="flex flex-col gap-5">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-xl font-semibold">{editMaquinariaId ? 'Editar equipo' : 'Nuevo equipo'}</h2>
+                        <p className="text-xs text-slate-500">{editMaquinariaId ? `ID ${editMaquinariaId}` : 'Completa los datos'}</p>
+                      </div>
+                      <button type="button" onClick={resetFormMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-sky-300">Nuevo</button>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700">Nombre *</label>
+                      <input type="text" value={formMaquinaria.nombre} onChange={e => setFormMaquinaria({ ...formMaquinaria, nombre: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Ej: Excavadora CAT 320D" />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700">Descripcion</label>
+                      <textarea rows={4} value={formMaquinaria.descripcion} onChange={e => setFormMaquinaria({ ...formMaquinaria, descripcion: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Detalles del equipo, ano, horas, etc." />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-semibold text-slate-700">Precio (COP)</label>
+                        <input type="number" step="0.01" value={formMaquinaria.precio} onChange={e => setFormMaquinaria({ ...formMaquinaria, precio: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="0.00" />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm font-semibold text-slate-700">Estado</label>
+                        <select value={formMaquinaria.estado} onChange={e => setFormMaquinaria({ ...formMaquinaria, estado: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400">
+                          <option value="disponible">Disponible</option>
+                          <option value="reservado">Reservado</option>
+                          <option value="vendido">Vendido</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700">Imagenes (URLs separadas por coma)</label>
+                      <textarea rows={3} value={formMaquinaria.imagenes} onChange={e => setFormMaquinaria({ ...formMaquinaria, imagenes: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="https://... , https://..." />
+                      <div className="flex items-center gap-2">
+                        <input ref={uploadRefMaquinaria} type="file" accept="image/*" multiple className="hidden" onChange={e => { handleUploadMaquinaria(e.target.files); e.target.value = ''; }} />
+                        <button type="button" onClick={() => uploadRefMaquinaria.current?.click()} disabled={subiendoMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-sky-300 disabled:opacity-50">
+                          {subiendoMaquinaria ? 'Subiendo...' : '📤 Subir imagenes'}
+                        </button>
+                      </div>
+                      {imagenesPreviewMaquinaria.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {imagenesPreviewMaquinaria.map((url, i) => (
+                            <div key={i} className="h-14 w-14 rounded-xl border border-slate-200 overflow-hidden bg-slate-50">
+                              <img src={url} alt="" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button type="submit" className="btn-anim rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Guardar</button>
+                      <button type="button" onClick={resetFormMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-sky-300">Limpiar</button>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            )}
+          </>
         )}
       </div>
 
+      {/* Camara modal (compartido) */}
       {camaraAbierta && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center bg-slate-900/80 backdrop-blur-sm px-4" style={{paddingTop: '70px'}}>
+        <div className="fixed inset-0 z-[100] flex items-start justify-center bg-slate-900/80 backdrop-blur-sm px-4" style={{ paddingTop: '70px' }}>
           <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
               <p className="text-sm font-semibold text-slate-800">📷 Tomar foto</p>
-              <button
-                type="button"
-                onClick={cerrarCamara}
-                className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:border-orange-300"
-              >
-                Cancelar
-              </button>
+              <button type="button" onClick={cerrarCamara} className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:border-orange-300">Cancelar</button>
             </div>
             <div className="relative bg-black">
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                className="w-full"
-                style={{maxHeight: '380px', objectFit: 'cover'}}
-              />
+              <video ref={videoRef} autoPlay playsInline muted className="w-full" style={{ maxHeight: '380px', objectFit: 'cover' }} />
             </div>
             <div className="px-4 py-3 flex justify-center">
-              <button
-                type="button"
-                onClick={tomarFoto}
-                className="btn-anim rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-400"
-              >
-                ­ƒô© Capturar
-              </button>
+              <button type="button" onClick={tomarFoto} className="btn-anim rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-400">📸 Capturar</button>
             </div>
           </div>
           <canvas ref={canvasRef} className="hidden" />
