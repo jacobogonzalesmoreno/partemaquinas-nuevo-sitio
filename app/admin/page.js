@@ -539,7 +539,7 @@ export default function AdminPage() {
       const method = editMaquinariaId ? 'PUT' : 'POST';
       const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'Error al guardar.'); }
-      setAviso(editMaquinariaId ? 'Equipo actualizado.' : 'Equipo creado.');
+      setAviso(editMaquinariaId ? 'Producto actualizado correctamente.' : 'Producto subido correctamente.');
       resetFormMaquinaria();
       cargarMaquinaria();
     } catch (err) {
