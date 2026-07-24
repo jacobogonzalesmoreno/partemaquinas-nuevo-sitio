@@ -165,7 +165,6 @@ export default function MaquinariaPage() {
           </svg>
         </div>
         <h1 className="text-4xl font-bold text-slate-900 mb-3">Maquinaria en Venta</h1>
-        <p className="text-slate-600 max-w-xl mx-auto">Encuentra maquinaria pesada, equipos y herramientas industriales. Todos los productos son revisados y garantizados.</p>
       </div>
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="mb-8">
