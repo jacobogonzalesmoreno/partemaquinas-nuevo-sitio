@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 function parseImagenes(imagenes) {
   if (!imagenes) return [];
@@ -25,7 +26,27 @@ function estadoBadge(estado) {
 
 function ModalProducto({ producto, onClose }) {
   const [imagenIndex, setImagenIndex] = useState(0);
+  const [montado, setMontado] = useState(false);
+  const scrollAnterior = useRef(0);
   const imagenes = parseImagenes(producto.imagenes);
+
+  useEffect(() => { setMontado(true); }, []);
+
+  const abrirModal = useCallback(() => {
+    scrollAnterior.current = window.scrollY;
+    window.scrollTo(0, 0);
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => setImagenIndex(0));
+  }, []);
+
+  const cerrarModal = useCallback(() => {
+    setImagenIndex(0);
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, scrollAnterior.current);
+    onClose();
+  }, [onClose]);
 
   const siguiente = useCallback(() => {
     setImagenIndex(prev => (prev + 1) % imagenes.length);
@@ -36,88 +57,221 @@ function ModalProducto({ producto, onClose }) {
   }, [imagenes.length]);
 
   useEffect(() => {
+    abrirModal();
     const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') cerrarModal();
       if (e.key === 'ArrowRight') siguiente();
       if (e.key === 'ArrowLeft') anterior();
     };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
-  }, [onClose, siguiente, anterior]);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, [cerrarModal, siguiente, anterior, abrirModal]);
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm px-4 py-6" onClick={onClose}>
-      <div className="relative w-full max-w-5xl max-h-[90vh] rounded-3xl border border-slate-200 bg-white shadow-2xl overflow-hidden flex flex-col lg:flex-row" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/90 border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 shadow-sm transition-all">
+  if (!montado) return null;
+
+  return createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 99999,
+        backgroundColor: 'rgba(15, 23, 42, 0.8)',
+        backdropFilter: 'blur(4px)',
+        WebkitBackdropFilter: 'blur(4px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '16px',
+        margin: 0,
+        border: 'none',
+        width: '100%',
+        height: '100%',
+        boxSizing: 'border-box',
+      }}
+      onClick={cerrarModal}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '1024px',
+          maxHeight: '90vh',
+          borderRadius: '24px',
+          border: '1px solid #e2e8f0',
+          backgroundColor: 'white',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          display: 'flex',
+          flexDirection: 'row',
+          overflow: 'hidden',
+          boxSizing: 'border-box',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Cerrar */}
+        <button
+          onClick={cerrarModal}
+          style={{
+            position: 'absolute', top: 16, right: 16, zIndex: 20,
+            width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: '1px solid #e2e8f0',
+            color: '#475569', cursor: 'pointer', boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+          }}
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
-        <div className="relative flex-1 bg-slate-100 min-h-[300px] lg:min-h-[500px] flex items-center justify-center">
+
+        {/* Columna imagen */}
+        <div style={{
+          position: 'relative', flex: '1 1 0%', minWidth: 0,
+          backgroundColor: '#f1f5f9',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          minHeight: '300px', overflow: 'hidden',
+        }}>
           {imagenes.length > 0 ? (
             <>
-              <img src={imagenes[imagenIndex]} alt={producto.nombre} className="w-full h-full object-contain max-h-[60vh] lg:max-h-[80vh]" onError={e => { e.currentTarget.style.display = 'none'; }} />
+              <img
+                src={imagenes[imagenIndex]}
+                alt={producto.nombre}
+                style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', display: 'block' }}
+                onError={e => { e.currentTarget.style.display = 'none'; }}
+                draggable={false}
+              />
               {imagenes.length > 1 && (
                 <>
-                  <button onClick={anterior} className="absolute left-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-11 w-11 rounded-full bg-white/90 border border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 shadow-md transition-all">
+                  {/* Flecha anterior */}
+                  <button
+                    onClick={anterior}
+                    style={{
+                      position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
+                      width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: '1px solid #e2e8f0',
+                      color: '#334155', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                    }}
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                   </button>
-                  <button onClick={siguiente} className="absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-11 w-11 rounded-full bg-white/90 border border-slate-200 text-slate-700 hover:bg-white hover:text-slate-900 shadow-md transition-all">
+                  {/* Flecha siguiente */}
+                  <button
+                    onClick={siguiente}
+                    style={{
+                      position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
+                      width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: '1px solid #e2e8f0',
+                      color: '#334155', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                    }}
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                   </button>
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+                  {/* Indicadores */}
+                  <div style={{
+                    position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)',
+                    display: 'flex', alignItems: 'center', gap: '6px', zIndex: 10,
+                  }}>
                     {imagenes.map((_, i) => (
-                      <button key={i} onClick={() => setImagenIndex(i)} className={`h-2 rounded-full transition-all ${i === imagenIndex ? 'w-6 bg-slate-900' : 'w-2 bg-slate-400/60 hover:bg-slate-500'}`} />
+                      <button
+                        key={i}
+                        onClick={() => setImagenIndex(i)}
+                        style={{
+                          height: 8, borderRadius: 9999, border: 'none', cursor: 'pointer', padding: 0,
+                          width: i === imagenIndex ? 24 : 8,
+                          backgroundColor: i === imagenIndex ? '#0f172a' : 'rgba(148, 163, 184, 0.6)',
+                          transition: 'all 0.2s',
+                        }}
+                      />
                     ))}
                   </div>
                 </>
               )}
             </>
           ) : (
-            <div className="flex flex-col items-center gap-3 text-slate-400">
-              <span className="text-6xl">🖼️</span>
-              <p className="text-sm font-medium">Sin imagenes</p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, color: '#94a3b8' }}>
+              <span style={{ fontSize: 48 }}>🖼️</span>
+              <p style={{ fontSize: 14, fontWeight: 500 }}>Sin imagenes</p>
             </div>
           )}
         </div>
-        <div className="w-full lg:w-[380px] flex flex-col gap-5 p-6 lg:p-8 border-t lg:border-t-0 lg:border-l border-slate-200 overflow-y-auto max-h-[50vh] lg:max-h-[90vh]">
+
+        {/* Columna info */}
+        <div style={{
+          width: 380, flexShrink: 0,
+          display: 'flex', flexDirection: 'column', gap: 20,
+          padding: 32,
+          borderLeft: '1px solid #e2e8f0',
+          overflowY: 'auto', maxHeight: '90vh', boxSizing: 'border-box',
+        }}>
           <div>
-            <span className={`inline-block text-[10px] font-bold uppercase tracking-[0.2em] px-2.5 py-1 rounded-full border ${estadoBadge(producto.estado)}`}>
+            <span style={{
+              display: 'inline-block', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
+              padding: '4px 10px', borderRadius: 9999, border: '1px solid',
+              ...(() => {
+                const cls = estadoBadge(producto.estado);
+                const bgMap = { 'bg-emerald-100': '#d1fae5', 'bg-red-100': '#fee2e2', 'bg-amber-100': '#fef3c7', 'bg-slate-100': '#f1f5f9' };
+                const txtMap = { 'text-emerald-700': '#047857', 'text-red-700': '#b91c1c', 'text-amber-700': '#b45309', 'text-slate-600': '#475569' };
+                const brdMap = { 'border-emerald-200': '#a7f3d0', 'border-red-200': '#fecaca', 'border-amber-200': '#fde68a', 'border-slate-200': '#e2e8f0' };
+                const bg = bgMap[cls.split(' ')[0]] || '#f1f5f9';
+                const color = txtMap[cls.split(' ')[1]] || '#475569';
+                const border = brdMap[cls.split(' ')[2]] || '#e2e8f0';
+                return { backgroundColor: bg, color, borderColor: border };
+              })(),
+            }}>
               {producto.estado || 'disponible'}
             </span>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 leading-tight">{producto.nombre}</h2>
+            <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', lineHeight: 1.2, margin: 0 }}>{producto.nombre}</h2>
             {producto.precio !== null && producto.precio !== undefined && (
-              <p className="mt-3 text-3xl font-bold text-sky-600">{formatearPrecio(producto.precio)}</p>
+              <p style={{ marginTop: 12, fontSize: 30, fontWeight: 700, color: '#0284c7', margin: '12px 0 0' }}>{formatearPrecio(producto.precio)}</p>
             )}
           </div>
-          <div className="border-t border-slate-100 pt-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-2">Descripcion</p>
-            <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">{producto.descripcion || 'Sin descripcion.'}</p>
+          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 16 }}>
+            <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#94a3b8', marginBottom: 8 }}>Descripcion</p>
+            <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, whiteSpace: 'pre-line', margin: 0 }}>{producto.descripcion || 'Sin descripcion.'}</p>
           </div>
           {imagenes.length > 1 && (
-            <div className="border-t border-slate-100 pt-4">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-2">Galeria</p>
-              <div className="flex flex-wrap gap-2">
+            <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 16 }}>
+              <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#94a3b8', marginBottom: 8 }}>Galeria</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {imagenes.map((url, i) => (
-                  <button key={i} onClick={() => setImagenIndex(i)} className={`h-14 w-14 rounded-xl border overflow-hidden transition-all ${i === imagenIndex ? 'border-sky-400 ring-2 ring-sky-200' : 'border-slate-200 hover:border-sky-300'}`}>
-                    <img src={url} alt="" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                  <button
+                    key={i}
+                    onClick={() => setImagenIndex(i)}
+                    style={{
+                      height: 56, width: 56, borderRadius: 12, border: i === imagenIndex ? '2px solid #38bdf8' : '1px solid #e2e8f0',
+                      overflow: 'hidden', cursor: 'pointer', padding: 0,
+                      boxShadow: i === imagenIndex ? '0 0 0 2px rgba(56, 189, 248, 0.3)' : 'none',
+                    }}
+                  >
+                    <img src={url} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} onError={e => { e.currentTarget.style.display = 'none'; }} />
                   </button>
                 ))}
               </div>
             </div>
           )}
-          <div className="mt-auto pt-4">
-            <a href={'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa la maquinaria: ' + producto.nombre + (producto.precio ? ' - Precio: ' + formatearPrecio(producto.precio) : ''))}
+          <div style={{ marginTop: 'auto', paddingTop: 16 }}>
+            <a
+              href={'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa la maquinaria: ' + producto.nombre + (producto.precio ? ' - Precio: ' + formatearPrecio(producto.precio) : ''))}
               target="_blank" rel="noreferrer"
-              className="btn-anim flex items-center justify-center gap-2 w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-3 text-sm transition-colors shadow-sm">
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                width: '100%', borderRadius: 12, backgroundColor: '#10b981', color: 'white',
+                fontWeight: 600, padding: '12px 0', fontSize: 14, textDecoration: 'none',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              }}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = '#34d399'}
+              onMouseLeave={e => e.currentTarget.style.backgroundColor = '#10b981'}
+            >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               Consultar por WhatsApp
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
