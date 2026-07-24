@@ -106,6 +106,9 @@ export default function AdminPage() {
   });
   const [subiendoMaquinaria, setSubiendoMaquinaria] = useState(false);
   const uploadRefMaquinaria = useRef(null);
+  const [selectedImagenIndexMaquinaria, setSelectedImagenIndexMaquinaria] = useState(0);
+  const replaceInputRefMaquinaria = useRef(null);
+  const [replaceIndexMaquinaria, setReplaceIndexMaquinaria] = useState(null);
 
   // ============================================================
   // AUTH
@@ -573,6 +576,7 @@ export default function AdminPage() {
         if (data?.url) nuevas.push(data.url);
       }
       const combined = [...new Set([...actuales, ...nuevas])];
+      if (actuales.length === 0 && combined.length > 0) setSelectedImagenIndexMaquinaria(0);
       setFormMaquinaria(prev => ({ ...prev, imagenes: combined.join(', ') }));
     } catch (err) {
       setError(err.message);
@@ -581,7 +585,51 @@ export default function AdminPage() {
     }
   };
 
+  const handleReplaceImagenMaquinaria = async (file) => {
+    if (!file) return;
+    setSubiendoMaquinaria(true);
+    setError('');
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      if (!res.ok) throw new Error('Error subiendo imagen');
+      const data = await res.json();
+      const url = data?.url;
+      if (!url) throw new Error('Respuesta invalida de subida.');
+      const actuales = parseImagenesMaquinaria(formMaquinaria.imagenes);
+      const index = replaceIndexMaquinaria ?? selectedImagenIndexMaquinaria;
+      if (actuales.length === 0) {
+        setFormMaquinaria(prev => ({ ...prev, imagenes: url }));
+        setSelectedImagenIndexMaquinaria(0);
+      } else {
+        const next = [...actuales];
+        next[index] = url;
+        setFormMaquinaria(prev => ({ ...prev, imagenes: next.join(', ') }));
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubiendoMaquinaria(false);
+      setReplaceIndexMaquinaria(null);
+    }
+  };
+
+  const handleRemoveImagenAtMaquinaria = (index) => {
+    const actuales = parseImagenesMaquinaria(formMaquinaria.imagenes);
+    const filtered = actuales.filter((_, i) => i !== index);
+    if (index === selectedImagenIndexMaquinaria) setSelectedImagenIndexMaquinaria(0);
+    setFormMaquinaria(prev => ({ ...prev, imagenes: filtered.join(', ') }));
+  };
+
   const imagenesPreviewMaquinaria = parseImagenesMaquinaria(formMaquinaria.imagenes);
+
+  useEffect(() => {
+    const imgs = parseImagenesMaquinaria(formMaquinaria.imagenes);
+    if (imgs.length === 0) { setSelectedImagenIndexMaquinaria(0); return; }
+    if (selectedImagenIndexMaquinaria >= imgs.length) setSelectedImagenIndexMaquinaria(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formMaquinaria.imagenes]);
 
   // ============================================================
   // RENDER
@@ -942,10 +990,59 @@ export default function AdminPage() {
                       <textarea rows={4} value={formMaquinaria.descripcion} onChange={e => setFormMaquinaria({ ...formMaquinaria, descripcion: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Detalles del equipo, ano, horas, etc." />
                     </div>
 
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs uppercase tracking-[0.28em] text-slate-400 font-semibold">Imagenes</p>
+                          <div className="flex items-center gap-2">
+                            <button type="button" onClick={() => { setReplaceIndexMaquinaria(selectedImagenIndexMaquinaria); replaceInputRefMaquinaria.current?.click(); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-sky-300" disabled={subiendoMaquinaria || imagenesPreviewMaquinaria.length === 0}>Reemplazar</button>
+                            <button type="button" onClick={() => handleRemoveImagenAtMaquinaria(selectedImagenIndexMaquinaria)} className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300" disabled={subiendoMaquinaria || imagenesPreviewMaquinaria.length === 0}>Quitar</button>
+                          </div>
+                        </div>
+                        <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
+                          <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
+                            {imagenesPreviewMaquinaria[selectedImagenIndexMaquinaria] ? (
+                              <img src={imagenesPreviewMaquinaria[selectedImagenIndexMaquinaria]} alt={formMaquinaria.nombre || 'Equipo'} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                            ) : (
+                              <span className="text-3xl text-slate-300">⚙️</span>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
+                              {imagenesPreviewMaquinaria.length === 0 && <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>}
+                              {imagenesPreviewMaquinaria.map((url, index) => (
+                                <button key={`${url}-${index}`} type="button" onClick={() => setSelectedImagenIndexMaquinaria(index)} className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${index === selectedImagenIndexMaquinaria ? 'border-sky-400 bg-sky-50' : 'border-slate-200 bg-white hover:border-sky-300'}`}>
+                                  <img src={url} alt="Miniatura" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                </button>
+                              ))}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <input id="admin-maquinaria-imagenes-upload" ref={uploadRefMaquinaria} type="file" accept="image/*" multiple className="hidden" onChange={e => { handleUploadMaquinaria(e.target.files); e.target.value = ''; }} />
+                              <label htmlFor="admin-maquinaria-imagenes-upload" className="btn-anim inline-flex items-center justify-center rounded-xl bg-sky-500 px-3 py-2 text-xs font-semibold text-white hover:bg-sky-400 cursor-pointer">
+                                {subiendoMaquinaria ? 'Subiendo...' : 'Agregar imagenes'}
+                              </label>
+                              {subiendoMaquinaria && <span className="text-xs text-slate-500">Subiendo...</span>}
+                            </div>
+                            <input ref={replaceInputRefMaquinaria} type="file" accept="image/*" onChange={e => { handleReplaceImagenMaquinaria(e.target.files?.[0]); e.target.value = ''; }} className="hidden" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-3">
                       <div className="flex flex-col gap-2">
                         <label className="text-sm font-semibold text-slate-700">Precio (COP)</label>
-                        <input type="number" step="0.01" value={formMaquinaria.precio} onChange={e => setFormMaquinaria({ ...formMaquinaria, precio: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="0.00" />
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          value={formatearPrecioAdmin(formMaquinaria.precio)}
+                          onChange={e => {
+                            const soloDigitos = e.target.value.replace(/\D/g, '');
+                            setFormMaquinaria({ ...formMaquinaria, precio: soloDigitos });
+                          }}
+                          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400"
+                          placeholder="0"
+                        />
                       </div>
                       <div className="flex flex-col gap-2">
                         <label className="text-sm font-semibold text-slate-700">Estado</label>
@@ -955,26 +1052,6 @@ export default function AdminPage() {
                           <option value="vendido">Vendido</option>
                         </select>
                       </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-semibold text-slate-700">Imagenes (URLs separadas por coma)</label>
-                      <textarea rows={3} value={formMaquinaria.imagenes} onChange={e => setFormMaquinaria({ ...formMaquinaria, imagenes: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="https://... , https://..." />
-                      <div className="flex items-center gap-2">
-                        <input ref={uploadRefMaquinaria} type="file" accept="image/*" multiple className="hidden" onChange={e => { handleUploadMaquinaria(e.target.files); e.target.value = ''; }} />
-                        <button type="button" onClick={() => uploadRefMaquinaria.current?.click()} disabled={subiendoMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-sky-300 disabled:opacity-50">
-                          {subiendoMaquinaria ? 'Subiendo...' : '📤 Subir imagenes'}
-                        </button>
-                      </div>
-                      {imagenesPreviewMaquinaria.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {imagenesPreviewMaquinaria.map((url, i) => (
-                            <div key={i} className="h-14 w-14 rounded-xl border border-slate-200 overflow-hidden bg-slate-50">
-                              <img src={url} alt="" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </div>
 
                     <div className="flex gap-3">
