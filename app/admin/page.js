@@ -980,16 +980,6 @@ export default function AdminPage() {
                       <button type="button" onClick={resetFormMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-sky-300">Nuevo</button>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-semibold text-slate-700">Nombre *</label>
-                      <input type="text" value={formMaquinaria.nombre} onChange={e => setFormMaquinaria({ ...formMaquinaria, nombre: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Ej: Excavadora CAT 320D" />
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-semibold text-slate-700">Descripcion</label>
-                      <textarea rows={4} value={formMaquinaria.descripcion} onChange={e => setFormMaquinaria({ ...formMaquinaria, descripcion: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Detalles del equipo, ano, horas, etc." />
-                    </div>
-
                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center justify-between">
@@ -1027,6 +1017,16 @@ export default function AdminPage() {
                           </div>
                         </div>
                       </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700">Nombre *</label>
+                      <input type="text" value={formMaquinaria.nombre} onChange={e => setFormMaquinaria({ ...formMaquinaria, nombre: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Ej: Excavadora CAT 320D" />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700">Descripcion</label>
+                      <textarea rows={4} value={formMaquinaria.descripcion} onChange={e => setFormMaquinaria({ ...formMaquinaria, descripcion: e.target.value })} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-sky-400" placeholder="Detalles del equipo, ano, horas, etc." />
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
