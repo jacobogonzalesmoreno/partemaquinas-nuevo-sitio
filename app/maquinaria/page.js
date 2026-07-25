@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 function parseImagenes(imagenes) {
   if (!imagenes) return [];
   if (Array.isArray(imagenes)) return imagenes.filter(Boolean);
-  return imagenes.split(/[,\n]+/).map(s => s.trim()).filter(Boolean);
+  return imagenes.split(/[,]+/).map(s => s.trim()).filter(Boolean);
 }
 
 function formatearPrecio(valor) {
@@ -24,184 +24,180 @@ function estadoBadge(estado) {
   return map[estado] || 'bg-slate-100 text-slate-600 border-slate-200';
 }
 
+function badgeInline(estado) {
+  const map = {
+    disponible: { background: '#d1fae5', color: '#047857', borderColor: '#a7f3d0' },
+    vendido: { background: '#fee2e2', color: '#b91c1c', borderColor: '#fecaca' },
+    reservado: { background: '#fef3c7', color: '#b45309', borderColor: '#fde68a' },
+  };
+  return map[estado] || { background: '#f1f5f9', color: '#475569', borderColor: '#e2e8f0' };
+}
+
 function ModalProducto({ producto, onClose }) {
   const [imagenIndex, setImagenIndex] = useState(0);
-  const [montado, setMontado] = useState(false);
-  const scrollAnterior = useRef(0);
+  const [mounted, setMounted] = useState(false);
   const imagenes = parseImagenes(producto.imagenes);
 
-  useEffect(() => { setMontado(true); }, []);
+  const siguiente = useCallback(() => {
+    setImagenIndex(prev => (prev + 1) % imagenes.length);
+  }, [imagenes.length]);
+
+  const anterior = useCallback(() => {
+    setImagenIndex(prev => (prev - 1 + imagenes.length) % imagenes.length);
+  }, [imagenes.length]);
 
   useEffect(() => {
-    scrollAnterior.current = window.scrollY;
+    setMounted(true);
     window.scrollTo(0, 0);
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
     const onKey = (e) => {
-      if (e.key === 'Escape') cerrar();
-      if (e.key === 'ArrowRight') setImagenIndex(p => (p + 1) % imagenes.length);
-      if (e.key === 'ArrowLeft') setImagenIndex(p => (p - 1 + imagenes.length) % imagenes.length);
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') siguiente();
+      if (e.key === 'ArrowLeft') anterior();
     };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-    };
-  }, []);
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [onClose, siguiente, anterior]);
 
-  const cerrar = useCallback(() => {
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    window.scrollTo(0, scrollAnterior.current);
-    onClose();
-  }, [onClose]);
+  if (!mounted) return null;
 
-  if (!montado) return null;
+  const bs = badgeInline(producto.estado);
+  const waLink = 'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa la maquinaria: ' + producto.nombre + (producto.precio ? ' - Precio: ' + formatearPrecio(producto.precio) : ''));
 
   return createPortal(
-    <div
-      style={{
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999,
-        backgroundColor: 'rgba(15, 23, 42, 0.8)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-        padding: 0, margin: 0, border: 'none', width: '100%', height: '100%', boxSizing: 'border-box',
-      }}
-      onClick={cerrar}
-    >
+    <>
       <style>{`
         @media (min-width: 640px) {
-          #mq-modal-wrap { align-items: center !important; padding: 24px !important; }
-          #mq-modal-card { max-width: 1024px !important; max-height: 90vh !important; border-radius: 24px !important; flex-direction: row !important; overflow: hidden !important; }
-          #mq-modal-img { height: auto !important; flex: 1 1 0% !important; min-height: 500px !important; }
-          #mq-modal-info { width: 380px !important; border-left: 1px solid #e2e8f0 !important; border-top: none !important; max-height: 90vh !important; }
-          #mq-modal-close { position: absolute !important; top: 16px !important; right: 16px !important; }
+          .mq-modal-box { flex-direction: row !important; }
+          .mq-modal-info { width: 380px !important; max-height: 90vh !important; border-top: none !important; border-left: 1px solid #e2e8f0 !important; }
+          .mq-modal-img { min-height: 500px !important; }
+          .mq-modal-img img { max-height: 80vh !important; }
         }
       `}</style>
-      <div
-        id="mq-modal-wrap"
-        style={{
-          width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center',
-          padding: 0, boxSizing: 'border-box', height: '100vh', overflow: 'hidden',
-        }}
-        onClick={e => e.stopPropagation()}
-      >
-        <div
-          id="mq-modal-card"
-          style={{
-            position: 'relative', width: '100%', maxWidth: '100%', maxHeight: '100vh',
-            borderRadius: '16px 16px 0 0', border: '1px solid #e2e8f0', backgroundColor: 'white',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-            display: 'flex', flexDirection: 'column', overflow: 'hidden', boxSizing: 'border-box', paddingTop: '10%'
-          }}
-        >
-          {/* Cerrar */}
-          <button
-            id="mq-modal-close"
-            onClick={cerrar}
-            style={{
-              position: 'sticky', top: 8, zIndex: 20, alignSelf: 'flex-end', marginRight: 12, marginTop: 8,
-              width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: '1px solid #e2e8f0',
-              color: '#475569', cursor: 'pointer', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', padding: 0,
-            }}
-          >
+      {/* Overlay */}
+      <div onClick={onClose} style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(4px)',
+        padding: '16px', boxSizing: 'border-box',
+      }}>
+        {/* Container */}
+        <div className="mq-modal-box" onClick={e => e.stopPropagation()} style={{
+          position: 'relative', width: '100%', maxWidth: '1024px', maxHeight: '90vh',
+          borderRadius: '24px', border: '1px solid #e2e8f0', background: '#fff',
+          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column',
+        }}>
+          {/* Close button */}
+          <button onClick={onClose} style={{
+            position: 'absolute', top: '12px', right: '12px', zIndex: 10,
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            height: '36px', width: '36px', borderRadius: '50%', background: 'rgba(255,255,255,0.9)',
+            border: '1px solid #e2e8f0', color: '#475569', cursor: 'pointer',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.05)', padding: 0,
+          }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
 
-          {/* Imagen */}
-          <div
-            id="mq-modal-img"
-            style={{
-              position: 'relative', backgroundColor: '#f1f5f9',
-              height: '45vh', flexShrink: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
-            }}
-          >
+          {/* Image section */}
+          <div className="mq-modal-img" style={{
+            position: 'relative', flex: '1 1 auto', background: '#f1f5f9',
+            minHeight: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            overflow: 'hidden',
+          }}>
             {imagenes.length > 0 ? (
               <>
-                <img src={imagenes[imagenIndex]} alt={producto.nombre} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', display: 'block' }} draggable={false} />
+                <img src={imagenes[imagenIndex]} alt={producto.nombre} style={{ width: '100%', height: '100%', objectFit: 'contain', maxHeight: '45vh' }} onError={e => { e.currentTarget.style.display = 'none'; }} />
                 {imagenes.length > 1 && (
                   <>
-                    <button onClick={() => setImagenIndex(p => (p - 1 + imagenes.length) % imagenes.length)} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', zIndex: 10, width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: '1px solid #e2e8f0', color: '#334155', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', padding: 0 }}>
+                    <button onClick={anterior} style={{
+                      position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      height: '40px', width: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.9)',
+                      border: '1px solid #e2e8f0', color: '#334155', cursor: 'pointer',
+                      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', padding: 0,
+                    }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                     </button>
-                    <button onClick={() => setImagenIndex(p => (p + 1) % imagenes.length)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', zIndex: 10, width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.9)', border: '1px solid #e2e8f0', color: '#334155', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', padding: 0 }}>
+                    <button onClick={siguiente} style={{
+                      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      height: '40px', width: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.9)',
+                      border: '1px solid #e2e8f0', color: '#334155', cursor: 'pointer',
+                      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', padding: 0,
+                    }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                     </button>
-                    <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: 6, zIndex: 10 }}>
+                    <div style={{
+                      position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
+                      display: 'flex', alignItems: 'center', gap: '6px',
+                    }}>
                       {imagenes.map((_, i) => (
-                        <button key={i} onClick={() => setImagenIndex(i)} style={{ height: 8, borderRadius: 9999, border: 'none', cursor: 'pointer', padding: 0, width: i === imagenIndex ? 24 : 8, backgroundColor: i === imagenIndex ? '#0f172a' : 'rgba(148, 163, 184, 0.6)', transition: 'all 0.2s' }} />
+                        <button key={i} onClick={() => setImagenIndex(i)} style={{
+                          height: '8px', borderRadius: '4px', border: 'none', cursor: 'pointer', padding: 0,
+                          width: i === imagenIndex ? '24px' : '8px',
+                          background: i === imagenIndex ? '#0f172a' : 'rgba(148,163,184,0.6)',
+                          transition: 'all 0.2s',
+                        }} />
                       ))}
                     </div>
                   </>
                 )}
               </>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, color: '#94a3b8' }}>
-                <span style={{ fontSize: 48 }}>Sin imagen</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', color: '#94a3b8' }}>
+                <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>Sin imagenes</p>
               </div>
             )}
           </div>
 
-          {/* Info */}
-          <div
-            id="mq-modal-info"
-            style={{
-              width: '100%', display: 'flex', flexDirection: 'column', gap: 16,
-              padding: 20, borderTop: '1px solid #e2e8f0',
-              overflowY: 'auto', maxHeight: '55vh', boxSizing: 'border-box',
-            }}
-          >
+          {/* Info section */}
+          <div className="mq-modal-info" style={{
+            width: '100%', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '20px',
+            padding: '20px', borderTop: '1px solid #e2e8f0', overflowY: 'auto', maxHeight: '50vh',
+          }}>
             <div>
               <span style={{
-                display: 'inline-block', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em',
-                padding: '4px 10px', borderRadius: 9999, border: '1px solid',
-                backgroundColor: producto.estado === 'vendido' ? '#fee2e2' : producto.estado === 'reservado' ? '#fef3c7' : '#d1fae5',
-                color: producto.estado === 'vendido' ? '#b91c1c' : producto.estado === 'reservado' ? '#b45309' : '#047857',
-                borderColor: producto.estado === 'vendido' ? '#fecaca' : producto.estado === 'reservado' ? '#fde68a' : '#a7f3d0',
+                display: 'inline-block', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase',
+                letterSpacing: '0.2em', padding: '4px 10px', borderRadius: '9999px', border: '1px solid',
+                background: bs.background, color: bs.color, borderColor: bs.borderColor,
               }}>
                 {producto.estado || 'disponible'}
               </span>
             </div>
             <div>
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: '#0f172a', lineHeight: 1.2, margin: 0 }}>{producto.nombre}</h2>
+              <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', lineHeight: 1.2, margin: 0 }}>{producto.nombre}</h2>
               {producto.precio !== null && producto.precio !== undefined && (
-                <p style={{ marginTop: 10, fontSize: 28, fontWeight: 700, color: '#0284c7' }}>{formatearPrecio(producto.precio)}</p>
+                <p style={{ marginTop: '12px', fontSize: '28px', fontWeight: 700, color: '#0284c7', margin: '12px 0 0 0' }}>{formatearPrecio(producto.precio)}</p>
               )}
             </div>
-            <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 14 }}>
-              <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#94a3b8', marginBottom: 8 }}>Descripcion</p>
-              <p style={{ fontSize: 14, color: '#475569', lineHeight: 1.6, whiteSpace: 'pre-line', margin: 0 }}>{producto.descripcion || 'Sin descripcion.'}</p>
+            <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#94a3b8', margin: '0 0 8px 0' }}>Descripcion</p>
+              <p style={{ fontSize: '14px', color: '#475569', lineHeight: 1.6, whiteSpace: 'pre-line', margin: 0 }}>{producto.descripcion || 'Sin descripcion.'}</p>
             </div>
             {imagenes.length > 1 && (
-              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 14 }}>
-                <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#94a3b8', marginBottom: 8 }}>Galeria</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '16px' }}>
+                <p style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#94a3b8', margin: '0 0 8px 0' }}>Galeria</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {imagenes.map((url, i) => (
                     <button key={i} onClick={() => setImagenIndex(i)} style={{
-                      height: 52, width: 52, borderRadius: 10, padding: 0,
+                      height: '56px', width: '56px', borderRadius: '12px', padding: 0, cursor: 'pointer',
                       border: i === imagenIndex ? '2px solid #38bdf8' : '1px solid #e2e8f0',
-                      overflow: 'hidden', cursor: 'pointer',
-                      boxShadow: i === imagenIndex ? '0 0 0 2px rgba(56, 189, 248, 0.3)' : 'none',
+                      overflow: 'hidden', outline: i === imagenIndex ? '2px solid #bae6fd' : 'none',
                     }}>
-                      <img src={url} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+                      <img src={url} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} onError={e => { e.currentTarget.style.display = 'none'; }} />
                     </button>
                   ))}
                 </div>
               </div>
             )}
-            <div style={{ marginTop: 'auto', paddingTop: 14 }}>
-              <a
-                href={'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa la maquinaria: ' + producto.nombre + (producto.precio ? ' - Precio: ' + formatearPrecio(producto.precio) : ''))}
-                target="_blank" rel="noreferrer"
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                  width: '100%', borderRadius: 12, backgroundColor: '#10b981', color: 'white',
-                  fontWeight: 600, padding: '12px 0', fontSize: 14, textDecoration: 'none',
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                }}
-              >
+            <div style={{ marginTop: 'auto', paddingTop: '16px' }}>
+              <a href={waLink} target="_blank" rel="noreferrer" style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', width: '100%',
+                borderRadius: '12px', background: '#10b981', color: '#fff', fontWeight: 600,
+                padding: '12px', fontSize: '14px', textDecoration: 'none',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 Consultar por WhatsApp
               </a>
@@ -209,7 +205,7 @@ function ModalProducto({ producto, onClose }) {
           </div>
         </div>
       </div>
-    </div>,
+    </>,
     document.body
   );
 }
@@ -289,28 +285,28 @@ export default function MaquinariaPage() {
         ) : productosFiltrados.length === 0 ? (
           <div className="py-20 text-center">
             <div className="inline-flex flex-col items-center gap-3">
-              <span className="text-5xl">🔧</span>
+              <span className="text-5xl">&#x1F527;</span>
               <p className="text-lg text-slate-500 font-medium">{filtro ? `No se encontraron resultados para "${filtro}"` : 'No hay maquinaria disponible en este momento.'}</p>
             </div>
           </div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-slate-500">Mostrando <span className="font-semibold text-slate-900">{productosFiltrados.length}</span> {productosFiltrados.length === 1 ? 'equipo' : 'equipos'}{filtro && <span className="ml-1">para "{filtro}"</span>}</p>
+              <p className="text-sm text-slate-500">Mostrando <span className="font-semibold text-slate-900">{productosFiltrados.length}</span> {productosFiltrados.length === 1 ? 'equipo' : 'equipos'}{filtro && <span className="ml-1">para &quot;{filtro}&quot;</span>}</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {productosFiltrados.map(producto => {
                 const imagenes = parseImagenes(producto.imagenes);
                 const primeraImagen = imagenes[0];
                 const precioFmt = formatearPrecio(producto.precio);
                 return (
                   <div key={producto.id} onClick={() => setModalProducto(producto)}
-                    className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                    className="group bg-white rounded-xl sm:rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 cursor-pointer hover:-translate-y-1">
                     <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
                       {primeraImagen ? (
                         <img src={primeraImagen} alt={producto.nombre} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onError={e => { e.currentTarget.style.display = 'none'; }} />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl text-slate-300">⚙️</div>
+                        <div className="w-full h-full flex items-center justify-center text-4xl text-slate-300">&#x2699;</div>
                       )}
                       {imagenes.length > 1 && (
                         <div className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 text-white text-[10px] font-semibold px-2.5 py-1 backdrop-blur-sm">
@@ -324,11 +320,11 @@ export default function MaquinariaPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="p-4 flex flex-col gap-2">
-                      <h3 className="font-semibold text-slate-900 text-sm leading-snug line-clamp-2 group-hover:text-sky-700 transition-colors">{producto.nombre}</h3>
-                      {precioFmt ? <p className="text-lg font-bold text-sky-600">{precioFmt}</p> : <p className="text-sm font-medium text-slate-400">Precio a convenir</p>}
+                    <div className="p-2.5 sm:p-4 flex flex-col gap-1 sm:gap-2">
+                      <h3 className="font-semibold text-slate-900 text-xs sm:text-sm leading-snug line-clamp-2 group-hover:text-sky-700 transition-colors">{producto.nombre}</h3>
+                      {precioFmt ? <p className="text-base sm:text-lg font-bold text-sky-600">{precioFmt}</p> : <p className="text-sm font-medium text-slate-400">Precio a convenir</p>}
                       <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{producto.descripcion || ''}</p>
-                      <div className="mt-1 flex items-center gap-1.5 text-[11px] text-slate-400">
+                      <div className="mt-1 hidden sm:flex items-center gap-1.5 text-[11px] text-slate-400">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         Medellin, Colombia
                       </div>
