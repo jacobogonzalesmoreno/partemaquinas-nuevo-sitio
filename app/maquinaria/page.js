@@ -92,7 +92,7 @@ function ModalProducto({ producto, onClose }) {
             position: 'relative', width: '100%', maxWidth: '100%', maxHeight: '100vh',
             borderRadius: '16px 16px 0 0', border: '1px solid #e2e8f0', backgroundColor: 'white',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-            display: 'flex', flexDirection: 'column', overflow: 'hidden', boxSizing: 'border-box',
+            display: 'flex', flexDirection: 'column', overflow: 'hidden', boxSizing: 'border-box', paddingTop: '25px'
           }}
         >
           {/* Cerrar */}
