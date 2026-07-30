@@ -9,7 +9,7 @@ const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
 
 export default function SlugClient({ productos, categoria, categoriaPadre, slug }) {
   const router = useRouter();
-  const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
+  const placeholderImage = '/logo/logo-partemaquinas.png';
 
   const obtenerImagenPrincipal = producto => {
     const imagenes = getImagenesProducto(producto);

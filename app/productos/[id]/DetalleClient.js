@@ -9,7 +9,7 @@ export default function DetalleClient({ producto }) {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [montado, setMontado] = useState(false);
   const scrollAnterior = useRef(0);
-  const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
+  const placeholderImage = '/logo/logo-partemaquinas.png';
 
   const imagenes = producto ? getImagenesProducto(producto) : [];
 

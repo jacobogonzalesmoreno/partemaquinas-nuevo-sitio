@@ -258,7 +258,7 @@ function ProductosInner() {
     sessionStorage.setItem(CATALOGO_URL_KEY, window.location.pathname + window.location.search);
     sessionStorage.setItem(CATALOGO_SCROLL_KEY, String(window.scrollY));
   };
-  const placeholderImage = '/logo/ba818650-f622-4ea7-b90f-594d83a9ff20.png';
+  const placeholderImage = '/logo/logo-partemaquinas.png';
   const obtenerImagenPrincipal = producto => { const imgs = getImagenesProducto(producto); return imgs[0] || null; };
   const irADetalle = (e, productoId) => { guardarScrollCatalogo(); router.push(`/productos/${productoId}`); };
 
