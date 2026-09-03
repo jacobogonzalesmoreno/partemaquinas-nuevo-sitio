@@ -97,6 +97,22 @@ header nav :is(.menu, .menu-items, .nav-links) {
   opacity: 0.85;
 }
 
+.whatsapp-float {
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+body[data-mobile-menu-open="true"] .whatsapp-float {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.9);
+}
+
+body:has(#mobile-navigation) .whatsapp-float {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.9);
+}
+
 .accent-underline {
   position: relative;
 }

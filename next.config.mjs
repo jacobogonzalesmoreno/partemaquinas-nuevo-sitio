@@ -11,6 +11,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'partemaquinas.com' },
       { protocol: 'https', hostname: 'www.partemaquinas.com' },
+      { protocol: 'https', hostname: 'img.partemaquinas.com' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
     ],
   },
 };

@@ -107,7 +107,7 @@ export default function SlugClient({ productos, categoria, categoriaPadre, slug 
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3">
             {productos.map(producto => {
               const imagen = obtenerImagenPrincipal(producto);
               return (

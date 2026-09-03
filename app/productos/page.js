@@ -386,7 +386,7 @@ function ProductosInner() {
                   Ver todas las categorias
                 </button>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3">
                 {(Array.isArray(productos) ? productos : []).map(producto => {
                   const imagen = producto.imagen || obtenerImagenPrincipal(producto);
                   return (

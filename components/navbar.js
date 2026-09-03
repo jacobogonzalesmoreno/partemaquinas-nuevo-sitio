@@ -10,6 +10,7 @@ import { generarSugerencias, crearDebounce } from '@/lib/busqueda-tolerante';
 export default function Navbar() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [categoriaActiva, setCategoriaActiva] = useState(null);
+  const [categoriaMovilAbierta, setCategoriaMovilAbierta] = useState(null);
   const [subcategoriaActiva, setSubcategoriaActiva] = useState(null);
   const [buscarNav, setBuscarNav] = useState('');
   const [sugerenciasCats, setSugerenciasCats] = useState([]);
@@ -22,6 +23,17 @@ export default function Navbar() {
   const searchRef = useRef(null);
   const abortRef = useRef(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const overflowAnterior = document.body.style.overflow;
+    document.body.dataset.mobileMenuOpen = String(menuAbierto);
+    if (menuAbierto) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = overflowAnterior;
+    return () => {
+      delete document.body.dataset.mobileMenuOpen;
+      document.body.style.overflow = overflowAnterior;
+    };
+  }, [menuAbierto]);
 
   const menuCategorias = MENU_CATEGORIAS;
   const navLinkClass = 'inline-flex items-center justify-center rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-600 transition-all border border-slate-200 bg-white shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md';
@@ -186,18 +198,18 @@ export default function Navbar() {
     );
   };
 
-  const renderCategorias = onSelect => (
-    <ul className="inline-flex flex-col gap-1 w-fit">
+  const renderCategorias = (onSelect, mobile = false) => (
+    <ul className={`${mobile ? 'grid grid-cols-2 gap-2 w-full' : 'inline-flex flex-col gap-1 w-fit'}`}>
       {menuCategorias.map(categoria => {
         const submenuOffsetClass = categoria.nombre === 'Giro' ? 'left-[calc(100%+24px)] md:left-[calc(100%+40px)]' : categoria.nombre === 'Motor' ? 'left-[calc(100%+16px)] md:left-[calc(100%+28px)]' : 'left-[calc(100%+16px)]';
         return (
-          <li key={categoria.nombre} className="relative group w-fit z-10 hover:z-30"
+          <li key={categoria.nombre} className={`${mobile ? 'w-full' : 'relative group w-fit z-10 hover:z-30'}`}
             onMouseEnter={() => { if (hideCategoriaTimer.current) { clearTimeout(hideCategoriaTimer.current); hideCategoriaTimer.current = null; } setCategoriaActiva(categoria.nombre); }}
             onMouseLeave={() => { if (hideCategoriaTimer.current) clearTimeout(hideCategoriaTimer.current); hideCategoriaTimer.current = setTimeout(() => setCategoriaActiva(null), 150); }}>
-            <Link href={hrefCategoria(categoria.nombre)} onClick={onSelect} className={navDropdownLinkClass}>
+            <Link href={hrefCategoria(categoria.nombre)} onClick={onSelect} className={mobile ? `${navDropdownLinkClass} w-full min-h-11 px-3` : navDropdownLinkClass}>
               <span>{categoria.nombre}</span>{categoria.hijos && <span className="text-orange-400">›</span>}
             </Link>
-            {categoria.hijos && (
+            {categoria.hijos && !mobile && (
               <div className={`absolute ${submenuOffsetClass} top-0 z-[60] w-56 transition-all duration-200 ease-out ${categoriaActiva === categoria.nombre ? 'opacity-100 translate-x-0 scale-100 pointer-events-auto' : 'opacity-0 translate-x-2 scale-95 pointer-events-none'}`}>
                 <div className="rounded-2xl border border-slate-200 bg-white shadow-lg p-2.5">
                   <ul className="space-y-0.5">
@@ -231,14 +243,49 @@ export default function Navbar() {
     </ul>
   );
 
+  const renderCategoriasMovil = () => (
+    <ul className="flex flex-col divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+      {menuCategorias.map(categoria => {
+        const abierta = categoriaMovilAbierta === categoria.nombre;
+        return (
+          <li key={categoria.nombre}>
+            <div className="flex min-h-12 items-center gap-2 px-3">
+              <Link href={hrefCategoria(categoria.nombre)} onClick={() => setMenuAbierto(false)} className="flex min-w-0 flex-1 items-center py-3 text-sm font-semibold text-slate-700">
+                <span className="truncate">{categoria.nombre}</span>
+              </Link>
+              {categoria.hijos && (
+                <button type="button" aria-label={`${abierta ? 'Ocultar' : 'Mostrar'} subcategorias de ${categoria.nombre}`} aria-expanded={abierta}
+                  onClick={() => setCategoriaMovilAbierta(abierta ? null : categoria.nombre)}
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-orange-500 transition-colors hover:bg-orange-100">
+                  <svg className={`h-4 w-4 transition-transform ${abierta ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                </button>
+              )}
+            </div>
+            {categoria.hijos && abierta && (
+              <ul className="grid grid-cols-2 gap-2 border-t border-slate-200 bg-white px-3 py-3">
+                {categoria.hijos.map(hijo => (
+                  <li key={hijo.nombre}>
+                    <Link href={hrefCategoria(hijo.nombre)} onClick={() => setMenuAbierto(false)} className="flex min-h-10 items-center rounded-lg border border-slate-200 px-2.5 py-2 text-xs font-medium text-slate-600 hover:border-orange-300 hover:bg-orange-50">
+                      {hijo.nombre}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+
   return (
-    <nav className="bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-4 sticky top-0 z-50 shadow-sm relative overflow-visible">
+    <nav className="bg-white/90 backdrop-blur border-b border-slate-200 px-4 py-3 sm:px-6 sm:py-4 sticky top-0 z-50 shadow-sm relative overflow-visible">
       <div className="relative flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm">
             <Image src="/logo/logo-partemaquinas.png" alt="ParteMaquinas" width={32} height={32} priority />
           </span>
-          <span className="text-slate-900 text-2xl font-bold tracking-tight">ParteMaquinas</span>
+          <span className="truncate text-slate-900 text-xl sm:text-2xl font-bold tracking-tight">ParteMaquinas</span>
         </Link>
         <div className="hidden md:flex gap-6 text-sm font-semibold absolute left-1/2 -translate-x-1/2">
           <Link href="/" className={navLinkClass}>Inicio</Link>
@@ -269,20 +316,25 @@ export default function Navbar() {
             </button>
           </form>
         </div>
-        <button type="button" onClick={() => setMenuAbierto(valor => !valor)} className="btn-anim inline-flex md:hidden items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-700 transition-all shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-2 hover:ring-amber-200 hover:shadow-md">
-          <span className="sr-only">Abrir menu</span>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <button type="button" onClick={() => setMenuAbierto(valor => !valor)} aria-expanded={menuAbierto} aria-controls="mobile-navigation" className="btn-anim inline-flex md:hidden items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-700 transition-all hover:text-slate-900 hover:border-amber-400 hover:ring-2 hover:ring-amber-200 hover:shadow-md">
+          <span className="sr-only">{menuAbierto ? 'Cerrar menu' : 'Abrir menu'}</span>
+          {menuAbierto ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> : <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>}
         </button>
       </div>
       {menuAbierto && (
-        <div className="absolute left-0 right-0 top-full z-50 bg-white border-b border-slate-200 shadow-lg">
-          <div className="max-w-6xl mx-auto px-6 py-6 grid gap-6 md:grid-cols-[1.4fr_0.6fr]">
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400 font-semibold">Categorias</p>
-              <div className="mt-5">{renderCategorias(() => setMenuAbierto(false))}</div>
-            </div>
+        <div id="mobile-navigation" className="absolute left-0 right-0 top-full z-50 max-h-[calc(100svh-4.5rem)] overflow-y-auto overscroll-contain border-b border-slate-200 bg-white shadow-xl md:hidden">
+          <div className="mx-auto flex w-full max-w-xl flex-col gap-5 px-4 py-5 sm:px-6">
             <div className="flex flex-col gap-2 text-sm font-semibold">
-              <div ref={searchRef} className="relative">
+              <p className="px-1 text-[10px] uppercase tracking-[0.28em] text-slate-400">Navegacion</p>
+              <div className="grid grid-cols-2 gap-2">
+                <Link href="/" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Inicio</Link>
+                <Link href="/productos" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Productos</Link>
+                <Link href="/nosotros" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Nosotros</Link>
+                <Link href="/contacto" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Contacto</Link>
+              </div>
+            </div>
+            <div ref={searchRef} className="relative">
+              <p className="mb-2 px-1 text-[10px] uppercase tracking-[0.28em] text-slate-400">Buscar</p>
                 <form onSubmit={event => onSubmitBuscar(event)} className="flex items-center gap-2">
                   <div className="relative flex-1">
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -296,11 +348,10 @@ export default function Navbar() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                   </button>
                 </form>
-              </div>
-              <Link href="/" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Inicio</Link>
-              <Link href="/productos" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Productos</Link>
-              <Link href="/nosotros" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Nosotros</Link>
-              <Link href="/contacto" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Contacto</Link>
+            </div>
+            <div>
+              <p className="mb-2 px-1 text-[10px] uppercase tracking-[0.28em] text-slate-400">Categorias</p>
+              {renderCategoriasMovil()}
             </div>
           </div>
         </div>
