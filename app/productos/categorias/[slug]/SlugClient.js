@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { getImagenesProducto } from '@/lib/imagenes';
 import { slugifyCategoria } from '@/lib/catalogo-categorias';
 
@@ -116,11 +117,13 @@ export default function SlugClient({ productos, categoria, categoriaPadre, slug 
                   className="bg-white rounded-2xl border border-slate-200 hover:border-orange-400 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-lg flex flex-col cursor-pointer hover:-translate-y-1"
                 >
                   {imagen ? (
-                    <div className="w-full h-48 bg-slate-100 overflow-hidden">
-                      <img
+                    <div className="relative w-full h-48 bg-slate-100 overflow-hidden">
+                      <Image
                         src={imagen}
                         alt={producto.nombre}
-                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                        fill
+                        sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        className="object-contain transition-transform duration-300 group-hover:scale-105"
                         onError={e => { e.currentTarget.src = placeholderImage; }}
                       />
                     </div>

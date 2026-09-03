@@ -487,6 +487,7 @@ export default function Home() {
                   alt="Banner principal"
                   width={1600}
                   height={420}
+                  sizes="100vw"
                   className="w-full h-auto"
                   priority
                 />
@@ -635,7 +636,7 @@ export default function Home() {
                           </Link>
                           <Link href="/contacto"
                             className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
-                            <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={30} height={30} />
+                            <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={30} height={30} sizes="30px" />
                             Hablar con un asesor
                           </Link>
                         </div>
@@ -707,7 +708,7 @@ export default function Home() {
                   <Link href={`/productos?buscar=${encodeURIComponent(marca.buscar)}`}
                     className="brand-card group rounded-2xl border border-slate-200 bg-white p-4 text-center shadow-sm hover:shadow-md hover:border-orange-300 transition-all duration-300 block focus-visible:outline-2 focus-visible:outline-orange-500">
                     <div className="h-16 rounded-xl bg-slate-100 group-hover:bg-yellow-50/60 flex items-center justify-center transition-colors duration-300">
-                      <Image src={`/marcas/${marca.archivo}`} alt={marca.nombre} width={120} height={64} className="max-h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+                      <Image src={`/marcas/${marca.archivo}`} alt={marca.nombre} width={120} height={64} sizes="(min-width: 1024px) 120px, 40vw" className="max-h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
                     </div>
                     <p className="mt-3 text-sm font-semibold text-slate-700 group-hover:text-slate-900 transition-colors">{marca.nombre}</p>
                   </Link>

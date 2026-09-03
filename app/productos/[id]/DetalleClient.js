@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
+import Image from 'next/image';
 import { getImagenesProducto } from '@/lib/imagenes';
 
 export default function DetalleClient({ producto }) {
@@ -177,11 +178,11 @@ export default function DetalleClient({ producto }) {
           {/* Columna de imágenes */}
           <div className="flex flex-col gap-4">
             <div
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-zoom-in hover:border-orange-300 transition-colors"
+              className="relative aspect-square bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-zoom-in hover:border-orange-300 transition-colors"
               onClick={() => imagenes.length > 0 && abrirLightbox(0)}
             >
               {imagenes[0] ? (
-                <img src={imagenes[0]} alt={producto.nombre} className="w-full aspect-square object-contain bg-slate-50 p-4" onError={e => { e.currentTarget.src = placeholderImage; }} />
+                <Image src={imagenes[0]} alt={producto.nombre} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain bg-slate-50 p-4" onError={e => { e.currentTarget.src = placeholderImage; }} priority />
               ) : (
                 <div className="w-full aspect-square bg-slate-50 flex items-center justify-center text-7xl text-slate-200">⚙️</div>
               )}
@@ -190,9 +191,9 @@ export default function DetalleClient({ producto }) {
               <div className="grid grid-cols-4 gap-3">
                 {imagenes.slice(0, 8).map((img, i) => (
                   <div key={i}
-                    className="bg-white rounded-xl border border-slate-200 overflow-hidden cursor-zoom-in hover:border-orange-400 transition-all hover:shadow-md"
+                    className="relative aspect-square bg-white rounded-xl border border-slate-200 overflow-hidden cursor-zoom-in hover:border-orange-400 transition-all hover:shadow-md"
                     onClick={() => abrirLightbox(i)}>
-                    <img src={img} alt={`Miniatura ${i + 1}`} className="w-full aspect-square object-contain bg-slate-50 p-2" onError={e => { e.currentTarget.src = placeholderImage; }} />
+                    <Image src={img} alt={`Miniatura ${i + 1}`} fill sizes="(min-width: 768px) 12vw, 25vw" className="object-contain bg-slate-50 p-2" onError={e => { e.currentTarget.src = placeholderImage; }} />
                   </div>
                 ))}
               </div>

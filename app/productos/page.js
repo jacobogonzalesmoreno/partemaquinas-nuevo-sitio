@@ -2,6 +2,7 @@
 import { Suspense, useRef, useCallback } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
 import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
@@ -27,7 +28,7 @@ function TarjetaCategoria({ categoria, nivel, categoriasConImagenError, setCateg
       className={`group overflow-hidden border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-xl ${c.wrapper} ${c.cardTone}`}>
       <div className={`relative overflow-hidden ${c.imageTone} ${c.image}`}>
         {!tieneError ? (
-          <img src={rutaImagen} alt={categoria.nombre} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          <Image src={rutaImagen} alt={categoria.nombre} fill sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105"
             onError={() => setCategoriasConImagenError(prev => ({ ...prev, [slug]: true }))} />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[radial-gradient(circle_at_top,_rgba(251,146,60,0.18),_transparent_55%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] px-6 text-center">
@@ -392,8 +393,8 @@ function ProductosInner() {
                     <div key={producto.id} onClick={(e) => irADetalle(e, producto.id)}
                       className="bg-white rounded-2xl border border-slate-200 hover:border-orange-400 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-lg flex flex-col cursor-pointer hover:-translate-y-1">
                       {imagen ? (
-                        <div className="w-full h-48 bg-slate-100 overflow-hidden">
-                          <img src={imagen} alt={producto.nombre} className="w-full h-full object-contain transition-transform duration-300" onError={e => { e.currentTarget.src = placeholderImage; }} />
+                        <div className="relative w-full h-48 bg-slate-100 overflow-hidden">
+                          <Image src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-contain transition-transform duration-300" onError={e => { e.currentTarget.src = placeholderImage; }} />
                         </div>
                       ) : (
                         <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-5xl text-slate-300">⚙️</div>

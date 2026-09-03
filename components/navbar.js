@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
 import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 import { generarSugerencias, crearDebounce } from '@/lib/busqueda-tolerante';
@@ -22,7 +22,6 @@ export default function Navbar() {
   const searchRef = useRef(null);
   const abortRef = useRef(null);
   const router = useRouter();
-  const pathname = usePathname();
 
   const menuCategorias = MENU_CATEGORIAS;
   const navLinkClass = 'inline-flex items-center justify-center rounded-lg px-3.5 py-2 text-sm font-semibold text-slate-600 transition-all border border-slate-200 bg-white shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md';
@@ -30,9 +29,6 @@ export default function Navbar() {
   const navSubmenuLinkClass = 'inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-700 transition-all shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md w-fit min-w-[124px]';
   const navSubmenuChildLinkClass = 'inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-700 transition-all shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md w-fit min-w-[116px]';
   const mobileLinkClass = 'inline-flex w-full items-center rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-all border border-slate-200 bg-white shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md';
-
-  const maquinariaLinkClass = 'inline-flex items-center justify-center rounded-lg px-3.5 py-2 text-sm font-semibold transition-all border shadow-sm hover:shadow-md';
-  const isMaquinaria = pathname === '/maquinaria' || pathname?.startsWith('/maquinaria/');
 
   const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
   const totalSugerencias = sugerenciasCats.length + sugerenciasProds.length + 1;
@@ -255,10 +251,6 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          <Link href="/maquinaria" className={`${maquinariaLinkClass} ${isMaquinaria ? 'bg-sky-100 text-sky-700 border-sky-300 ring-1 ring-sky-200' : 'bg-sky-50 text-sky-600 border-sky-200 hover:bg-sky-100 hover:text-sky-700 hover:border-sky-300 hover:ring-1 hover:ring-sky-200'}`}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-            Maquinaria
-          </Link>
           <Link href="/nosotros" className={navLinkClass}>Nosotros</Link>
           <Link href="/contacto" className={navLinkClass}>Contacto</Link>
         </div>
@@ -307,10 +299,6 @@ export default function Navbar() {
               </div>
               <Link href="/" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Inicio</Link>
               <Link href="/productos" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Productos</Link>
-              <Link href="/maquinaria" onClick={() => setMenuAbierto(false)} className={`${mobileLinkClass} ${isMaquinaria ? 'bg-sky-100 text-sky-700 border-sky-300 ring-1 ring-sky-200' : 'bg-sky-50 text-sky-600 border-sky-200'}`}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                Maquinaria
-              </Link>
               <Link href="/nosotros" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Nosotros</Link>
               <Link href="/contacto" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Contacto</Link>
             </div>
