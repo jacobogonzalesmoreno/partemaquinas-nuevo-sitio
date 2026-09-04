@@ -197,7 +197,8 @@ function buildUpdate(row, wpProduct, categoryNames, wpImages) {
     reasons.push('categorias');
   }
 
-  if (wpImages.length > 0 && !sameStringSet(localImageNames, wpImageNames, value => String(value || '').toLowerCase())) {
+  const hasLocalImages = localImages.some(image => String(image || '').startsWith('/uploads/'));
+  if (wpImages.length > 0 && !hasLocalImages && !sameStringSet(localImageNames, wpImageNames, value => String(value || '').toLowerCase())) {
     fields.imagenes = wpImages.join(', ');
     reasons.push('imagenes');
   }

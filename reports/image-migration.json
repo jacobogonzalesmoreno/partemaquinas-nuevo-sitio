@@ -1,16 +1,301 @@
 {
-  "generatedAt": "2026-06-05T17:18:45.950Z",
+  "generatedAt": "2026-09-04T05:13:01.329Z",
   "applied": true,
   "summary": {
     "products": 391,
     "productsUpdated": 391,
-    "remoteImagesFound": 3019,
-    "imagesDownloaded": 2752,
+    "remoteImagesFound": 2911,
+    "imagesDownloaded": 2743,
     "descriptionUrlsRewritten": 2,
     "skippedLocalImages": 0,
-    "failures": 0
+    "failures": 71
   },
-  "failures": [],
+  "failures": [
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/478926ac-dad0-4873-8fe7-e2e14c17d9b8.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/478926ac-dad0-4873-8fe7-e2e14c17d9b8.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/44c8e7f6-7626-4d25-929f-f77c51cf336c_(1).jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/44c8e7f6-7626-4d25-929f-f77c51cf336c_(1).jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/c95a34f1-d9fe-488c-bd64-50ccd5215323.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/c95a34f1-d9fe-488c-bd64-50ccd5215323.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/72d5ce5f-7b2f-420d-8dc6-d07c69a2b1d5.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/72d5ce5f-7b2f-420d-8dc6-d07c69a2b1d5.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/7496c9af-528f-4a64-9469-e411ed0c7224.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/7496c9af-528f-4a64-9469-e411ed0c7224.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/7b66955e-3641-4ea4-a205-541a7a47a145.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/7b66955e-3641-4ea4-a205-541a7a47a145.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/f92e776e-f6d3-459b-b8b3-3a2725356de8.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/f92e776e-f6d3-459b-b8b3-3a2725356de8.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/b34c756a-f919-4c76-a823-bc50bf717e03_(1).jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/b34c756a-f919-4c76-a823-bc50bf717e03_(1).jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/008b889c-8292-4dea-85de-bb7582eab308.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/008b889c-8292-4dea-85de-bb7582eab308.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/d1e9b6d1-78b3-4a64-b091-ffe436cb3c5c.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/d1e9b6d1-78b3-4a64-b091-ffe436cb3c5c.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/3957849c-d162-4feb-87f3-a796e7392f47.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/3957849c-d162-4feb-87f3-a796e7392f47.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/7bf40493-e4fb-4849-8ac0-0f2d815da1ed.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/7bf40493-e4fb-4849-8ac0-0f2d815da1ed.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/210be988-fb01-48f1-9594-f0c66f2d8e5e.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/210be988-fb01-48f1-9594-f0c66f2d8e5e.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/66b2ebdf-427d-405c-8b56-1d027215af32.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/66b2ebdf-427d-405c-8b56-1d027215af32.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/8fa7280b-0cc7-4dc3-9c8b-60f45512d780.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/8fa7280b-0cc7-4dc3-9c8b-60f45512d780.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/fe1ffde6-523e-487c-a865-12a4804c8d6c.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/fe1ffde6-523e-487c-a865-12a4804c8d6c.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-02-01_at_13.30.05_(1).jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-02-01_at_13.30.05_(1).jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-02-01_at_13.30.05.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/WhatsApp_Image_2020-02-01_at_13.30.05.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/6164370c-b8b2-4a4e-9f20-210b6d6a063d.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/6164370c-b8b2-4a4e-9f20-210b6d6a063d.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/cfe03624-379a-4318-9587-98ab08d26a05.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/cfe03624-379a-4318-9587-98ab08d26a05.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/7b44cc6a-7fd3-4c36-9002-9370d89811d2.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/7b44cc6a-7fd3-4c36-9002-9370d89811d2.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/16aba1b1-60bd-437b-a3b9-af8426de5157.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/16aba1b1-60bd-437b-a3b9-af8426de5157.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/fce00b5e-b9e3-4a1a-8493-d118004c1060.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/fce00b5e-b9e3-4a1a-8493-d118004c1060.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/628df79b-fa45-42ca-98d8-d2eb39895ccd.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/628df79b-fa45-42ca-98d8-d2eb39895ccd.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/cee1f17c-3acf-423d-ac0d-fa9a12ccdb16.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/cee1f17c-3acf-423d-ac0d-fa9a12ccdb16.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/6e28b4d4-1b3b-48b2-9bd0-4ecfab2e2655.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/6e28b4d4-1b3b-48b2-9bd0-4ecfab2e2655.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/d6a1cb04-df7d-4c72-97a1-801996be7f46.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/d6a1cb04-df7d-4c72-97a1-801996be7f46.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/ba440837-7792-4acb-ae81-1239d4766992-1.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/ba440837-7792-4acb-ae81-1239d4766992-1.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/9afb33dd-0ee3-4e17-b3af-75ba0cd970a5.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/9afb33dd-0ee3-4e17-b3af-75ba0cd970a5.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8f1b1f1e-20d7-45f4-aab9-b5ff044cd506.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8f1b1f1e-20d7-45f4-aab9-b5ff044cd506.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/b5b8242b-6be4-4d68-8437-7c228f76f5f4.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/b5b8242b-6be4-4d68-8437-7c228f76f5f4.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/51d329a9-2960-41a1-b6da-0b2a70ce6330.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/51d329a9-2960-41a1-b6da-0b2a70ce6330.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/0d1a988d-7ce2-4a8a-b3ed-e3a7140b891a.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/0d1a988d-7ce2-4a8a-b3ed-e3a7140b891a.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/08e26c4e-74a6-483b-9f29-62672d88caa2.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/08e26c4e-74a6-483b-9f29-62672d88caa2.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/2e4ccd13-f678-469f-8c75-fa9a63096646.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/2e4ccd13-f678-469f-8c75-fa9a63096646.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8db05e85-3fc8-4f10-bb07-16a77e611c77.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8db05e85-3fc8-4f10-bb07-16a77e611c77.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/e08a8f4f-b294-4838-aaba-3dec3099b595.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/e08a8f4f-b294-4838-aaba-3dec3099b595.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/00438f33-ec19-400f-a7e5-bc27d0f0a6e1.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/00438f33-ec19-400f-a7e5-bc27d0f0a6e1.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/043f4383-c94f-445c-81db-e7942f059238.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/043f4383-c94f-445c-81db-e7942f059238.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/04c4bcd2-0c9d-4911-be1f-156f3c15191d.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/04c4bcd2-0c9d-4911-be1f-156f3c15191d.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/3958986a-ee7a-4398-aead-b9ddd48ce3c1-1.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/3958986a-ee7a-4398-aead-b9ddd48ce3c1-1.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/de81bbc4-be5d-4e8e-ae47-0c1a7345fca8.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/de81bbc4-be5d-4e8e-ae47-0c1a7345fca8.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8f74930c-0755-4046-b374-ebbf7a4b44c2.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8f74930c-0755-4046-b374-ebbf7a4b44c2.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-1.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-1.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-2.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-2.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-3.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-3.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-4.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-4.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-5.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-5.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-6.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-6.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-7.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-7.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-8.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-8.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-9.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16-9.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16.jpg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/PHOTO-2023-12-12-09-46-16.jpg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/1f52fff7-041c-4362-b068-2ddc5ffa955e.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/1f52fff7-041c-4362-b068-2ddc5ffa955e.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/2f90618d-7eb4-4be6-87a3-378eb9976f6d.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/2f90618d-7eb4-4be6-87a3-378eb9976f6d.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/6fc022e1-a16f-4b14-a286-9ea62b343abb.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/6fc022e1-a16f-4b14-a286-9ea62b343abb.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8c25a146-8212-4137-ba64-bc94d75c69fd.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/8c25a146-8212-4137-ba64-bc94d75c69fd.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/09f2722a-0bd9-43ec-a24b-cd5db249dabf.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/09f2722a-0bd9-43ec-a24b-cd5db249dabf.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/00027e31-63ea-4b91-b871-457a577c1125.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/00027e31-63ea-4b91-b871-457a577c1125.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/34b92d30-62c4-42be-9f2b-6dbdd6cc81be.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/34b92d30-62c4-42be-9f2b-6dbdd6cc81be.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/46c4ebf6-b056-4237-8de9-174b49baa6d2.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/46c4ebf6-b056-4237-8de9-174b49baa6d2.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/095bef1f-5426-4d7e-8732-9c2c184735a6.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/095bef1f-5426-4d7e-8732-9c2c184735a6.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/48899a7a-d1ed-45ad-92fa-c092a3983f5c.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/48899a7a-d1ed-45ad-92fa-c092a3983f5c.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/47448915-0c8b-4a89-89ed-f46d02a6ad0c.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/47448915-0c8b-4a89-89ed-f46d02a6ad0c.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/a20206d5-791a-41d1-bb76-9a20d394906f.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/a20206d5-791a-41d1-bb76-9a20d394906f.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/d7c51909-42db-4a68-8b0a-d1dd8e95a24b.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/d7c51909-42db-4a68-8b0a-d1dd8e95a24b.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/f662f0ee-4a43-4229-98e1-cd51f1a7bddd.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/photo-gallery/imported_from_media_libray/f662f0ee-4a43-4229-98e1-cd51f1a7bddd.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.21-PM-1-1.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.21-PM-1-1.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.21-PM-2.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.21-PM-2.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.22-PM-1-1.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.22-PM-1-1.jpeg: 403"
+    },
+    {
+      "sourceUrl": "https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.22-PM-2.jpeg",
+      "message": "No se pudo descargar https://partemaquinas.com/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-23-at-2.51.22-PM-2.jpeg: 403"
+    }
+  ],
   "updatedProducts": [
     {
       "id": 415,
@@ -119,7 +404,7 @@
     },
     {
       "id": 628,
-      "nombre": "O'Rings",
+      "nombre": "O’Rings",
       "imageCount": 7
     },
     {
@@ -150,12 +435,12 @@
     {
       "id": 692,
       "nombre": "Bala de mando para Caterpillar",
-      "imageCount": 11
+      "imageCount": 6
     },
     {
       "id": 693,
       "nombre": "Bala de mando Kobelco SK210-6 YQ07",
-      "imageCount": 7
+      "imageCount": 4
     },
     {
       "id": 698,
@@ -295,7 +580,7 @@
     {
       "id": 918,
       "nombre": "Válvula solenoide o electrovalvula punto rojo YN35V00050F1",
-      "imageCount": 19
+      "imageCount": 10
     },
     {
       "id": 924,
@@ -309,7 +594,7 @@
     },
     {
       "id": 938,
-      "nombre": "Balinera Reductor de Giro - NTN 22320 - Kobelco SK210-6",
+      "nombre": "Balinera Reductor de Giro – NTN 22320 – Kobelco SK210-6",
       "imageCount": 5
     },
     {
@@ -359,12 +644,12 @@
     },
     {
       "id": 976,
-      "nombre": "Balas de mandos de pedales para Kobelco SK 210 - 6",
+      "nombre": "Balas de mandos de pedales para Kobelco SK 210 – 6",
       "imageCount": 4
     },
     {
       "id": 979,
-      "nombre": "Balinera Reductor de Giro - NTN 22322",
+      "nombre": "Balinera Reductor de Giro – NTN 22322",
       "imageCount": 5
     },
     {
@@ -375,7 +660,7 @@
     {
       "id": 989,
       "nombre": "Enfriador de aceite motor Isuzu 6BG1",
-      "imageCount": 7
+      "imageCount": 4
     },
     {
       "id": 992,
@@ -440,7 +725,7 @@
     {
       "id": 1032,
       "nombre": "Turbo IHI para motor Isuzu 6HK1",
-      "imageCount": 10
+      "imageCount": 1
     },
     {
       "id": 1034,
@@ -449,7 +734,7 @@
     },
     {
       "id": 1046,
-      "nombre": "Soporte de motor para Hyundai 210 - 5",
+      "nombre": "Soporte de motor para Hyundai 210 – 5",
       "imageCount": 3
     },
     {
@@ -459,7 +744,7 @@
     },
     {
       "id": 1062,
-      "nombre": "Soporte de motor para Kobelco SK-200-3 - 4",
+      "nombre": "Soporte de motor para Kobelco SK-200-3 – 4",
       "imageCount": 5
     },
     {
@@ -509,7 +794,7 @@
     },
     {
       "id": 1100,
-      "nombre": "Soporte de motor Kobelco SK210 - 6",
+      "nombre": "Soporte de motor Kobelco SK210 – 6",
       "imageCount": 6
     },
     {
@@ -539,7 +824,7 @@
     },
     {
       "id": 1125,
-      "nombre": "Monitor Escavadora Kobelco SK210 - 6E",
+      "nombre": "Monitor Escavadora Kobelco SK210 – 6E",
       "imageCount": 9
     },
     {
@@ -595,7 +880,7 @@
     {
       "id": 1178,
       "nombre": "Motor Cummins N14 Remanofacturado",
-      "imageCount": 1
+      "imageCount": 8
     },
     {
       "id": 1181,
@@ -605,7 +890,7 @@
     {
       "id": 1184,
       "nombre": "Motor Cummins ISX Remanofacturado",
-      "imageCount": 1
+      "imageCount": 10
     },
     {
       "id": 1191,
@@ -684,7 +969,7 @@
     },
     {
       "id": 1242,
-      "nombre": "Valvula de escape culata y admisión  - Cummins 6BT",
+      "nombre": "Valvula de escape culata y admisión  – Cummins 6BT",
       "imageCount": 20
     },
     {
@@ -704,7 +989,7 @@
     },
     {
       "id": 1316,
-      "nombre": "Bobcat - Thomas",
+      "nombre": "Bobcat – Thomas",
       "imageCount": 10
     },
     {
@@ -730,7 +1015,7 @@
     {
       "id": 1350,
       "nombre": "Cadena 49 pasos Kobelco SK200-34, SK210-66, Caterpillar E200B",
-      "imageCount": 8
+      "imageCount": 6
     },
     {
       "id": 1352,
@@ -750,92 +1035,92 @@
     {
       "id": 1361,
       "nombre": "Motor Cummins 6BT5.9, Kobelco SK200-4, Liugon 922, Hyundai R210-7",
-      "imageCount": 1
+      "imageCount": 3
     },
     {
       "id": 1379,
       "nombre": "Balancin inyeccion Cummins ISM",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1383,
       "nombre": "Balancin Valvulas motor Cummins ISM",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1390,
       "nombre": "Empaquetadura Cilindro Arrastre Liugong 922D",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 1397,
       "nombre": "Cigueñal Motor Shibaura ( Pesa Pequeña)",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1404,
       "nombre": "Cigueñal Motor Shibaura (Pesa Grande)",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1414,
       "nombre": "Tapa Bomba aceite Caterpillar 320B",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1427,
       "nombre": "Eject de balancing (Flauta) Motor Cummins ISX (4059306)",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1437,
       "nombre": "Eje de balancin (Flauta) Motor Cummins ISX (4059304)",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 1449,
       "nombre": "Kato 1430",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 1455,
       "nombre": "Piñon Solar, Carrier Inferior Kobelco Sk210-6E,  SK210-8",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1459,
       "nombre": "Balinera de traslacion BA205 Kobelco SK210",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1469,
       "nombre": "Botadores Motor Caterpillar 3066, Excavadora Caterpillar E200b y 320BC",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1477,
       "nombre": "Bloque Motor Isuzu 6BG1",
-      "imageCount": 11
+      "imageCount": 10
     },
     {
       "id": 1488,
       "nombre": "Bloque Motor Cummins 6BT5.9",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 1494,
       "nombre": "Cigueñal Motor Cummins 6BT5.9 Forjado",
-      "imageCount": 8
+      "imageCount": 7
     },
     {
       "id": 1503,
       "nombre": "Cigueñal Motor Isuzu 6BG1 Forjado",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1510,
       "nombre": "Cigueñal Motor Mitsubishi 6D34 Forjado",
-      "imageCount": 8
+      "imageCount": 7
     },
     {
       "id": 1522,
@@ -850,22 +1135,22 @@
     {
       "id": 1529,
       "nombre": "Culata de Motor Isuzu 4HK1",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1536,
       "nombre": "Kit Casquetes Biela+Bancada Motor Isuzu 6bg1 Medidas STD 0.25,0.50,0.75",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1542,
       "nombre": "Kit Casquetes Biela+Bancada Motor Caterpillar 3066, Medidas STD 0.25,0.50,0.75",
-      "imageCount": 9
+      "imageCount": 8
     },
     {
       "id": 1553,
       "nombre": "Kit Casquetes biela+Bancada  Motor Cummins 6BT5-9 Medidas STD 0.25,0.50,0.75",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1566,
@@ -875,62 +1160,62 @@
     {
       "id": 1593,
       "nombre": "Turbo Kobelco SK210-6E Sany Y215 Kato 820-3 Motor Mitsubishi 6D34",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 1606,
       "nombre": "Empaquetadura de Motor Cummins 6BT5-9 Superior e Inferior",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 1713,
       "nombre": "Kit de Piñones Planetarios Reductor de Giro, Carrier Inferior Liugong 922",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1721,
       "nombre": "Turbo Motor Cummins ISX sin Valvula HX55W",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 1733,
-      "nombre": "Radiador de Agua - Motor Isuzu 6BG1- Excavadora Hitachi Zaxis 200 - 270",
-      "imageCount": 8
+      "nombre": "Radiador de Agua – Motor Isuzu 6BG1- Excavadora Hitachi Zaxis 200 – 270",
+      "imageCount": 7
     },
     {
       "id": 1741,
       "nombre": "Mofle de Motor Isuzu 6BG1 en excavadora Hitachi Zaxis 200",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1746,
-      "nombre": "Eje Central (Torito) - Traslacion Hyundai R210-7,  XCMG",
-      "imageCount": 7
+      "nombre": "Eje Central (Torito) – Traslacion Hyundai R210-7,  XCMG",
+      "imageCount": 6
     },
     {
       "id": 1753,
       "nombre": "Arbol de Levas Motor Isuzu 6BG1",
-      "imageCount": 13
+      "imageCount": 12
     },
     {
       "id": 1767,
       "nombre": "Culata de Motor Cummins 6BT5-9",
-      "imageCount": 11
+      "imageCount": 10
     },
     {
       "id": 1779,
-      "nombre": "Turbo Motor Mitsubishi 6D16 -  Kobelco SK330",
-      "imageCount": 23
+      "nombre": "Turbo Motor Mitsubishi 6D16 –  Kobelco SK330",
+      "imageCount": 22
     },
     {
       "id": 1802,
       "nombre": "Sello Hidráulico (Empaquetadura) de Cilindros (Gatos) Alce (Mellizos), Arrastre, Balde para Sany Y215",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1812,
       "nombre": "Mando Kawasaki Excavadora Kobelco, Liugong",
-      "imageCount": 11
+      "imageCount": 10
     },
     {
       "id": 1825,
@@ -940,107 +1225,107 @@
     {
       "id": 1838,
       "nombre": "Radiador o Enfriador de Aceite Hidráulico, Kobelco SK210-6E,  SK210-8",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 1845,
       "nombre": "Carrier Inferior Reductor de Giro Hyundai R210-7",
-      "imageCount": 9
+      "imageCount": 8
     },
     {
       "id": 1854,
       "nombre": "Carrier Inferior Reductor de Giro Case CX210, Kato HD820-3",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1861,
       "nombre": "Carrier Inferior Reductor de Giro Liugong 922",
-      "imageCount": 8
+      "imageCount": 7
     },
     {
       "id": 1868,
-      "nombre": "Tuberia de Inyeccion Caterpillar E200B - 3066 - 320C - 3066",
-      "imageCount": 3
+      "nombre": "Tuberia de Inyeccion Caterpillar E200B – 3066 – 320C – 3066",
+      "imageCount": 2
     },
     {
       "id": 1879,
       "nombre": "Carrier Grande, Mediano y Pequeño Traslacion Hitachi Zaxis 200",
-      "imageCount": 25
+      "imageCount": 24
     },
     {
       "id": 1904,
       "nombre": "Medidores Aceite hidráulico excavadora Hyundai Kobelco Hitachi",
-      "imageCount": 2
+      "imageCount": 1
     },
     {
       "id": 1906,
       "nombre": "Turbo motor D6D sin Valvula, Excavadora Volvo EC210",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 1918,
       "nombre": "Medidor de Aceite Hidráulico Excavadora Kobelco SK200-3-4, SK210-6E",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1923,
       "nombre": "Medidor de Aceite Hidráulico Excavadora Hyundai R210-7",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 1928,
       "nombre": "Medidor de Aceite Hidráulico Excavadora Hitachi Zaxis 200, EX 200",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1933,
       "nombre": "Cigüeñal motor Cummins 350-400",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 1940,
-      "nombre": "Empaquetadura de Motor Caterpillar 3066 - Caterpillar 320BC - E200B",
-      "imageCount": 8
+      "nombre": "Empaquetadura de Motor Caterpillar 3066 – Caterpillar 320BC – E200B",
+      "imageCount": 7
     },
     {
       "id": 1949,
-      "nombre": "Eje de Levas (Arbol de Levas) - Motor Cummins 350-400",
-      "imageCount": 11
+      "nombre": "Eje de Levas (Arbol de Levas) – Motor Cummins 350-400",
+      "imageCount": 10
     },
     {
       "id": 1960,
       "nombre": "Pinon de giro (Pinon de ataque) Excavadora Liugong 922",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1965,
-      "nombre": "Bomba de Aceite - Motor Cummins 6BT5-9",
-      "imageCount": 10
+      "nombre": "Bomba de Aceite – Motor Cummins 6BT5-9",
+      "imageCount": 9
     },
     {
       "id": 1975,
       "nombre": "Culata Motor Mitsubishi 6D34",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 1986,
       "nombre": "Asientos de culata motor Isuzu 6BG1",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1990,
       "nombre": "Asientos de culata motor Isuzu 6HK1",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1994,
       "nombre": "Asientos de Culata Motor Caterpillar 3066",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 1998,
       "nombre": "Asientos de Culata Motor Isuzu 4HK1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2001,
@@ -1050,262 +1335,262 @@
     {
       "id": 2005,
       "nombre": "Guias culata motor Isuzu 6HK1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2008,
       "nombre": "Guias culata motor Isuzu 4HK1",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2011,
       "nombre": "Asientos de culata motor Cummins 6BT5-9",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2015,
       "nombre": "Guias culata motor Cummins 6BT5-9",
-      "imageCount": 2
+      "imageCount": 1
     },
     {
       "id": 2017,
       "nombre": "Guias de culata motor Isuzu 6BG1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2020,
       "nombre": "Guias culata motor Mitsubishi 6D34",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2023,
       "nombre": "Kato 820-3",
-      "imageCount": 28
+      "imageCount": 27
     },
     {
       "id": 2051,
       "nombre": "Kobelco SK210 Mark 8",
-      "imageCount": 20
+      "imageCount": 19
     },
     {
       "id": 2073,
-      "nombre": "Turbo motor Isuzu 6SD1 - Hitachi EX300",
-      "imageCount": 12
+      "nombre": "Turbo motor Isuzu 6SD1 – Hitachi EX300",
+      "imageCount": 11
     },
     {
       "id": 2085,
-      "nombre": "Empaquetadura de Motor Isuzu 6WG1 - Hitachi Zaxis 450",
-      "imageCount": 8
+      "nombre": "Empaquetadura de Motor Isuzu 6WG1 – Hitachi Zaxis 450",
+      "imageCount": 7
     },
     {
       "id": 2094,
-      "nombre": "Empaquetadura de Motor- Cummins ISM - Kenworth",
-      "imageCount": 8
+      "nombre": "Empaquetadura de Motor- Cummins ISM – Kenworth",
+      "imageCount": 7
     },
     {
       "id": 2102,
-      "nombre": "Carrier inferior - Motor de giro - Case 130",
-      "imageCount": 4
+      "nombre": "Carrier inferior – Motor de giro – Case 130",
+      "imageCount": 3
     },
     {
       "id": 2108,
       "nombre": "Sellos Hidraulico (empaquetadura) Caterpillar 312",
-      "imageCount": 8
+      "imageCount": 7
     },
     {
       "id": 2117,
-      "nombre": "Empaquetadura Motor - Mitsubishi  6D16- Excavadora Kobelco SK330",
-      "imageCount": 11
+      "nombre": "Empaquetadura Motor – Mitsubishi  6D16- Excavadora Kobelco SK330",
+      "imageCount": 10
     },
     {
       "id": 2128,
-      "nombre": "Empaquetadura Motor - Isuzu  6bg1- Excavadora Hitachi Zaxis 200-270 Sany Y235",
-      "imageCount": 9
+      "nombre": "Empaquetadura Motor – Isuzu  6bg1- Excavadora Hitachi Zaxis 200-270 Sany Y235",
+      "imageCount": 8
     },
     {
       "id": 2137,
-      "nombre": "Empaquetadura Motor - Doosan DB58 - Excavadora Doosan DX225",
-      "imageCount": 11
+      "nombre": "Empaquetadura Motor – Doosan DB58 – Excavadora Doosan DX225",
+      "imageCount": 10
     },
     {
       "id": 2149,
       "nombre": "Empaquetadura Motor- Isuzu 4HK1- Excavadora Zaxis 200-3",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 2161,
-      "nombre": "Buje Baby (Du Bushing) Cilindro (gato) balde - Excavadora Caterpillar 312B-C",
-      "imageCount": 2
+      "nombre": "Buje Baby (Du Bushing) Cilindro (gato) balde – Excavadora Caterpillar 312B-C",
+      "imageCount": 1
     },
     {
       "id": 2163,
-      "nombre": "Buje Baby (Du Bushing) Cilindro (Gato) alce - Excavadora Caterpillar 312B-C",
-      "imageCount": 2
+      "nombre": "Buje Baby (Du Bushing) Cilindro (Gato) alce – Excavadora Caterpillar 312B-C",
+      "imageCount": 1
     },
     {
       "id": 2165,
-      "nombre": "Buje Baby (Du Bushing) Cilindro (gato) arrastre - Excavadora Caterpillar 312B-C",
-      "imageCount": 2
+      "nombre": "Buje Baby (Du Bushing) Cilindro (gato) arrastre – Excavadora Caterpillar 312B-C",
+      "imageCount": 1
     },
     {
       "id": 2167,
-      "nombre": "Empaquetadura Motor - Mitsubishi  6D34- Excavadora Kobelco SK210 Sany Y215 Kato 820",
-      "imageCount": 14
-    },
-    {
-      "id": 2182,
-      "nombre": "Empaquetadura de Motor - Shibaura N844T Mini Cargador New Holland S170",
-      "imageCount": 19
-    },
-    {
-      "id": 2201,
-      "nombre": "Empaquetadura de motor - Mitsubishi 6d34 - Excavadora kobelco sk210, Kato 820, Sany Y215",
-      "imageCount": 14
-    },
-    {
-      "id": 2215,
-      "nombre": "Turbo Motor- Cummins 6CT - HX40W",
-      "imageCount": 12
-    },
-    {
-      "id": 2228,
-      "nombre": "Turbo sin Valvula - Motor Cummins 6CT - HX40",
-      "imageCount": 15
-    },
-    {
-      "id": 2244,
-      "nombre": "Kit piñon planetario carrier inferior - Reductor de giro - Excavadora kobelco SK200-3-4",
-      "imageCount": 6
-    },
-    {
-      "id": 2250,
-      "nombre": "Empaquetadura Motor - Isuzu  6HK1- Excavadora Hitachi Zaxis 330",
+      "nombre": "Empaquetadura Motor – Mitsubishi  6D34- Excavadora Kobelco SK210 Sany Y215 Kato 820",
       "imageCount": 13
     },
     {
-      "id": 2263,
-      "nombre": "Cableado Electrico (Harness) - Excavadora Sany Y215 - 235",
-      "imageCount": 2
+      "id": 2182,
+      "nombre": "Empaquetadura de Motor – Shibaura N844T Mini Cargador New Holland S170",
+      "imageCount": 18
     },
     {
-      "id": 2265,
-      "nombre": "Kit tuberia inyección motor Isuzu 6BG1 - Excavadora Hitachi EX-Zaxis 200",
-      "imageCount": 3
+      "id": 2201,
+      "nombre": "Empaquetadura de motor – Mitsubishi 6d34 – Excavadora kobelco sk210, Kato 820, Sany Y215",
+      "imageCount": 13
     },
     {
-      "id": 2268,
-      "nombre": "Cableado Eléctrico (Harness) - Excavadora  Caterpillar 312-320-330B-C-D",
-      "imageCount": 8
+      "id": 2215,
+      "nombre": "Turbo Motor- Cummins 6CT – HX40W",
+      "imageCount": 11
     },
     {
-      "id": 2277,
-      "nombre": "Carrier Superiro - Reductor Giro - Excavadora XGMA",
-      "imageCount": 6
+      "id": 2228,
+      "nombre": "Turbo sin Valvula – Motor Cummins 6CT – HX40",
+      "imageCount": 14
     },
     {
-      "id": 2284,
-      "nombre": "Tapa Distribución - Motor Isuzu 6BG1 Doosan",
+      "id": 2244,
+      "nombre": "Kit piñon planetario carrier inferior – Reductor de giro – Excavadora kobelco SK200-3-4",
       "imageCount": 5
     },
     {
+      "id": 2250,
+      "nombre": "Empaquetadura Motor – Isuzu  6HK1- Excavadora Hitachi Zaxis 330",
+      "imageCount": 12
+    },
+    {
+      "id": 2263,
+      "nombre": "Cableado Electrico (Harness) – Excavadora Sany Y215 – 235",
+      "imageCount": 1
+    },
+    {
+      "id": 2265,
+      "nombre": "Kit tuberia inyección motor Isuzu 6BG1 – Excavadora Hitachi EX-Zaxis 200",
+      "imageCount": 2
+    },
+    {
+      "id": 2268,
+      "nombre": "Cableado Eléctrico (Harness) – Excavadora  Caterpillar 312-320-330B-C-D",
+      "imageCount": 7
+    },
+    {
+      "id": 2277,
+      "nombre": "Carrier Superiro – Reductor Giro – Excavadora XGMA",
+      "imageCount": 5
+    },
+    {
+      "id": 2284,
+      "nombre": "Tapa Distribución – Motor Isuzu 6BG1 Doosan",
+      "imageCount": 4
+    },
+    {
       "id": 2289,
-      "nombre": "Scanner Caterpillar ET - Herramienta Diagnostico Excavadora Bulldozer Retroexcavadora Cargador Minicargador - Caterpillar",
-      "imageCount": 11
+      "nombre": "Scanner Caterpillar ET – Herramienta Diagnostico Excavadora Bulldozer Retroexcavadora Cargador Minicargador – Caterpillar",
+      "imageCount": 10
     },
     {
       "id": 2304,
       "nombre": "Kit pasadores carrier inferior reductor giro excavadora XGMA 822",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2307,
       "nombre": "Empaque de culata motor Cummins 6BT5-9",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 2312,
       "nombre": "Inyectores motor Isuzu 6BG1",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 2319,
       "nombre": "Carrier grande traslacion Hyundai R210-7,  Volvo EC210B",
-      "imageCount": 8
+      "imageCount": 7
     },
     {
       "id": 2327,
       "nombre": "Carrier pequeño traslacion Hyundai R210-7,  Volvo EC210B",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 2348,
-      "nombre": "Empaquetadura de cilindros (gatos) excavadora Volvo EC210B - arrastre, balde - mellizos",
-      "imageCount": 6
+      "nombre": "Empaquetadura de cilindros (gatos) excavadora Volvo EC210B – arrastre, balde – mellizos",
+      "imageCount": 5
     },
     {
       "id": 2354,
       "nombre": "Empaquetadura de cilindros (gatos) excavadora XGMA 822 arrastre, balde, mellizos, center",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 2373,
       "nombre": "Empaquetadura de cilindros (gatos) excavadora Liugong 922, arrastre, balde, mellizos",
-      "imageCount": 14
+      "imageCount": 13
     },
     {
       "id": 2387,
       "nombre": "Empaquetadura de cilindros (gatos) excavadora Hyundai R210-7,  arrastre, balde, mellizos, center",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 2399,
       "nombre": "Turbo Cummins 350",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 2400,
       "nombre": "Kit motor de traslacion Volvo EC210B",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 2412,
       "nombre": "Motor SANY 6D34",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 2417,
       "nombre": "Retenedor trasero motor Isuzu 6BG1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2420,
       "nombre": "Retenedor delantero motor Isuzu 6BG1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2423,
       "nombre": "Plato escualizable motor de traslacion Volvo EC210B",
-      "imageCount": 9
+      "imageCount": 8
     },
     {
       "id": 2433,
       "nombre": "Inyector de combustible motor Isuzu 4HK1",
-      "imageCount": 14
+      "imageCount": 13
     },
     {
       "id": 2447,
       "nombre": "Bomba de inyeccion motor Isuzu 6BG1",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2452,
       "nombre": "Damper de cigueñal motor Mitsubishi 6D34",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2457,
       "nombre": "Piñon Solar Carrier inferior Giro Casé CX210 Kato 820-3",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2462,
@@ -1315,12 +1600,12 @@
     {
       "id": 2471,
       "nombre": "Multiple escape motor Cummins 6BT5-9",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2475,
       "nombre": "Multiple escape motor Mitsubishi 6D34 Isuzu 6BG1 Cummins 6BT5-9",
-      "imageCount": 2
+      "imageCount": 1
     },
     {
       "id": 2477,
@@ -1330,42 +1615,42 @@
     {
       "id": 2481,
       "nombre": "Empaquetadura motor Komatsu",
-      "imageCount": 19
+      "imageCount": 18
     },
     {
       "id": 2500,
       "nombre": "Multiple escape motor Isuzu 6BG1",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 2506,
       "nombre": "Multiple escape motor Mitsubishi 6D34",
-      "imageCount": 1
+      "imageCount": 4
     },
     {
       "id": 2511,
       "nombre": "Motobomba con motor Cummins 350",
-      "imageCount": 12
+      "imageCount": 11
     },
     {
       "id": 2523,
       "nombre": "Inyector Motor Cummins 6BT5.9 Excavadora Kobelco SK200-3-4 Liugong 922 Hyundai R210-7",
-      "imageCount": 11
+      "imageCount": 10
     },
     {
       "id": 2534,
       "nombre": "Filtro aceite hidráulico excavadora Sany Y215",
-      "imageCount": 9
+      "imageCount": 8
     },
     {
       "id": 2545,
       "nombre": "Filtro hidráulico de succión excavadora Sany Y215",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 2551,
       "nombre": "Filtro hidráulico piloto excavadora Sany Y215",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 2558,
@@ -1375,172 +1660,172 @@
     {
       "id": 2560,
       "nombre": "Bomba de inyeccion Cummins Iveco CNH excavadora Kobelco SK210-8",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 2566,
       "nombre": "Bomba inyeccion Motor Isuzu 6BG1 excavadora Hitachi Zaxis 200 Sany Y235",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 2571,
       "nombre": "Bomba piloto excavadora Kobelco SK200-3-4",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 2579,
       "nombre": "Reparacion Motor Giro SG08 Link Belt 210",
-      "imageCount": 22
+      "imageCount": 21
     },
     {
       "id": 2602,
       "nombre": "Bomba de agua, motor Isuzu 6WG1,  Hitachi Zaxis 450",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 2608,
       "nombre": "Ventilador Motor Cummins 6BT5-9   Excavadora Liugong 922",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2612,
-      "nombre": "Ventilador motor Komatsu - excavadora Komatsu PC200-6-7-8",
-      "imageCount": 4
+      "nombre": "Ventilador motor Komatsu – excavadora Komatsu PC200-6-7-8",
+      "imageCount": 3
     },
     {
       "id": 2618,
-      "nombre": "Ventilador motor Mitsubishi 6d34 - excavadora Kobelco SK210 - Sany Y215 - Kato 820-3",
-      "imageCount": 4
+      "nombre": "Ventilador motor Mitsubishi 6d34 – excavadora Kobelco SK210 – Sany Y215 – Kato 820-3",
+      "imageCount": 3
     },
     {
       "id": 2623,
-      "nombre": "Sensor de refrigerante - Motor Cummins ISM ISX- Kenworth T800 - Internacional 9400 7600",
-      "imageCount": 5
+      "nombre": "Sensor de refrigerante – Motor Cummins ISM ISX- Kenworth T800 – Internacional 9400 7600",
+      "imageCount": 4
     },
     {
       "id": 2628,
       "nombre": "Ventilador motor Cummins ISL ISM ISC",
-      "imageCount": 7
+      "imageCount": 6
     },
     {
       "id": 2635,
-      "nombre": "Sensor temperatura - motor Cummins ISX ISM",
-      "imageCount": 5
+      "nombre": "Sensor temperatura – motor Cummins ISX ISM",
+      "imageCount": 4
     },
     {
       "id": 2640,
       "nombre": "Sensor lubricación",
-      "imageCount": 6
+      "imageCount": 5
     },
     {
       "id": 2646,
       "nombre": "Acople Manguera tanque combustible",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2650,
-      "nombre": "Bloque motor - Caterpillar 3066 - Excavadora Caterpillar E200B 320C",
-      "imageCount": 6
+      "nombre": "Bloque motor – Caterpillar 3066 – Excavadora Caterpillar E200B 320C",
+      "imageCount": 5
     },
     {
       "id": 2656,
       "nombre": "Culata motor Isuzu 6HK1",
-      "imageCount": 14
+      "imageCount": 13
     },
     {
       "id": 2670,
       "nombre": "Cigueñal motor Isuzu 6HK1",
-      "imageCount": 8
+      "imageCount": 7
     },
     {
       "id": 2678,
       "nombre": "Banco de Valvulas Hyundai R210-7",
-      "imageCount": 5
+      "imageCount": 4
     },
     {
       "id": 2684,
       "nombre": "Bloque Motor Mitsubishi 6D34  Excavadora Sany Y215  Kobelco SK210-6E Kato HD820-3",
-      "imageCount": 13
+      "imageCount": 12
     },
     {
       "id": 2698,
       "nombre": "Bloque Motor Isuzu 6hk1 Excavadora Hitachi Zaxis 330",
-      "imageCount": 10
+      "imageCount": 9
     },
     {
       "id": 2710,
       "nombre": "Liner Kit Cummins 6CT",
-      "imageCount": 17
+      "imageCount": 16
     },
     {
       "id": 2729,
       "nombre": "Liner Kit Cummins ISX",
-      "imageCount": 11
+      "imageCount": 10
     },
     {
       "id": 2741,
-      "nombre": "Kit Reparacion Motor Traslacion - Excavadora Kobelco SK200-3-4 Caterpillar E200B-320c",
-      "imageCount": 19
+      "nombre": "Kit Reparacion Motor Traslacion – Excavadora Kobelco SK200-3-4 Caterpillar E200B-320c",
+      "imageCount": 18
     },
     {
       "id": 2761,
-      "nombre": "Kit Reparacion Motor Traslacion - Excavadora Hyundai R210-7 Doosan DX225",
-      "imageCount": 14
+      "nombre": "Kit Reparacion Motor Traslacion – Excavadora Hyundai R210-7 Doosan DX225",
+      "imageCount": 13
     },
     {
       "id": 2777,
-      "nombre": "Reductor Traslacion - Excavadora CASE CX130-130B",
-      "imageCount": 14
+      "nombre": "Reductor Traslacion – Excavadora CASE CX130-130B",
+      "imageCount": 13
     },
     {
       "id": 2792,
-      "nombre": "Moto Reductor Giro - Excavadora Liugong 922, XGMA 822",
-      "imageCount": 13
+      "nombre": "Moto Reductor Giro – Excavadora Liugong 922, XGMA 822",
+      "imageCount": 12
     },
     {
       "id": 2805,
       "nombre": "Bomba aceite motor Isuzu 6BG1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2810,
       "nombre": "Bomba aceite motor Isuzu 6WG1",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2815,
       "nombre": "Bomba aceite motor Isuzu 4HK1",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2820,
       "nombre": "Bomba aceite motor Cummins 6BT5-9",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2824,
       "nombre": "Bomba aceite motor Mitsubishi 6D34",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2827,
       "nombre": "Bomba aceite motor Isuzu 6HK1",
-      "imageCount": 3
+      "imageCount": 2
     },
     {
       "id": 2832,
-      "nombre": "Bomba de inyección - motor CNH - excavadora Kobelco SK210-8",
-      "imageCount": 7
+      "nombre": "Bomba de inyección – motor CNH – excavadora Kobelco SK210-8",
+      "imageCount": 6
     },
     {
       "id": 2840,
-      "nombre": "Tapa bomba de aceite - motor Caterpillar 3066 - excavadora Caterpillar 320C",
-      "imageCount": 4
+      "nombre": "Tapa bomba de aceite – motor Caterpillar 3066 – excavadora Caterpillar 320C",
+      "imageCount": 3
     },
     {
       "id": 2844,
       "nombre": "Liner kit Caterpillar E200B ( 3116 )",
-      "imageCount": 4
+      "imageCount": 3
     },
     {
       "id": 2907,
@@ -1555,27 +1840,27 @@
     {
       "id": 2932,
       "nombre": "Radiador de aceite KOBELCO SK200-3/4",
-      "imageCount": 1
+      "imageCount": 6
     },
     {
       "id": 2935,
       "nombre": "Motor DOOSAN DB58",
-      "imageCount": 1
+      "imageCount": 6
     },
     {
       "id": 2962,
       "nombre": "Liner Kit CATERPILLAR C15",
-      "imageCount": 1
+      "imageCount": 16
     },
     {
       "id": 3126,
       "nombre": "Excavadora HYUNDAI R220-9S",
-      "imageCount": 1
+      "imageCount": 11
     },
     {
       "id": 3145,
       "nombre": "Excavadora HITACHI EX100-5",
-      "imageCount": 1
+      "imageCount": 15
     },
     {
       "id": 3174,
@@ -1599,7 +1884,7 @@
     },
     {
       "id": 3256,
-      "nombre": "Kit Reparacion Motor de Giro (M5X130) - Zaxis 200 / SK210-6",
+      "nombre": "Kit Reparacion Motor de Giro (M5X130) – Zaxis 200 / SK210-6",
       "imageCount": 21
     },
     {
@@ -1639,7 +1924,7 @@
     },
     {
       "id": 3393,
-      "nombre": "Banco De Valvulas Zaxis200",
+      "nombre": "Bnaco De Valvulas Zaxis200",
       "imageCount": 12
     },
     {
@@ -1695,7 +1980,7 @@
     {
       "id": 3498,
       "nombre": "Reductor de giro KOBELCO SK210-6",
-      "imageCount": 31
+      "imageCount": 29
     },
     {
       "id": 3520,
@@ -1720,7 +2005,7 @@
     {
       "id": 3549,
       "nombre": "Motorreductor de Traslacion KOBELCO SK200-3/4",
-      "imageCount": 5
+      "imageCount": 9
     },
     {
       "id": 3562,
@@ -1784,12 +2069,12 @@
     },
     {
       "id": 3704,
-      "nombre": "Carrier Externo (Pequeño) - Reductor de Traslación - Excavadora - Hyundai R210/220",
+      "nombre": "Carrier Externo (Pequeño) – Reductor de Traslación – Excavadora – Hyundai R210/220",
       "imageCount": 4
     },
     {
       "id": 3708,
-      "nombre": "Carrier Interno (Grande) - Reductor de Traslación - Excavadora - Hyundai R210/220",
+      "nombre": "Carrier Interno (Grande) – Reductor de Traslación – Excavadora – Hyundai R210/220",
       "imageCount": 3
     },
     {
@@ -1869,42 +2154,42 @@
     },
     {
       "id": 3802,
-      "nombre": "Rueda Guía (Tensora - Loca) CATERPILLAR E120B",
+      "nombre": "Rueda Guía (Tensora – Loca) CATERPILLAR E120B",
       "imageCount": 2
     },
     {
       "id": 3803,
-      "nombre": "Rueda Guia (Tensora - Loca) HITACHI EX200-6",
+      "nombre": "Rueda Guia (Tensora – Loca) HITACHI EX200-6",
       "imageCount": 2
     },
     {
       "id": 3804,
-      "nombre": "Rueda Guía (Tensora - Loca) HITACHI EX200-2",
+      "nombre": "Rueda Guía (Tensora – Loca) HITACHI EX200-2",
       "imageCount": 2
     },
     {
       "id": 3805,
-      "nombre": "Rueda Guía (Tensora - Loca) CATERPILLAR E200B",
+      "nombre": "Rueda Guía (Tensora – Loca) CATERPILLAR E200B",
       "imageCount": 2
     },
     {
       "id": 3806,
-      "nombre": "Rueda Guía (Tensora - Loca) HITACHI ZX300-5",
+      "nombre": "Rueda Guía (Tensora – Loca) HITACHI ZX300-5",
       "imageCount": 2
     },
     {
       "id": 3807,
-      "nombre": "Rueda Guía (Tensora - Loca) DOOSAN DH220-5",
+      "nombre": "Rueda Guía (Tensora – Loca) DOOSAN DH220-5",
       "imageCount": 2
     },
     {
       "id": 3808,
-      "nombre": "Rueda Guía (Tensora - Loca) KOBELCO SK200-3",
+      "nombre": "Rueda Guía (Tensora – Loca) KOBELCO SK200-3",
       "imageCount": 2
     },
     {
       "id": 3809,
-      "nombre": "Rueda Guía (Tensora - Loca) HITACHI EX100-5",
+      "nombre": "Rueda Guía (Tensora – Loca) HITACHI EX100-5",
       "imageCount": 2
     },
     {

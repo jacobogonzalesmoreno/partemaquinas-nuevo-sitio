@@ -197,17 +197,33 @@ async function main() {
       let localUrl = urlMap.get(key);
 
       if (!localUrl) {
-        const tempResponse = await fetch(normalized, { method: 'HEAD', redirect: 'follow' }).catch(() => null);
-        const contentType = tempResponse?.headers?.get?.('content-type') || '';
-        const fileName = buildLocalFileName(normalized, contentType);
+        const fileName = buildLocalFileName(normalized, '');
         localUrl = buildLocalUrl(fileName);
 
         if (APPLY_CHANGES) {
           const targetPath = path.join(UPLOAD_DIR, fileName);
-          if (!downloadCache.has(key)) {
+          if (downloadCache.has(key)) {
+            urlMap.set(key, localUrl);
+          } else if (fsSync.existsSync(targetPath)) {
+            downloadCache.set(key, targetPath);
+            urlMap.set(key, localUrl);
+            report.summary.imagesDownloaded += 1;
+          } else {
+            const tempResponse = await fetch(normalized, { method: 'HEAD', redirect: 'follow' }).catch(() => null);
+            const contentType = tempResponse?.headers?.get?.('content-type') || '';
+            const remoteFileName = buildLocalFileName(normalized, contentType);
+            const remoteTargetPath = path.join(UPLOAD_DIR, remoteFileName);
+            if (fsSync.existsSync(remoteTargetPath)) {
+              localUrl = buildLocalUrl(remoteFileName);
+              downloadCache.set(key, remoteTargetPath);
+              urlMap.set(key, localUrl);
+              report.summary.imagesDownloaded += 1;
+              continue;
+            }
             try {
-              await downloadImage(normalized, targetPath);
-              downloadCache.set(key, targetPath);
+              await downloadImage(normalized, remoteTargetPath);
+              localUrl = buildLocalUrl(remoteFileName);
+              downloadCache.set(key, remoteTargetPath);
               urlMap.set(key, localUrl);
               report.summary.imagesDownloaded += 1;
             } catch (error) {
@@ -215,8 +231,6 @@ async function main() {
               report.failures.push({ sourceUrl: normalized, message: error.message });
               continue;
             }
-          } else {
-            urlMap.set(key, localUrl);
           }
         } else {
           urlMap.set(key, localUrl);

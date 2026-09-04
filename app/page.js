@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -206,17 +207,19 @@ function SidebarTabs({ manualesPorMarca, mecanicos, aliados }) {
 
 function MobileDrawer({ manualesPorMarca, mecanicos, aliados }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; return () => { document.body.style.overflow = ''; }; }, [open]);
 
-  return (
+  const drawer = (
     <>
-      <button onClick={() => setOpen(true)} aria-label="Abrir panel de soporte"
-        className="lg:hidden fixed bottom-6 right-6 z-40 w-14 h-14 rounded-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/30 flex items-center justify-center hover:bg-slate-800 active:scale-95 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
+      <button onClick={() => setOpen(true)} aria-label="Abrir panel de soporte" aria-expanded={open}
+        className="lg:hidden fixed left-3 top-1/2 -translate-y-1/2 z-40 w-12 h-14 rounded-r-2xl bg-slate-900 text-white shadow-lg shadow-slate-900/30 flex items-center justify-center hover:bg-slate-800 active:scale-95 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
         <IconMenu />
       </button>
       <div className={`lg:hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setOpen(false)} />
-      <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out max-h-[85vh] flex flex-col ${open ? 'translate-y-0' : 'translate-y-full'}`}>
+      <div className={`lg:hidden fixed inset-y-0 left-0 z-50 w-[min(88vw,380px)] bg-white rounded-r-3xl shadow-2xl transition-transform duration-300 ease-out flex flex-col ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-slate-100 shrink-0">
           <div>
             <p className="text-[10px] uppercase tracking-[0.35em] text-orange-500 font-bold">Red de soporte</p>
@@ -230,6 +233,8 @@ function MobileDrawer({ manualesPorMarca, mecanicos, aliados }) {
       </div>
     </>
   );
+
+  return mounted ? createPortal(drawer, document.body) : null;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -500,7 +505,7 @@ export default function Home() {
             <div className="max-w-2xl mx-auto px-6 py-10">
               <Reveal>
                 <div className="text-center mb-5">
-                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900" style={{ fontFamily: 'var(--font-display)' }}>Que producto estas buscando?</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900" style={{ fontFamily: 'var(--font-display)' }}>¿Qué producto estas buscando?</h2>
                   <p className="text-slate-500 mt-2">Escribe el nombre, marca, referencia o modelo y encuentra el repuesto.</p>
                 </div>
                 <form onSubmit={onSubmitBuscar} className="relative" ref={searchRef}>
@@ -634,11 +639,11 @@ export default function Home() {
                             className="inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
                             Ver catalogo
                           </Link>
-                          <Link href="/contacto"
+                          <a href="https://wa.me/573163293151?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20repuestos" target="_blank" rel="noopener noreferrer"
                             className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
                             <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={30} height={30} sizes="30px" />
                             Hablar con un asesor
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </Reveal>
@@ -732,10 +737,10 @@ export default function Home() {
                   <h3 className="text-2xl font-bold text-slate-900">Listo para cotizar?</h3>
                   <p className="text-slate-600">Recibe respuesta rapida con un asesor experto.</p>
                 </div>
-                <Link href="/contacto"
+                <a href="https://wa.me/573163293151?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20repuestos" target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-orange-500">
                   Contactar ahora
-                </Link>
+                </a>
               </div>
             </section>
           </Reveal>

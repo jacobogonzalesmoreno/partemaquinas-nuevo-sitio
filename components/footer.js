@@ -21,15 +21,7 @@ export default function Footer() {
         <div className="flex flex-wrap gap-6 text-sm font-semibold">
           <a href="https://api.whatsapp.com/send?phone=573163293151" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-slate-300 hover:text-emerald-300 transition-colors">
             <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={28} height={28} />
-            Asesor 1
-          </a>
-          <a href="https://api.whatsapp.com/send?phone=573108948217" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-slate-300 hover:text-emerald-300 transition-colors">
-            <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={28} height={28} />
-            Asesor 2
-          </a>
-          <a href="https://api.whatsapp.com/send?phone=573104526096" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-slate-300 hover:text-emerald-300 transition-colors">
-            <Image src="/logo/Logo-WhatsApp.png" alt="WhatsApp" width={28} height={28} />
-            Asesor 3
+            Asesor Comercial
           </a>
         </div>
         <p className="text-slate-500 text-xs">© 2026 ParteMaquinas. Todos los derechos reservados.</p>

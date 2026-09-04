@@ -258,12 +258,14 @@ export default function Nosotros() {
             >
               Explorar productos
             </Link>
-            <Link
-              href="/contacto"
+            <a
+              href="https://wa.me/573163293151?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20repuestos"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-anim inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 transition-colors"
             >
               Contactar ahora
-            </Link>
+            </a>
           </div>
         </div>
       </section>
