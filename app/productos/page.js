@@ -10,6 +10,11 @@ import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
 const CATALOGO_URL_KEY = 'catalogoListadoUrl';
 const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
+const PORTADAS_CATEGORIA = {
+  giro: '/categorias/giro-portada.png',
+  motores: '/categorias/motores-portada.png',
+  ventiladores: '/categorias/ventiladores-portada.png',
+};
 
 const obtenerClasesTarjeta = nivel => {
   if (nivel === 0) return { wrapper: 'rounded-[28px]', image: 'aspect-[6/5]', padding: 'px-6 py-5', title: 'text-2xl', label: 'Categoria', icon: 'h-11 w-11 text-xl', cardTone: 'border-slate-200 bg-white', imageTone: 'bg-slate-100', labelTone: 'text-slate-400' };
@@ -19,7 +24,7 @@ const obtenerClasesTarjeta = nivel => {
 
 function TarjetaCategoria({ categoria, nivel, categoriasConImagenError, setCategoriasConImagenError, hrefCategoria, onNavigate }) {
   const slug = slugifyCategoria(categoria.nombre);
-  const rutaImagen = `/categorias/${slug}.png`;
+  const rutaImagen = PORTADAS_CATEGORIA[slug] || `/categorias/${slug}.png`;
   const tieneError = Boolean(categoriasConImagenError[slug]);
   const c = obtenerClasesTarjeta(nivel);
   return (

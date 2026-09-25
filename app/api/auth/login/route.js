@@ -23,13 +23,24 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Credenciales invalidas.' }, { status: 400 });
   }
 
-  const { username, password } = parsed.data;
-  const ok = verifyAdminCredentials(username, password);
-  if (!ok) {
-    return NextResponse.json({ error: 'Usuario o clave incorrectos.' }, { status: 401 });
-  }
+  try {
+    const { username, password } = parsed.data;
+    const ok = verifyAdminCredentials(username, password);
+    if (!ok) {
+      return NextResponse.json({ error: 'Usuario o clave incorrectos.' }, { status: 401 });
+    }
 
-  const response = NextResponse.json({ ok: true });
-  setSessionCookie(response, 'admin');
-  return response;
+    const response = NextResponse.json({ ok: true });
+    setSessionCookie(response, 'admin');
+    return response;
+  } catch (error) {
+    console.error('[API /api/auth/login] Falló la validación del acceso:', error?.name || 'Error');
+    const detalleSeguro = error instanceof Error && /configuraci[oó]n de seguridad|configura ADMIN_USER/i.test(error.message)
+      ? error.message
+      : 'No se pudo validar el acceso. Revisa la configuración de seguridad del servidor.';
+    return NextResponse.json(
+      { error: detalleSeguro },
+      { status: 503 },
+    );
+  }
 }

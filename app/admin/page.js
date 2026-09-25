@@ -62,6 +62,7 @@ export default function AdminPage() {
   const [validandoSesion, setValidandoSesion] = useState(true);
   const [usuario, setUsuario] = useState('');
   const [clave, setClave] = useState('');
+  const [mostrarClave, setMostrarClave] = useState(false);
   const [cargandoLogin, setCargandoLogin] = useState(false);
   const [mostrarLogin, setMostrarLogin] = useState(false);
   const [loginShake, setLoginShake] = useState(false);
@@ -86,6 +87,7 @@ export default function AdminPage() {
   const [pagina, setPagina] = useState(1);
   const [totalProductos, setTotalProductos] = useState(0);
   const [editId, setEditId] = useState(null);
+  const [mostrarEditorProducto, setMostrarEditorProducto] = useState(false);
   const [form, setForm] = useState({});
   const [categoriaForm, setCategoriaForm] = useState({ nombre: '', emoji: '' });
   const [categoriaEditId, setCategoriaEditId] = useState(null);
@@ -102,6 +104,7 @@ export default function AdminPage() {
   const [maquinariaItems, setMaquinariaItems] = useState([]);
   const [cargandoMaquinaria, setCargandoMaquinaria] = useState(false);
   const [editMaquinariaId, setEditMaquinariaId] = useState(null);
+  const [mostrarEditorMaquinaria, setMostrarEditorMaquinaria] = useState(false);
   const [formMaquinaria, setFormMaquinaria] = useState({
     nombre: '', descripcion: '', precio: '', imagenes: '', estado: 'disponible',
   });
@@ -166,6 +169,7 @@ export default function AdminPage() {
       setAutenticado(true);
       setUsuario('');
       setClave('');
+      setMostrarClave(false);
     } catch (err) {
       setError(err.message || 'No se pudo iniciar sesion.');
       setLoginShake(true);
@@ -289,6 +293,7 @@ export default function AdminPage() {
       else next[field] = String(value);
     });
     setEditId(String(producto.id));
+    setMostrarEditorProducto(true);
     setForm(next);
     setSelectedImagenIndex(0);
     setAviso('');
@@ -297,6 +302,7 @@ export default function AdminPage() {
 
   const resetForm = () => {
     setEditId(null);
+    setMostrarEditorProducto(false);
     setForm(buildEmptyForm(editableFields));
     setSelectedImagenIndex(0);
     setAviso('');
@@ -343,6 +349,7 @@ export default function AdminPage() {
       if (!editId && data?.id) setEditId(String(data.id));
       const message = editId ? 'Producto actualizado.' : 'Producto creado.';
       setAviso(message);
+      setMostrarEditorProducto(false);
       if (editId) { setToast(message); setToastVisible(true); setTimeout(() => setToastVisible(false), 2000); setTimeout(() => setToast(''), 2300); }
       loadProductos(buscar, categoria, pagina);
       loadCategorias();
@@ -400,6 +407,21 @@ export default function AdminPage() {
     const filtered = actuales.filter((_, idx) => idx !== index);
     handleFieldChange('imagenes', filtered.join(', '));
     if (index === selectedImagenIndex) setSelectedImagenIndex(0);
+  };
+
+  const handleSetPortada = () => {
+    const actuales = parseImagenes(form.imagenes);
+    if (selectedImagenIndex < 0 || selectedImagenIndex >= actuales.length) return;
+    if (selectedImagenIndex === 0) {
+      setAviso('Esta imagen ya es la portada.');
+      return;
+    }
+    const portada = actuales[selectedImagenIndex];
+    const ordenadas = [portada, ...actuales.filter((_, index) => index !== selectedImagenIndex)];
+    handleFieldChange('imagenes', ordenadas.join(', '));
+    setSelectedImagenIndex(0);
+    setError('');
+    setAviso('Portada seleccionada. Guarda los cambios del producto para aplicarla.');
   };
 
   const handleReplaceImagen = async file => {
@@ -507,6 +529,7 @@ export default function AdminPage() {
 
   const resetFormMaquinaria = () => {
     setEditMaquinariaId(null);
+    setMostrarEditorMaquinaria(false);
     setFormMaquinaria({ nombre: '', descripcion: '', precio: '', imagenes: '', estado: 'disponible' });
     setAviso('');
     setError('');
@@ -514,6 +537,7 @@ export default function AdminPage() {
 
   const handleEditMaquinaria = (item) => {
     setEditMaquinariaId(String(item.id));
+    setMostrarEditorMaquinaria(true);
     setFormMaquinaria({
       nombre: item.nombre || '',
       descripcion: item.descripcion || '',
@@ -699,16 +723,30 @@ export default function AdminPage() {
               <form onSubmit={handleLogin} className="flex flex-col gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500">Usuario</label>
-                  <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Usuario" className="admin-login-input mt-2 w-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                  <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Usuario" autoComplete="username" required className="admin-login-input mt-2 w-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500">Contrasena</label>
-                  <input type="password" value={clave} onChange={e => setClave(e.target.value)} placeholder="Contrasena" className="admin-login-input mt-2 w-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                  <div className="relative mt-2">
+                    <input type={mostrarClave ? 'text' : 'password'} value={clave} onChange={e => setClave(e.target.value)} placeholder="Contrasena" autoComplete="current-password" required className="admin-login-input w-full border border-slate-200 bg-slate-50 px-4 py-2 pr-11 text-sm focus:outline-none focus:border-orange-400" />
+                    <button type="button" className="admin-password-toggle" aria-label={mostrarClave ? 'Ocultar contraseña' : 'Mostrar contraseña'} aria-pressed={mostrarClave} onMouseDown={event => event.preventDefault()} onClick={() => setMostrarClave(value => !value)}>
+                      {mostrarClave ? (
+                        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c5 0 8.5 4.1 9.5 6-.4.8-1.1 1.7-2 2.6M6.2 6.2C3.8 7.6 2.5 9.7 2 11c1 1.9 4.5 6 10 6 1 0 2-.2 2.9-.5"/></svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <button type="submit" disabled={cargandoLogin} className={`admin-login-submit btn-anim mt-2 inline-flex items-center justify-center px-4 py-2 text-sm font-semibold disabled:opacity-60 ${loginShake ? 'login-shake-button' : ''} ${loginErrorFlash ? 'login-error' : ''}`}>
                   {cargandoLogin ? 'Ingresando...' : 'Ingresar'}
                 </button>
               </form>
+              {error && (
+                <div className="admin-login-error mt-4 border px-3 py-2.5 text-sm" role="alert" aria-live="polite">
+                  {error}
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -734,7 +772,7 @@ export default function AdminPage() {
 
             {/* ==================== TAB PRODUCTOS ==================== */}
             {tabActiva === 'productos' && (
-              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="grid grid-cols-1 gap-8">
                 {/* Listado Productos */}
                 <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6">
                   <div className="flex flex-col gap-4">
@@ -743,7 +781,10 @@ export default function AdminPage() {
                         <h2 className="text-xl font-semibold">Listado</h2>
                         <p className="text-sm text-slate-500">Mostrando {productos.length} de {totalProductos} productos</p>
                       </div>
-                      <p className="text-xs text-slate-500">Pagina {pagina} de {totalPaginas}</p>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <p className="text-xs text-slate-500">Pagina {pagina} de {totalPaginas}</p>
+                        <button type="button" onClick={() => { resetForm(); setMostrarEditorProducto(true); }} className="btn-anim border border-orange-500 bg-orange-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-orange-400">Nuevo</button>
+                      </div>
                     </div>
                     <form onSubmit={handleSubmitBuscar} className="flex flex-col lg:flex-row gap-2">
                       <input value={busqueda} onChange={e => setBusqueda(e.target.value)} placeholder="Buscar por nombre, marca o categoria" className="w-full lg:w-64 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
@@ -800,50 +841,69 @@ export default function AdminPage() {
                 </section>
 
                 {/* Formulario Productos */}
-                <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-                  <form onSubmit={handleGuardar} className="flex flex-col gap-5">
-                    <div className="flex items-center justify-between">
+                {mostrarEditorProducto && <button type="button" aria-label="Cerrar editor de producto" onClick={resetForm} className="admin-modal-backdrop fixed inset-0 z-[70] cursor-default bg-slate-950/60 backdrop-blur-sm" />}
+                {mostrarEditorProducto && <section role="dialog" aria-modal="true" aria-labelledby="admin-product-form-title" className="admin-modal-panel fixed left-1/2 top-1/2 z-[71] flex max-h-[calc(100dvh-2rem)] w-[min(96vw,1200px)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden border border-slate-200 bg-white p-6 shadow-2xl">
+                  <form onSubmit={handleGuardar} className="flex min-h-0 flex-col gap-5 overflow-y-auto">
+                    <div className="sticky top-0 z-10 -mx-6 -mt-6 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
                       <div>
-                        <h2 className="text-xl font-semibold">{editId ? 'Editar producto' : 'Nuevo producto'}</h2>
+                        <h2 id="admin-product-form-title" className="text-xl font-semibold">{editId ? 'Editar producto' : 'Nuevo producto'}</h2>
                         <p className="text-xs text-slate-500">{editId ? `ID ${editId}` : 'Completa los datos principales'}</p>
                       </div>
-                      <button type="button" onClick={resetForm} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300">Nuevo</button>
+                      <button type="button" onClick={resetForm} aria-label="Cerrar editor" className="btn-anim flex h-10 w-10 items-center justify-center border border-slate-300 bg-white text-2xl leading-none text-slate-700 hover:border-orange-400 hover:text-slate-950">×</button>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                       <div className="flex flex-col gap-3">
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs uppercase tracking-[0.28em] text-slate-400 font-semibold">Imagenes</p>
-                          <div className="flex items-center gap-2">
-                            <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); replaceInputRef.current?.click(); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>Reemplazar</button>
-                            <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); abrirCamara(true); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>Foto</button>
-                            <button type="button" onClick={() => handleRemoveImagenAt(selectedImagenIndex)} className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300" disabled={subiendo}>Quitar</button>
-                          </div>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xs uppercase tracking-[0.28em] text-slate-500 font-semibold">Imágenes del producto</p>
+                          <p className="text-xs text-slate-500">Elige una imagen para previsualizarla o definirla como portada.</p>
                         </div>
-                        <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
-                          <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
+                        <div className="grid items-start gap-6 lg:grid-cols-[minmax(280px,34%)_minmax(0,1fr)]">
+                          <div className="aspect-[4/3] w-full overflow-hidden border border-slate-200 bg-white flex items-center justify-center">
                             {parseImagenes(form.imagenes)[selectedImagenIndex] ? (
                               <img src={parseImagenes(form.imagenes)[selectedImagenIndex]} alt={form.nombre || 'Producto'} className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                             ) : (
                               <svg className="h-9 w-9 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8h16v11H4zM7 8l1.5-3h7L17 8M8 13h.01M12 13h.01M16 13h.01"/></svg>
                             )}
                           </div>
-                          <div className="flex flex-col gap-2">
-                            <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
-                              {parseImagenes(form.imagenes).length === 0 && <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>}
+                          <div className="flex min-w-0 flex-col gap-4">
+                            <div>
+                              <p className="mb-2 text-xs font-semibold text-slate-700">Galería <span className="font-normal text-slate-400">({parseImagenes(form.imagenes).length})</span></p>
+                              <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
+                              {parseImagenes(form.imagenes).length === 0 && <p className="py-3 text-sm text-slate-500">Aún no hay imágenes cargadas.</p>}
                               {parseImagenes(form.imagenes).map((url, index) => (
-                                <button key={`${url}-${index}`} type="button" onClick={() => setSelectedImagenIndex(index)} className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${index === selectedImagenIndex ? 'border-orange-400 bg-orange-50' : 'border-slate-200 bg-white hover:border-orange-300'}`}>
+                                <button key={`${url}-${index}`} type="button" title={index === 0 ? 'Portada actual' : `Seleccionar imagen ${index + 1}`} aria-label={index === 0 ? `Portada actual: imagen ${index + 1}` : `Seleccionar imagen ${index + 1}`} onClick={() => setSelectedImagenIndex(index)} className={`relative h-16 w-16 shrink-0 overflow-hidden border ${index === selectedImagenIndex ? 'border-orange-500 ring-2 ring-orange-200' : 'border-slate-200 hover:border-orange-300'}`}>
                                   <img src={url} alt="Miniatura" className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                  {index === 0 && <span className="absolute inset-x-0 bottom-0 bg-slate-900/85 px-1 py-0.5 text-[8px] font-semibold uppercase tracking-wide text-white">Portada</span>}
                                 </button>
                               ))}
+                              </div>
                             </div>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <input id="admin-imagenes-upload" type="file" accept="image/*" multiple onChange={e => { handleUpload(e.target.files); e.target.value = ''; }} className="hidden" />
-                              <label htmlFor="admin-imagenes-upload" className="btn-anim inline-flex items-center justify-center rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-400">Agregar imagenes</label>
-                              <button type="button" onClick={() => abrirCamara(false)} disabled={subiendo} className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60">Tomar foto</button>
-                              {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
+                            <div className="border-t border-slate-200 pt-4">
+                              <p className="mb-2 text-xs font-semibold text-slate-700">Acciones de la imagen seleccionada</p>
+                              <div className="flex flex-wrap gap-2">
+                                <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); replaceInputRef.current?.click(); }} className="btn-anim border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:border-orange-400" disabled={subiendo || parseImagenes(form.imagenes).length === 0}>Reemplazar archivo</button>
+                                <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); abrirCamara(true); }} className="btn-anim border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:border-orange-400" disabled={subiendo || parseImagenes(form.imagenes).length === 0}>Reemplazar con cámara</button>
+                                <button type="button" onClick={() => handleRemoveImagenAt(selectedImagenIndex)} className="btn-anim border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 hover:border-red-400" disabled={subiendo || parseImagenes(form.imagenes).length === 0}>Eliminar imagen</button>
+                              </div>
                             </div>
-                            <p className="text-xs text-slate-400">Las fotos nuevas se preparan automáticamente a 1600 × 1200 px (formato 4:3), sin recortar la pieza.</p>
+                            <div className="border-t border-slate-200 pt-4">
+                              <p className="mb-2 text-xs font-semibold text-slate-700">Agregar imágenes al producto</p>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <input id="admin-imagenes-upload" type="file" accept="image/*" multiple onChange={e => { handleUpload(e.target.files); e.target.value = ''; }} className="hidden" />
+                                <label htmlFor="admin-imagenes-upload" className="btn-anim inline-flex cursor-pointer items-center justify-center bg-orange-500 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-400">Subir imágenes</label>
+                                <button type="button" onClick={() => abrirCamara(false)} disabled={subiendo} className="btn-anim inline-flex items-center justify-center border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-800 hover:border-orange-400 disabled:opacity-60">Tomar nueva foto</button>
+                                {subiendo && <span className="text-xs text-slate-500">Subiendo imágenes...</span>}
+                              </div>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3 border-t border-slate-200 pt-4">
+                              {parseImagenes(form.imagenes).length > 0 && selectedImagenIndex === 0 ? (
+                                <span className="inline-flex items-center border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900">Portada actual</span>
+                              ) : (
+                                <button type="button" onClick={handleSetPortada} disabled={subiendo || parseImagenes(form.imagenes).length === 0} className="btn-anim inline-flex items-center justify-center bg-slate-900 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-700 disabled:opacity-60">Definir como portada</button>
+                              )}
+                              <p className="text-xs leading-relaxed text-slate-500">Las fotos se preparan a 1600 × 1200 px sin recortar la pieza. Guarda el producto para publicar los cambios.</p>
+                            </div>
                             <input ref={replaceInputRef} type="file" accept="image/*" onChange={e => handleReplaceImagen(e.target.files?.[0])} className="hidden" />
                           </div>
                         </div>
@@ -916,28 +976,29 @@ export default function AdminPage() {
                       </details>
                     )}
 
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <button type="submit" disabled={guardando} className="btn-anim rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60">{guardando ? 'Guardando...' : editId ? 'Guardar cambios' : 'Crear producto'}</button>
-                      <button type="button" onClick={resetForm} className="btn-anim rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-orange-300">Limpiar</button>
+                    <div className="sticky bottom-0 -mx-6 -mb-6 mt-2 flex flex-col-reverse justify-end gap-3 border-t border-slate-200 bg-white px-6 py-4 sm:flex-row">
+                      <button type="button" onClick={resetForm} className="btn-anim border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-orange-400">Cancelar</button>
+                      <button type="submit" disabled={guardando} className="btn-anim border border-slate-900 bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60">{guardando ? 'Guardando...' : editId ? 'Guardar cambios' : 'Crear producto'}</button>
                     </div>
                     {toast && (
                       <div className={`rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700 shadow-lg transition-all duration-300 ${toastVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>{toast}</div>
                     )}
                   </form>
-                </section>
+                </section>}
               </div>
             )}
 
             {/* ==================== TAB MAQUINARIA ==================== */}
             {tabActiva === 'maquinaria' && (
-              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="grid grid-cols-1 gap-8">
                 {/* Listado Maquinaria */}
                 <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h2 className="text-xl font-semibold">Equipos registrados</h2>
-                      <p className="text-sm text-slate-500">{maquinariaItems.length} {maquinariaItems.length === 1 ? 'equipo' : 'equipos'}</p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-xl font-semibold">Equipos registrados</h2>
+                        <p className="text-sm text-slate-500">{maquinariaItems.length} {maquinariaItems.length === 1 ? 'equipo' : 'equipos'}</p>
+                      </div>
+                      <button type="button" onClick={() => { resetFormMaquinaria(); setMostrarEditorMaquinaria(true); }} className="btn-anim border border-orange-500 bg-orange-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-orange-400">Nuevo</button>
                   </div>
                   {cargandoMaquinaria ? (
                     <div className="py-10 text-center text-slate-500">Cargando...</div>
@@ -976,14 +1037,15 @@ export default function AdminPage() {
                 </section>
 
                 {/* Formulario Maquinaria */}
-                <section className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-                  <form onSubmit={handleGuardarMaquinaria} className="flex flex-col gap-5">
-                    <div className="flex items-center justify-between">
+                {mostrarEditorMaquinaria && <button type="button" aria-label="Cerrar editor de maquinaria" onClick={resetFormMaquinaria} className="admin-modal-backdrop fixed inset-0 z-[70] cursor-default bg-slate-950/60 backdrop-blur-sm" />}
+                {mostrarEditorMaquinaria && <section role="dialog" aria-modal="true" aria-labelledby="admin-maquinaria-form-title" className="admin-modal-panel fixed left-1/2 top-1/2 z-[71] flex max-h-[calc(100dvh-2rem)] w-[min(96vw,1000px)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden border border-slate-200 bg-white p-6 shadow-2xl">
+                  <form onSubmit={handleGuardarMaquinaria} className="flex min-h-0 flex-col gap-5 overflow-y-auto">
+                    <div className="sticky top-0 z-10 -mx-6 -mt-6 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
                       <div>
-                        <h2 className="text-xl font-semibold">{editMaquinariaId ? 'Editar equipo' : 'Nuevo equipo'}</h2>
+                        <h2 id="admin-maquinaria-form-title" className="text-xl font-semibold">{editMaquinariaId ? 'Editar equipo' : 'Nuevo equipo'}</h2>
                         <p className="text-xs text-slate-500">{editMaquinariaId ? `ID ${editMaquinariaId}` : 'Completa los datos'}</p>
                       </div>
-                      <button type="button" onClick={resetFormMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-sky-300">Nuevo</button>
+                      <button type="button" onClick={resetFormMaquinaria} aria-label="Cerrar editor" className="btn-anim flex h-10 w-10 items-center justify-center border border-slate-300 bg-white text-2xl leading-none text-slate-700 hover:border-orange-400 hover:text-slate-950">×</button>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
@@ -1061,12 +1123,12 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    <div className="flex gap-3">
-                      <button type="submit" className="btn-anim rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Guardar</button>
-                      <button type="button" onClick={resetFormMaquinaria} className="btn-anim rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-sky-300">Limpiar</button>
+                    <div className="sticky bottom-0 -mx-6 -mb-6 mt-2 flex flex-col-reverse justify-end gap-3 border-t border-slate-200 bg-white px-6 py-4 sm:flex-row">
+                      <button type="button" onClick={resetFormMaquinaria} className="btn-anim border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-orange-400">Cancelar</button>
+                      <button type="submit" className="btn-anim border border-slate-900 bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Guardar</button>
                     </div>
                   </form>
-                </section>
+                </section>}
               </div>
             )}
           </>

@@ -77,7 +77,7 @@ const pilares = [
 
 export default function Nosotros() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="about-page min-h-screen bg-slate-50 text-slate-900">
       <section className="bg-white border-b border-slate-200 overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 py-16 lg:py-20 grid gap-12 lg:grid-cols-[1.15fr_0.85fr] items-start">
           <div className="flex flex-col gap-6 reveal-up">
@@ -105,13 +105,13 @@ export default function Nosotros() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/productos"
-                className="btn-anim inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors"
+                className="brand-cta-primary btn-anim inline-flex items-center justify-center rounded-xl font-semibold px-6 py-3 transition-colors"
               >
                 Ver catalogo
               </Link>
               <Link
                 href="/contacto"
-                className="btn-anim inline-flex items-center justify-center rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-6 py-3 transition-colors"
+                className="brand-cta-secondary btn-anim inline-flex items-center justify-center rounded-xl border font-semibold px-6 py-3 transition-colors"
               >
                 Hablar con un asesor
               </Link>
@@ -254,15 +254,15 @@ export default function Nosotros() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/productos"
-              className="btn-anim inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors"
+              className="brand-cta-primary btn-anim inline-flex items-center justify-center rounded-xl font-semibold px-6 py-3 transition-colors"
             >
-              Explorar productos
+              Ver productos
             </Link>
             <a
               href="https://wa.me/573163293151?text=Hola%2C%20necesito%20informaci%C3%B3n%20sobre%20repuestos"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-anim inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 transition-colors"
+              className="brand-cta-secondary btn-anim inline-flex items-center justify-center rounded-xl border font-semibold px-6 py-3 transition-colors"
             >
               Contactar ahora
             </a>

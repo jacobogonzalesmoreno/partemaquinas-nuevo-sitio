@@ -12,7 +12,7 @@ export default function Contacto() {
   const rutaGoogleMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consultaMapa)}`;
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="contact-page min-h-screen bg-slate-50 text-slate-900">
       <section className="bg-white border-b border-slate-200 overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 py-16 lg:py-20 grid gap-12 lg:grid-cols-[1.15fr_0.85fr] items-start">
           <div className="flex flex-col gap-6 reveal-up">
@@ -40,7 +40,7 @@ export default function Contacto() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/productos"
-                className="btn-anim inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors"
+                className="brand-cta-primary btn-anim inline-flex items-center justify-center rounded-xl font-semibold px-6 py-3 transition-colors"
               >
                 Ver catalogo
               </Link>
@@ -48,7 +48,7 @@ export default function Contacto() {
                 href={rutaGoogleMaps}
                 target="_blank"
                 rel="noreferrer"
-                className="btn-anim inline-flex items-center justify-center rounded-xl border border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 font-semibold px-6 py-3 transition-colors"
+                className="brand-cta-secondary btn-anim inline-flex items-center justify-center rounded-xl border font-semibold px-6 py-3 transition-colors"
               >
                 Abrir en Google Maps
               </a>
@@ -159,17 +159,17 @@ export default function Contacto() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/productos"
-              className="btn-anim inline-flex items-center justify-center rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 transition-colors"
+              className="brand-cta-primary btn-anim inline-flex items-center justify-center rounded-xl font-semibold px-6 py-3 transition-colors"
             >
-              Ir a productos
+              Ver productos
             </Link>
             <a
-              href={rutaGoogleMaps}
+              href="https://wa.me/573163293151?text=Hola%2C%20necesito%20asesor%C3%ADa%20para%20encontrar%20un%20repuesto"
               target="_blank"
               rel="noreferrer"
-              className="btn-anim inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 transition-colors"
+              className="brand-cta-secondary btn-anim inline-flex items-center justify-center rounded-xl border font-semibold px-6 py-3 transition-colors"
             >
-              Ver ubicacion
+              Contactar ahora
             </a>
           </div>
         </div>

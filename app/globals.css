@@ -470,6 +470,49 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
 .admin-login-input::placeholder { color: #89898f; }
 .admin-login-submit { border: 1px solid #ffb600 !important; border-radius: 0 !important; background: #ffb600 !important; color: #171719 !important; }
 .admin-login-submit:hover { background: #ffc533 !important; }
+.admin-login-error { border-color: #e6a3a3 !important; background: #fff1f1 !important; color: #8c2525 !important; }
+.admin-password-toggle { position: absolute; top: 50%; right: 10px; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; transform: translateY(-50%); color: #65656b; cursor: pointer; }
+.admin-password-toggle:hover, .admin-password-toggle:focus-visible { color: #171719; outline: 2px solid #ffb600; outline-offset: 1px; }
+.contact-page, .about-page { background: #f1f1f1 !important; color: #171719; font-family: inherit; }
+.contact-page [class*="bg-slate-50"], .about-page [class*="bg-slate-50"] { background-color: #f1f1f1 !important; }
+.contact-page [class*="text-slate-900"], .about-page [class*="text-slate-900"] { color: #171719 !important; }
+.contact-page [class*="text-slate-700"], .about-page [class*="text-slate-700"] { color: #45454a !important; }
+.contact-page [class*="text-slate-600"], .about-page [class*="text-slate-600"] { color: #5c5c61 !important; }
+.contact-page [class*="text-slate-500"], .about-page [class*="text-slate-500"] { color: #69696e !important; }
+.contact-page [class*="text-slate-400"], .about-page [class*="text-slate-400"] { color: #77777c !important; }
+.contact-page [class*="border-slate-200"], .about-page [class*="border-slate-200"] { border-color: #dedee0 !important; }
+.contact-page [class*="text-orange-"], .about-page [class*="text-orange-"] { color: #a56c00 !important; }
+.contact-page [class*="bg-orange-"], .about-page [class*="bg-orange-"] { background-color: #ffb600 !important; }
+.contact-page [class*="border-orange-"], .about-page [class*="border-orange-"] { border-color: #e6ae17 !important; }
+.contact-page [class*="hover:bg-orange-"]:hover, .about-page [class*="hover:bg-orange-"]:hover { background-color: #ffc533 !important; }
+.contact-page [class*="bg-emerald-"], .about-page [class*="bg-emerald-"] { background-color: #ffb600 !important; }
+.contact-page [class*="text-emerald-"], .about-page [class*="text-emerald-"] { color: #171719 !important; }
+.contact-page [class*="border-emerald-"], .about-page [class*="border-emerald-"] { border-color: #e6ae17 !important; }
+.contact-page [class*="hover:bg-emerald-"]:hover, .about-page [class*="hover:bg-emerald-"]:hover { background-color: #ffc533 !important; }
+.contact-page [class*="hover:border-emerald-"]:hover, .about-page [class*="hover:border-emerald-"]:hover { border-color: #e6ae17 !important; }
+.contact-page .brand-cta-primary, .about-page .brand-cta-primary { border: 1px solid #1b1b1d !important; background: #1b1b1d !important; color: #fff !important; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease !important; }
+.contact-page .brand-cta-primary:hover, .about-page .brand-cta-primary:hover { border-color: #ffb600 !important; background: #333336 !important; color: #fff !important; box-shadow: 0 7px 18px rgba(255,182,0,.24); transform: translateY(-2px); }
+.contact-page .brand-cta-secondary, .about-page .brand-cta-secondary { border: 1px solid #e6ae17 !important; background: #ffb600 !important; color: #171719 !important; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease !important; }
+.contact-page .brand-cta-secondary:hover, .about-page .brand-cta-secondary:hover { border-color: #d99a00 !important; background: #ffc533 !important; color: #171719 !important; box-shadow: 0 7px 18px rgba(255,182,0,.3); transform: translateY(-2px); }
+.contact-page .brand-cta-primary:active, .about-page .brand-cta-primary:active, .contact-page .brand-cta-secondary:active, .about-page .brand-cta-secondary:active { transform: translateY(0) scale(.98); }
+.contact-page .brand-cta-primary:focus-visible, .about-page .brand-cta-primary:focus-visible, .contact-page .brand-cta-secondary:focus-visible, .about-page .brand-cta-secondary:focus-visible { outline: 3px solid #ffb600; outline-offset: 3px; }
+.admin-page section, .admin-page article, .admin-page button, .admin-page a, .admin-page input, .admin-page select, .admin-page textarea, .admin-page summary, .admin-page label {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 220ms ease, transform 180ms ease, opacity 180ms ease;
+}
+.admin-page section { animation: adminContentIn 360ms both ease-out; }
+.admin-page section:hover { box-shadow: 0 10px 26px rgba(20, 20, 22, .07); }
+.admin-page button:not(:disabled):hover, .admin-page a:hover, .admin-page label[for]:hover { transform: translateY(-1px); }
+.admin-page button:not(:disabled):active, .admin-page a:active, .admin-page label[for]:active { transform: translateY(0) scale(.98); }
+.admin-page input:focus, .admin-page select:focus, .admin-page textarea:focus { transform: translateY(-1px); }
+.admin-modal-backdrop { animation: adminBackdropIn 180ms ease-out both; }
+.admin-modal-panel { animation: adminModalIn 220ms cubic-bezier(.2,.8,.2,1) both; }
+.admin-modal-panel form { overscroll-behavior: contain; }
+@keyframes adminContentIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes adminBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes adminModalIn { from { opacity: 0; transform: translate(-50%, calc(-50% + 10px)) scale(.99); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .admin-page *, .admin-page *::before, .admin-page *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
 @media (prefers-reduced-motion: reduce) {
   .store-hero__main, .store-promo-card, .store-category-card, .store-brand-pill, .store-more-link, .store-hero__button, .store-contact-banner__button, .store-filter-pills button, .store-product-card__visual img, .store-promo-card__image img, .store-category-card__image img { transition: none !important; }
 }

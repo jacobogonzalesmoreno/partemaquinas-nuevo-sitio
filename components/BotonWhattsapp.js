@@ -1,8 +1,14 @@
+'use client';
+
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function BotonWhatsapp() {
+  const pathname = usePathname();
   const mensaje = encodeURIComponent('Hola, necesito información sobre repuestos');
   const url = 'https://api.whatsapp.com/send?phone=573163293151&text=' + mensaje;
+
+  if (pathname !== '/') return null;
 
   return (
     <div className="whatsapp-float fixed bottom-6 right-6 z-50">
