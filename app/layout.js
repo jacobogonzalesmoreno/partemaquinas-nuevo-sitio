@@ -15,6 +15,11 @@ const montserrat = Montserrat({
 export const metadata = {
   title: 'ParteMaquinas - Repuestos para Maquinaria Pesada Medellín',
   description: 'Somos especialistas en repuestos para maquinaria pesada en Medellín. Excavadoras, motores diésel, cargadores y más.',
+  icons: {
+    icon: '/logo/logo-partemaquinas-oficial.jpeg',
+    shortcut: '/logo/logo-partemaquinas-oficial.jpeg',
+    apple: '/logo/logo-partemaquinas-oficial.jpeg',
+  },
 };
 
 export default function RootLayout({ children }) {

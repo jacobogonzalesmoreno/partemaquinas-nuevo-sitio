@@ -57,6 +57,7 @@ export default function Navbar() {
   const searchRef = useRef(null);
   const abortRef = useRef(null);
   const router = useRouter();
+  const esVistaMovil = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
 
   useEffect(() => {
     const syncQuery = () => setBuscarNav(new URLSearchParams(window.location.search).get('buscar') || '');
@@ -83,7 +84,7 @@ export default function Navbar() {
   const navDropdownLinkClass = 'nav-category-item inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-[13px] font-medium text-slate-700 transition-all shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md w-fit';
   const navSubmenuLinkClass = 'nav-category-item inline-flex items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-700 transition-all shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md w-fit min-w-[124px]';
   const navSubmenuChildLinkClass = 'nav-category-item inline-flex items-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[13px] text-slate-700 transition-all shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md w-fit min-w-[116px]';
-  const mobileLinkClass = 'inline-flex w-full items-center rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-all border border-slate-200 bg-white shadow-sm hover:text-slate-900 hover:border-amber-400 hover:ring-1 hover:ring-amber-200 hover:shadow-md';
+  const mobileLinkClass = 'mobile-nav-link inline-flex w-full items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all border shadow-sm';
 
   const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
   const renderRecursos = () => (
@@ -358,7 +359,7 @@ export default function Navbar() {
           </form>
         </div>
         <div className="site-navbar__quick-actions">
-          <div className="site-navbar__quick-item" onMouseEnter={() => { if (hideSocialPanelTimer.current) { clearTimeout(hideSocialPanelTimer.current); hideSocialPanelTimer.current = null; } }} onMouseLeave={() => { if (panelAccesoRapido === 'social') { if (hideSocialPanelTimer.current) clearTimeout(hideSocialPanelTimer.current); hideSocialPanelTimer.current = setTimeout(() => setPanelAccesoRapido(current => current === 'social' ? null : current), 180); } }}>
+          <div className="site-navbar__quick-item" onMouseEnter={() => { if (!esVistaMovil() && hideSocialPanelTimer.current) { clearTimeout(hideSocialPanelTimer.current); hideSocialPanelTimer.current = null; } }} onMouseLeave={() => { if (!esVistaMovil() && panelAccesoRapido === 'social') { if (hideSocialPanelTimer.current) clearTimeout(hideSocialPanelTimer.current); hideSocialPanelTimer.current = setTimeout(() => setPanelAccesoRapido(current => current === 'social' ? null : current), 180); } }}>
             <button type="button" className="site-navbar__icon-button" aria-label="Redes sociales" aria-expanded={panelAccesoRapido === 'social'} onClick={() => setPanelAccesoRapido(panelAccesoRapido === 'social' ? null : 'social')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
             </button>
@@ -368,13 +369,13 @@ export default function Navbar() {
               <a className="site-navbar__social-link" href="https://www.tiktok.com/@partemaquinas" target="_blank" rel="noreferrer"><svg className="site-social-icon site-social-icon--tiktok" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 8.2a6.7 6.7 0 0 1-4.1-1.4v7.1a5.7 5.7 0 1 1-5-5.7v3.6a2.2 2.2 0 1 0 1.5 2.1V2.8h3.5c.1 2.1 1.6 3.9 4.1 4.2v1.2Z"/></svg>TikTok</a>
             </div>}
           </div>
-          <div className="site-navbar__quick-item" onMouseEnter={() => { if (hideCartPanelTimer.current) { clearTimeout(hideCartPanelTimer.current); hideCartPanelTimer.current = null; } }} onMouseLeave={() => { if (panelAccesoRapido === 'cart') { if (hideCartPanelTimer.current) clearTimeout(hideCartPanelTimer.current); hideCartPanelTimer.current = setTimeout(() => setPanelAccesoRapido(current => current === 'cart' ? null : current), 180); } }}>
+          <div className="site-navbar__quick-item" onMouseEnter={() => { if (!esVistaMovil() && hideCartPanelTimer.current) { clearTimeout(hideCartPanelTimer.current); hideCartPanelTimer.current = null; } }} onMouseLeave={() => { if (!esVistaMovil() && panelAccesoRapido === 'cart') { if (hideCartPanelTimer.current) clearTimeout(hideCartPanelTimer.current); hideCartPanelTimer.current = setTimeout(() => setPanelAccesoRapido(current => current === 'cart' ? null : current), 180); } }}>
             <button type="button" className="site-navbar__icon-button" aria-label="Carrito" aria-expanded={panelAccesoRapido === 'cart'} onClick={() => setPanelAccesoRapido(panelAccesoRapido === 'cart' ? null : 'cart')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
             </button>
             {panelAccesoRapido === 'cart' && <div className="site-navbar__quick-panel"><strong>Tu carrito</strong><p>Aún no has agregado productos.</p><Link href="/productos" onClick={() => setPanelAccesoRapido(null)}>Explorar catálogo</Link></div>}
           </div>
-          <div className="site-navbar__quick-item" onMouseEnter={() => { if (hideAccountPanelTimer.current) { clearTimeout(hideAccountPanelTimer.current); hideAccountPanelTimer.current = null; } }} onMouseLeave={() => { if (panelAccesoRapido === 'account') { if (hideAccountPanelTimer.current) clearTimeout(hideAccountPanelTimer.current); hideAccountPanelTimer.current = setTimeout(() => setPanelAccesoRapido(current => current === 'account' ? null : current), 180); } }}>
+          <div className="site-navbar__quick-item" onMouseEnter={() => { if (!esVistaMovil() && hideAccountPanelTimer.current) { clearTimeout(hideAccountPanelTimer.current); hideAccountPanelTimer.current = null; } }} onMouseLeave={() => { if (!esVistaMovil() && panelAccesoRapido === 'account') { if (hideAccountPanelTimer.current) clearTimeout(hideAccountPanelTimer.current); hideAccountPanelTimer.current = setTimeout(() => setPanelAccesoRapido(current => current === 'account' ? null : current), 180); } }}>
             <button type="button" className="site-navbar__icon-button" aria-label="Cuenta" aria-expanded={panelAccesoRapido === 'account'} onClick={() => setPanelAccesoRapido(panelAccesoRapido === 'account' ? null : 'account')}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </button>
@@ -399,7 +400,7 @@ export default function Navbar() {
               </div>
             </div>
             <div>
-              <button type="button" className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-semibold text-slate-700"
+              <button type="button" className="mobile-nav-link flex w-full items-center justify-between rounded-xl border px-3 py-3 text-sm font-semibold"
                 aria-expanded={recursosAbiertos} onClick={() => setRecursosAbiertos(open => !open)}>
                 Manuales, mecánicos y aliados
                 <svg className={`h-4 w-4 transition-transform ${recursosAbiertos ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
