@@ -185,7 +185,7 @@ function ModalProducto({ producto, onClose }) {
                       border: i === imagenIndex ? '2px solid #38bdf8' : '1px solid #e2e8f0',
                       overflow: 'hidden', outline: i === imagenIndex ? '2px solid #bae6fd' : 'none',
                     }}>
-                      <img src={url} alt="" style={{ height: '100%', width: '100%', objectFit: 'cover' }} onError={e => { e.currentTarget.style.display = 'none'; }} />
+                      <img src={url} alt="" style={{ height: '100%', width: '100%', objectFit: 'contain', background: '#f3f5f3' }} onError={e => { e.currentTarget.style.display = 'none'; }} />
                     </button>
                   ))}
                 </div>
@@ -246,7 +246,7 @@ export default function MaquinariaPage() {
   });
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="machinery-page min-h-screen bg-slate-50 text-slate-900">
       <div className="bg-white py-12 px-6 text-center border-b border-slate-200">
         <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-sky-100 border border-sky-200 text-sky-600 mb-4">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -302,11 +302,11 @@ export default function MaquinariaPage() {
                 return (
                   <div key={producto.id} onClick={() => setModalProducto(producto)}
                     className="group bg-white rounded-xl sm:rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-sky-300 transition-all duration-300 cursor-pointer hover:-translate-y-1">
-                    <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <div className="relative aspect-[4/3] bg-white overflow-hidden">
                       {primeraImagen ? (
-                        <img src={primeraImagen} alt={producto.nombre} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                        <img src={primeraImagen} alt={producto.nombre} className="w-full h-full object-contain p-3" onError={e => { e.currentTarget.style.display = 'none'; }} />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl text-slate-300">&#x2699;</div>
+                        <div className="w-full h-full flex items-center justify-center text-slate-300"><svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M8 18h32v20H8zM14 18l3-7h14l3 7M17 27h.01M24 27h.01M31 27h.01M14 38v3m20-3v3"/></svg></div>
                       )}
                       {imagenes.length > 1 && (
                         <div className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-black/60 text-white text-[10px] font-semibold px-2.5 py-1 backdrop-blur-sm">

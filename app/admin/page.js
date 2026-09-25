@@ -1,6 +1,7 @@
 ﻿'use client';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { normalizeImagenesText, parseImagenesValue, getImagenesProducto } from '@/lib/imagenes';
+import { prepararImagenProducto } from '@/lib/imagen-producto-client';
 import { normalizeCategoriasText, parseCategoriasValue, normalizeCategoriaKey } from '@/lib/categorias';
 import { MENU_CATEGORIAS_FLAT } from '@/lib/menu-categorias';
 
@@ -376,8 +377,9 @@ export default function AdminPage() {
       const actuales = parseImagenes(form.imagenes);
       const nuevas = [];
       for (const file of Array.from(files)) {
+        const imagenPreparada = await prepararImagenProducto(file);
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', imagenPreparada);
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
         if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'No se pudo subir una imagen.'); }
         const data = await res.json();
@@ -405,8 +407,9 @@ export default function AdminPage() {
     setSubiendo(true);
     setError('');
     try {
+      const imagenPreparada = await prepararImagenProducto(file);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', imagenPreparada);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
       if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'No se pudo subir la imagen.'); }
       const data = await res.json();
@@ -568,8 +571,9 @@ export default function AdminPage() {
     const nuevas = [];
     try {
       for (const file of Array.from(files)) {
+        const imagenPreparada = await prepararImagenProducto(file);
         const fd = new FormData();
-        fd.append('file', file);
+        fd.append('file', imagenPreparada);
         const res = await fetch('/api/upload', { method: 'POST', body: fd });
         if (!res.ok) throw new Error('Error subiendo imagen');
         const data = await res.json();
@@ -590,8 +594,9 @@ export default function AdminPage() {
     setSubiendoMaquinaria(true);
     setError('');
     try {
+      const imagenPreparada = await prepararImagenProducto(file);
       const fd = new FormData();
-      fd.append('file', file);
+      fd.append('file', imagenPreparada);
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       if (!res.ok) throw new Error('Error subiendo imagen');
       const data = await res.json();
@@ -635,7 +640,7 @@ export default function AdminPage() {
   // RENDER
   // ============================================================
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="admin-page min-h-screen bg-slate-50 text-slate-900">
       <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-8 relative">
 
         {/* Header + Tabs */}
@@ -683,9 +688,9 @@ export default function AdminPage() {
           </div>
         ) : !autenticado ? (
           /* Login */
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-md px-4">
-            <div className={`relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl transition-all duration-300 ease-out ${mostrarLogin ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-3'} ${loginShake ? 'login-shake' : ''}`}>
-              <div className={`pointer-events-none absolute inset-0 rounded-3xl border border-orange-200/50 transition-all duration-300 ${mostrarLogin ? 'opacity-100' : 'opacity-0'}`} />
+          <div className="admin-login-overlay fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className={`admin-login-card relative w-full max-w-md border bg-white p-6 shadow-2xl transition-all duration-300 ease-out ${mostrarLogin ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-3'} ${loginShake ? 'login-shake' : ''}`}>
+              <div className={`admin-login-card__accent pointer-events-none absolute inset-0 border transition-all duration-300 ${mostrarLogin ? 'opacity-100' : 'opacity-0'}`} />
               <div className="mb-4">
                 <p className="text-xs uppercase tracking-[0.3em] text-orange-500 font-semibold">Acceso</p>
                 <h2 className="text-2xl font-semibold text-slate-900">Iniciar sesion</h2>
@@ -694,13 +699,13 @@ export default function AdminPage() {
               <form onSubmit={handleLogin} className="flex flex-col gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500">Usuario</label>
-                  <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Usuario" className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                  <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} placeholder="Usuario" className="admin-login-input mt-2 w-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500">Contrasena</label>
-                  <input type="password" value={clave} onChange={e => setClave(e.target.value)} placeholder="Contrasena" className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
+                  <input type="password" value={clave} onChange={e => setClave(e.target.value)} placeholder="Contrasena" className="admin-login-input mt-2 w-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:border-orange-400" />
                 </div>
-                <button type="submit" disabled={cargandoLogin} className={`btn-anim mt-2 inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60 ${loginShake ? 'login-shake-button' : ''} ${loginErrorFlash ? 'login-error' : ''}`}>
+                <button type="submit" disabled={cargandoLogin} className={`admin-login-submit btn-anim mt-2 inline-flex items-center justify-center px-4 py-2 text-sm font-semibold disabled:opacity-60 ${loginShake ? 'login-shake-button' : ''} ${loginErrorFlash ? 'login-error' : ''}`}>
                   {cargandoLogin ? 'Ingresando...' : 'Ingresar'}
                 </button>
               </form>
@@ -762,9 +767,9 @@ export default function AdminPage() {
                               <div className="flex items-start gap-3">
                                 <div className="h-14 w-14 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center">
                                   {previewUrl ? (
-                                    <img src={previewUrl} alt={producto.nombre} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                    <img src={previewUrl} alt={producto.nombre} className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                                   ) : (
-                                    <span className="text-xl text-slate-300">⚙️</span>
+                                    <svg className="h-6 w-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8h16v11H4zM7 8l1.5-3h7L17 8M8 13h.01M12 13h.01M16 13h.01"/></svg>
                                   )}
                                 </div>
                                 <div>
@@ -811,16 +816,16 @@ export default function AdminPage() {
                           <p className="text-xs uppercase tracking-[0.28em] text-slate-400 font-semibold">Imagenes</p>
                           <div className="flex items-center gap-2">
                             <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); replaceInputRef.current?.click(); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>Reemplazar</button>
-                            <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); abrirCamara(true); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>📷 Foto</button>
+                            <button type="button" onClick={() => { setReplaceIndex(selectedImagenIndex); abrirCamara(true); }} className="btn-anim rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300" disabled={subiendo}>Foto</button>
                             <button type="button" onClick={() => handleRemoveImagenAt(selectedImagenIndex)} className="btn-anim rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:border-red-300" disabled={subiendo}>Quitar</button>
                           </div>
                         </div>
                         <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
                           <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
                             {parseImagenes(form.imagenes)[selectedImagenIndex] ? (
-                              <img src={parseImagenes(form.imagenes)[selectedImagenIndex]} alt={form.nombre || 'Producto'} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                              <img src={parseImagenes(form.imagenes)[selectedImagenIndex]} alt={form.nombre || 'Producto'} className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                             ) : (
-                              <span className="text-3xl text-slate-300">⚙️</span>
+                              <svg className="h-9 w-9 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8h16v11H4zM7 8l1.5-3h7L17 8M8 13h.01M12 13h.01M16 13h.01"/></svg>
                             )}
                           </div>
                           <div className="flex flex-col gap-2">
@@ -828,16 +833,17 @@ export default function AdminPage() {
                               {parseImagenes(form.imagenes).length === 0 && <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>}
                               {parseImagenes(form.imagenes).map((url, index) => (
                                 <button key={`${url}-${index}`} type="button" onClick={() => setSelectedImagenIndex(index)} className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${index === selectedImagenIndex ? 'border-orange-400 bg-orange-50' : 'border-slate-200 bg-white hover:border-orange-300'}`}>
-                                  <img src={url} alt="Miniatura" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                  <img src={url} alt="Miniatura" className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                                 </button>
                               ))}
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                               <input id="admin-imagenes-upload" type="file" accept="image/*" multiple onChange={e => { handleUpload(e.target.files); e.target.value = ''; }} className="hidden" />
                               <label htmlFor="admin-imagenes-upload" className="btn-anim inline-flex items-center justify-center rounded-xl bg-orange-500 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-400">Agregar imagenes</label>
-                              <button type="button" onClick={() => abrirCamara(false)} disabled={subiendo} className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60">📷 Tomar foto</button>
+                              <button type="button" onClick={() => abrirCamara(false)} disabled={subiendo} className="btn-anim inline-flex items-center gap-1 justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-orange-300 disabled:opacity-60">Tomar foto</button>
                               {subiendo && <span className="text-xs text-slate-500">Subiendo...</span>}
                             </div>
+                            <p className="text-xs text-slate-400">Las fotos nuevas se preparan automáticamente a 1600 × 1200 px (formato 4:3), sin recortar la pieza.</p>
                             <input ref={replaceInputRef} type="file" accept="image/*" onChange={e => handleReplaceImagen(e.target.files?.[0])} className="hidden" />
                           </div>
                         </div>
@@ -945,9 +951,9 @@ export default function AdminPage() {
                           <div key={item.id} className={`rounded-2xl border p-4 flex flex-col sm:flex-row gap-4 transition-shadow ${editMaquinariaId === String(item.id) ? 'border-sky-300 bg-sky-50/40' : 'border-slate-200 bg-white'}`}>
                             <div className="h-16 w-16 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden flex-shrink-0 flex items-center justify-center">
                               {imgs[0] ? (
-                                <img src={imgs[0]} alt="" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                <img src={imgs[0]} alt="" className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                               ) : (
-                                <span className="text-xl text-slate-300">⚙️</span>
+                                <svg className="h-6 w-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8h16v11H4zM7 8l1.5-3h7L17 8M8 13h.01M12 13h.01M16 13h.01"/></svg>
                               )}
                             </div>
                             <div className="flex-1 min-w-0">
@@ -992,9 +998,9 @@ export default function AdminPage() {
                         <div className="grid gap-3 lg:grid-cols-[160px_1fr]">
                           <div className="h-40 w-full rounded-2xl border border-slate-200 bg-white overflow-hidden flex items-center justify-center">
                             {imagenesPreviewMaquinaria[selectedImagenIndexMaquinaria] ? (
-                              <img src={imagenesPreviewMaquinaria[selectedImagenIndexMaquinaria]} alt={formMaquinaria.nombre || 'Equipo'} className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                              <img src={imagenesPreviewMaquinaria[selectedImagenIndexMaquinaria]} alt={formMaquinaria.nombre || 'Equipo'} className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                             ) : (
-                              <span className="text-3xl text-slate-300">⚙️</span>
+                              <svg className="h-9 w-9 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8h16v11H4zM7 8l1.5-3h7L17 8M8 13h.01M12 13h.01M16 13h.01"/></svg>
                             )}
                           </div>
                           <div className="flex flex-col gap-2">
@@ -1002,7 +1008,7 @@ export default function AdminPage() {
                               {imagenesPreviewMaquinaria.length === 0 && <p className="text-xs text-slate-500">Sin imagenes cargadas.</p>}
                               {imagenesPreviewMaquinaria.map((url, index) => (
                                 <button key={`${url}-${index}`} type="button" onClick={() => setSelectedImagenIndexMaquinaria(index)} className={`h-14 w-14 rounded-xl border overflow-hidden flex items-center justify-center transition-colors ${index === selectedImagenIndexMaquinaria ? 'border-sky-400 bg-sky-50' : 'border-slate-200 bg-white hover:border-sky-300'}`}>
-                                  <img src={url} alt="Miniatura" className="h-full w-full object-cover" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                                  <img src={url} alt="Miniatura" className="h-full w-full object-contain bg-white" onError={e => { e.currentTarget.style.display = 'none'; }} />
                                 </button>
                               ))}
                             </div>
@@ -1013,6 +1019,7 @@ export default function AdminPage() {
                               </label>
                               {subiendoMaquinaria && <span className="text-xs text-slate-500">Subiendo...</span>}
                             </div>
+                            <p className="text-xs text-slate-400">Las fotos nuevas se preparan automáticamente a 1600 × 1200 px (formato 4:3), sin recortar el equipo.</p>
                             <input ref={replaceInputRefMaquinaria} type="file" accept="image/*" onChange={e => { handleReplaceImagenMaquinaria(e.target.files?.[0]); e.target.value = ''; }} className="hidden" />
                           </div>
                         </div>
@@ -1071,14 +1078,14 @@ export default function AdminPage() {
         <div className="fixed inset-0 z-[100] flex items-start justify-center bg-slate-900/80 backdrop-blur-sm px-4" style={{ paddingTop: '70px' }}>
           <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-              <p className="text-sm font-semibold text-slate-800">📷 Tomar foto</p>
+              <p className="text-sm font-semibold text-slate-800">Tomar foto</p>
               <button type="button" onClick={cerrarCamara} className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:border-orange-300">Cancelar</button>
             </div>
             <div className="relative bg-black">
               <video ref={videoRef} autoPlay playsInline muted className="w-full" style={{ maxHeight: '380px', objectFit: 'cover' }} />
             </div>
             <div className="px-4 py-3 flex justify-center">
-              <button type="button" onClick={tomarFoto} className="btn-anim rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-400">📸 Capturar</button>
+              <button type="button" onClick={tomarFoto} className="btn-anim rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-orange-400">Capturar</button>
             </div>
           </div>
           <canvas ref={canvasRef} className="hidden" />

@@ -5,12 +5,13 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-200 py-10 px-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-3">
-          <div className="h-11 w-11 rounded-full bg-white border border-slate-200 flex items-center justify-center">
+          <div className="h-11 w-11 rounded-none bg-[#1b1b1d] border border-[#38383a] flex items-center justify-center overflow-hidden">
             <Image
-              src="/logo/logo-partemaquinas.png"
+              src="/logo/logo-partemaquinas-oficial.jpeg"
               alt="ParteMaquinas"
-              width={34}
-              height={34}
+              width={42}
+              height={42}
+              className="object-contain"
             />
           </div>
           <div>

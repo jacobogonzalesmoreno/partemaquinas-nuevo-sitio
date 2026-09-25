@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import JSZip from 'jszip';
+import { prepararImagenProducto } from '@/lib/imagen-producto-client';
 
 const generarId = () => Math.random().toString(36).slice(2, 10);
 
@@ -20,50 +21,6 @@ const normalizar = texto =>
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
-
-const comprimirImagen = (file, maxDim = 1600, calidad = 0.82) =>
-  new Promise(resolve => {
-    if (!file.type.startsWith('image/') || file.type === 'image/gif') {
-      resolve(file);
-      return;
-    }
-    const img = new Image();
-    const reader = new FileReader();
-    reader.onload = () => {
-      img.onload = () => {
-        let { width, height } = img;
-        if (width > maxDim || height > maxDim) {
-          if (width > height) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          } else {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        canvas.toBlob(
-          blob => {
-            if (!blob) {
-              resolve(file);
-              return;
-            }
-            resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
-          },
-          'image/jpeg',
-          calidad
-        );
-      };
-      img.onerror = () => resolve(file);
-      img.src = reader.result;
-    };
-    reader.onerror = () => resolve(file);
-    reader.readAsDataURL(file);
-  });
 
 const sugerirCategorias = nombre => {
   const nombreNorm = normalizar(nombre);
@@ -180,7 +137,7 @@ export default function CargaMasivaPage() {
   };
 
   const subirUnaImagen = async (file, intentos = 3) => {
-    const comprimido = await comprimirImagen(file);
+    const comprimido = await prepararImagenProducto(file, 0.82);
     for (let intento = 1; intento <= intentos; intento++) {
       try {
         const formData = new FormData();
@@ -271,7 +228,7 @@ export default function CargaMasivaPage() {
             <p className="text-xs uppercase tracking-[0.28em] text-orange-500 font-semibold mb-1">Admin</p>
             <h1 className="text-2xl font-bold text-slate-900">Carga masiva de productos</h1>
             <p className="text-sm text-slate-500 mt-1">
-              Agrega un nombre y sus fotos, repite por cada producto, y crea todos de una vez.
+              Agrega un nombre y sus fotos, repite por cada producto, y crea todos de una vez. Las fotos se preparan a 1600 × 1200 px (4:3) sin recortar la pieza.
             </p>
           </div>
           <a
@@ -370,7 +327,7 @@ export default function CargaMasivaPage() {
                         key={i}
                         src={src}
                         alt=""
-                        className="h-10 w-10 rounded-lg object-cover border-2 border-white"
+                        className="h-10 w-10 rounded-lg object-contain bg-white border-2 border-white"
                       />
                     ))}
                     {lote.previews.length > 3 && (

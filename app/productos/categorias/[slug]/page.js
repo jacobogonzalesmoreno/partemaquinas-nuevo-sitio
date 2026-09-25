@@ -1,6 +1,5 @@
-import db from '@/lib/db';
 import { MENU_CATEGORIAS_FLAT, MENU_CATEGORIAS } from '@/lib/menu-categorias';
-import { slugifyCategoria, productoCoincideCategoriaPorNombre } from '@/lib/catalogo-categorias';
+import { slugifyCategoria } from '@/lib/catalogo-categorias';
 import SlugClient from './SlugClient';
 import { notFound } from 'next/navigation';
 
@@ -43,32 +42,10 @@ export default async function CategoriaSlugPage({ params }) {
     if (categoriaPadre) break;
   }
 
-  // Consultar TODOS los productos de la base de datos
-  const [rows] = await db.execute(
-    'SELECT id, sku, nombre, descripcion_corta, categorias, marcas, etiquetas, palabra_clave, imagenes FROM productos'
-  );
-
-  // Filtrar usando la función de coincidencia (esto aplica el filtro de Motores)
-  const productos = (rows || [])
-    .filter(p => productoCoincideCategoriaPorNombre(p, categoriaNombre))
-    .map(p => ({
-      id: p.id,
-      sku: p.sku || '',
-      nombre: p.nombre || '',
-      descripcion_corta: p.descripcion_corta || '',
-      categorias: p.categorias || '',
-      marcas: p.marcas || '',
-      etiquetas: p.etiquetas || '',
-      palabra_clave: p.palabra_clave || '',
-      imagenes: p.imagenes || '',
-    }));
-
   return (
     <SlugClient
-      productos={productos}
       categoria={categoriaNombre}
       categoriaPadre={categoriaPadre}
-      slug={slug}
     />
   );
 }

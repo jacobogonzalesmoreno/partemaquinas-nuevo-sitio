@@ -1,21 +1,20 @@
 'use client';
-import { Suspense, useRef, useCallback } from 'react';
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getImagenesProducto } from '@/lib/imagenes';
-import { resolverRutaBusquedaCatalogo, slugifyCategoria } from '@/lib/catalogo-categorias';
-import { MENU_CATEGORIAS, MENU_CATEGORIAS_FLAT } from '@/lib/menu-categorias';
-import { generarSugerencias, crearDebounce } from '@/lib/busqueda-tolerante';
+import { slugifyCategoria } from '@/lib/catalogo-categorias';
+import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 
 const CATALOGO_URL_KEY = 'catalogoListadoUrl';
 const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
 
 const obtenerClasesTarjeta = nivel => {
-  if (nivel === 0) return { wrapper: 'rounded-[28px]', image: 'aspect-[16/10]', padding: 'px-6 py-5', title: 'text-2xl', label: 'Categoria', icon: 'h-11 w-11 text-xl', cardTone: 'border-slate-200 bg-white', imageTone: 'bg-slate-100', labelTone: 'text-slate-400' };
-  if (nivel === 1) return { wrapper: 'rounded-[20px]', image: 'aspect-[16/8]', padding: 'px-4 py-3', title: 'text-lg', label: 'Subcategoria', icon: 'h-9 w-9 text-base', cardTone: 'border-orange-200 bg-orange-50/70', imageTone: 'bg-orange-100/60', labelTone: 'text-orange-500' };
-  return { wrapper: 'rounded-[18px]', image: 'aspect-[5/4]', padding: 'px-3.5 py-3', title: 'text-base', label: 'Subnivel', icon: 'h-8 w-8 text-sm', cardTone: 'border-sky-200 bg-sky-50/70', imageTone: 'bg-sky-100/70', labelTone: 'text-sky-600' };
+  if (nivel === 0) return { wrapper: 'rounded-[28px]', image: 'aspect-[6/5]', padding: 'px-6 py-5', title: 'text-2xl', label: 'Categoria', icon: 'h-11 w-11 text-xl', cardTone: 'border-slate-200 bg-white', imageTone: 'bg-slate-100', labelTone: 'text-slate-400' };
+  if (nivel === 1) return { wrapper: 'rounded-[20px]', image: 'aspect-[6/5]', padding: 'px-4 py-3', title: 'text-lg', label: 'Subcategoria', icon: 'h-9 w-9 text-base', cardTone: 'border-orange-200 bg-orange-50/70', imageTone: 'bg-orange-100/60', labelTone: 'text-orange-500' };
+  return { wrapper: 'rounded-[18px]', image: 'aspect-[6/5]', padding: 'px-3.5 py-3', title: 'text-base', label: 'Subnivel', icon: 'h-8 w-8 text-sm', cardTone: 'border-sky-200 bg-sky-50/70', imageTone: 'bg-sky-100/70', labelTone: 'text-sky-600' };
 };
 
 function TarjetaCategoria({ categoria, nivel, categoriasConImagenError, setCategoriasConImagenError, hrefCategoria, onNavigate }) {
@@ -28,11 +27,11 @@ function TarjetaCategoria({ categoria, nivel, categoriasConImagenError, setCateg
       className={`group overflow-hidden border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-300 hover:shadow-xl ${c.wrapper} ${c.cardTone}`}>
       <div className={`relative overflow-hidden ${c.imageTone} ${c.image}`}>
         {!tieneError ? (
-          <Image src={rutaImagen} alt={categoria.nombre} fill sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105"
+          <Image src={rutaImagen} alt={categoria.nombre} fill sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-contain"
             onError={() => setCategoriasConImagenError(prev => ({ ...prev, [slug]: true }))} />
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-[radial-gradient(circle_at_top,_rgba(251,146,60,0.18),_transparent_55%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] px-6 text-center">
-            <span className="text-4xl text-orange-300">🖼️</span>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-slate-50 px-6 text-center">
+            <svg className="h-10 w-10 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5L5 20"/></svg>
             <p className="text-base font-semibold text-slate-800">Imagen de {categoria.nombre}</p>
           </div>
         )}
@@ -66,80 +65,15 @@ function ProductosInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const buscarInicial = searchParams.get('buscar') || '';
-  const [inputBuscar, setInputBuscar] = useState(() => buscarInicial);
   const [categoriasConImagenError, setCategoriasConImagenError] = useState({});
   const [productos, setProductos] = useState([]);
   const [cargandoBusqueda, setCargandoBusqueda] = useState(() => Boolean(buscarInicial));
   const [errorBusqueda, setErrorBusqueda] = useState('');
-
-  // --- Dropdown autocomplete ---
-  const [sugerenciasCats, setSugerenciasCats] = useState([]);
-  const [sugerenciasProds, setSugerenciasProds] = useState([]);
-  const [cargandoProds, setCargandoProds] = useState(false);
-  const [sugerenciaActiva, setSugerenciaActiva] = useState(-1);
-  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
-  const searchRef = useRef(null);
-  const dropdownRef = useRef(null);
-  const abortRef = useRef(null);
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState({ marcas: [], categorias: [] });
+  const [paginaResultados, setPaginaResultados] = useState(1);
 
   // --- Boton flotante volver arriba ---
   const [mostrarBtnArriba, setMostrarBtnArriba] = useState(false);
-
-  const totalSugerencias = sugerenciasCats.length + sugerenciasProds.length + 1;
-
-  const actualizarSugerenciasCats = useCallback(query => {
-    if (!query || query.trim().length < 1) { setSugerenciasCats([]); return; }
-    setSugerenciasCats(generarSugerencias(query, MENU_CATEGORIAS, 4));
-  }, []);
-
-  const debouncedCats = useRef(crearDebounce(actualizarSugerenciasCats, 150)).current;
-
-  const buscarProductosAPI = useCallback(async (query) => {
-    if (!query || query.trim().length < 2) { setSugerenciasProds([]); setCargandoProds(false); return; }
-    if (abortRef.current) abortRef.current.abort();
-    abortRef.current = new AbortController();
-    setCargandoProds(true);
-    try {
-      const res = await fetch(`/api/buscar?q=${encodeURIComponent(query.trim())}&limit=5`, { signal: abortRef.current.signal });
-      if (!res.ok) { setSugerenciasProds([]); return; }
-      const data = await res.json();
-      setSugerenciasProds(data.productos || []);
-    } catch (err) {
-      if (err.name !== 'AbortError') setSugerenciasProds([]);
-    } finally { setCargandoProds(false); }
-  }, []);
-
-  const debouncedProds = useRef(crearDebounce(buscarProductosAPI, 250)).current;
-
-  useEffect(() => {
-    return () => { debouncedCats.cancel(); debouncedProds.cancel(); if (abortRef.current) abortRef.current.abort(); };
-  }, [debouncedCats, debouncedProds]);
-
-  // Cerrar dropdown al clic fuera (solo mousedown, NO al scroll del dropdown)
-  useEffect(() => {
-    const handler = e => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setMostrarSugerencias(false);
-        setSugerenciaActiva(-1);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  // Cerrar dropdown al scroll de la PAGINA, pero NO al scroll dentro del dropdown
-  useEffect(() => {
-    const handler = (e) => {
-      // Si el scroll viene del dropdown o de un descendiente, ignorarlo
-      if (dropdownRef.current && dropdownRef.current.contains(e.target)) {
-        return;
-      }
-      setMostrarSugerencias(false);
-      setSugerenciaActiva(-1);
-    };
-    window.addEventListener('scroll', handler, true);
-    return () => window.removeEventListener('scroll', handler, true);
-  }, []);
 
   // Mostrar/ocultar boton flotante "volver arriba"
   useEffect(() => {
@@ -149,64 +83,6 @@ function ProductosInner() {
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
   }, []);
-
-  const onChangeInput = e => {
-    const val = e.target.value;
-    setInputBuscar(val);
-    setSugerenciaActiva(-1);
-    debouncedCats(val);
-    debouncedProds(val);
-    if (val.trim().length >= 2) setMostrarSugerencias(true);
-    else setMostrarSugerencias(false);
-  };
-
-  const cerrarDropdown = () => {
-    setMostrarSugerencias(false);
-    setSugerenciaActiva(-1);
-    debouncedCats.cancel();
-    debouncedProds.cancel();
-    if (abortRef.current) abortRef.current.abort();
-  };
-
-  const onKeyDownInput = e => {
-    const haySugerencias = mostrarSugerencias && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0 || cargandoProds);
-    if (!haySugerencias) return;
-
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setSugerenciaActiva(prev => (prev + 1) % totalSugerencias);
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setSugerenciaActiva(prev => (prev - 1 + totalSugerencias) % totalSugerencias);
-        break;
-      case 'Escape':
-        cerrarDropdown();
-        break;
-      case 'Enter': {
-        e.preventDefault();
-        const idx = sugerenciaActiva;
-        if (idx >= 0 && idx < sugerenciasCats.length) {
-          cerrarDropdown();
-          setInputBuscar('');
-          router.push(sugerenciasCats[idx].href);
-          return;
-        }
-        const prodIdx = idx - sugerenciasCats.length;
-        if (prodIdx >= 0 && prodIdx < sugerenciasProds.length) {
-          cerrarDropdown();
-          setInputBuscar('');
-          router.push(`/productos/${sugerenciasProds[prodIdx].id}`);
-          return;
-        }
-        // "Buscar todos"
-        cerrarDropdown();
-        onSubmitBuscar(e);
-        break;
-      }
-    }
-  };
 
   // --- Scroll restore ---
   useEffect(() => {
@@ -226,6 +102,8 @@ function ProductosInner() {
   // --- Buscar productos (al cargar con ?buscar=) ---
   useEffect(() => {
     let activo = true;
+    setFiltrosAbiertos({ marcas: [], categorias: [] });
+    setPaginaResultados(1);
     if (!buscarInicial) { Promise.resolve().then(() => { if (!activo) return; setProductos([]); setErrorBusqueda(''); setCargandoBusqueda(false); }); return () => { activo = false; }; }
     Promise.resolve().then(() => { if (!activo) return; setCargandoBusqueda(true); setErrorBusqueda(''); });
     const timeout = setTimeout(async () => {
@@ -241,25 +119,28 @@ function ProductosInner() {
     return () => { activo = false; clearTimeout(timeout); };
   }, [buscarInicial]);
 
-  const onSubmitBuscar = e => {
-    e?.preventDefault();
-    cerrarDropdown();
-    if (inputBuscar.trim()) {
-      const ruta = resolverRutaBusquedaCatalogo(inputBuscar.trim());
-      setInputBuscar('');
-      router.push(ruta);
-    } else {
-      router.push('/productos');
-    }
-  };
-
   const hrefCategoria = nombre => `/productos/categorias/${slugifyCategoria(nombre)}`;
+  const valoresFiltro = (campo) => [...new Set(productos.flatMap(p => String(p[campo] || '').split(/[,;|]/).map(value => value.trim()).filter(Boolean)))].sort((a, b) => a.localeCompare(b, 'es'));
+  const marcasDisponibles = valoresFiltro('marcas');
+  const categoriasDisponibles = valoresFiltro('categorias');
+  const productosFiltrados = productos.filter(producto => {
+    const marca = String(producto.marcas || '').toLocaleLowerCase();
+    const categoria = String(producto.categorias || '').toLocaleLowerCase();
+    return (!filtrosAbiertos.marcas.length || filtrosAbiertos.marcas.some(value => marca.includes(value.toLocaleLowerCase()))) &&
+      (!filtrosAbiertos.categorias.length || filtrosAbiertos.categorias.some(value => categoria.includes(value.toLocaleLowerCase())));
+  });
+  const paginaMaxima = Math.max(1, Math.ceil(productosFiltrados.length / 15));
+  const productosVisibles = productosFiltrados.slice((paginaResultados - 1) * 15, paginaResultados * 15);
+  const alternarFiltro = (tipo, valor) => {
+    setPaginaResultados(1);
+    setFiltrosAbiertos(actual => ({ ...actual, [tipo]: actual[tipo].includes(valor) ? actual[tipo].filter(item => item !== valor) : [...actual[tipo], valor] }));
+  };
   const guardarScrollCatalogo = () => {
     if (typeof window === 'undefined') return;
     sessionStorage.setItem(CATALOGO_URL_KEY, window.location.pathname + window.location.search);
     sessionStorage.setItem(CATALOGO_SCROLL_KEY, String(window.scrollY));
   };
-  const placeholderImage = '/logo/logo-partemaquinas.png';
+  const placeholderImage = '/logo/logo-partemaquinas-oficial.jpeg';
   const obtenerImagenPrincipal = producto => { const imgs = getImagenesProducto(producto); return imgs[0] || null; };
   const irADetalle = (e, productoId) => { guardarScrollCatalogo(); router.push(`/productos/${productoId}`); };
 
@@ -268,105 +149,8 @@ function ProductosInner() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <div className="bg-white py-12 px-6 text-center border-b border-slate-200">
-        <h2 className="text-4xl font-bold text-slate-900 mb-3">Catalogo de Repuestos</h2>
-        <p className="text-slate-600 mb-6">Explora por categoria y encuentra el repuesto ideal.</p>
-        <div className="w-full max-w-xl mx-auto">
-          <form onSubmit={onSubmitBuscar} className="relative" ref={searchRef}>
-            <input
-              type="text"
-              placeholder="Buscar producto, marca o referencia..."
-              value={inputBuscar}
-              onChange={onChangeInput}
-              onKeyDown={onKeyDownInput}
-              onFocus={() => { if (inputBuscar.trim().length >= 2 && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0)) setMostrarSugerencias(true); }}
-              className="w-full px-5 py-3 rounded-xl bg-slate-50 text-slate-900 border border-slate-300 focus:outline-none focus:border-orange-400 text-lg shadow-sm"
-              autoComplete="off"
-            />
-            {/* Dropdown de sugerencias */}
-            {mostrarSugerencias && (sugerenciasCats.length > 0 || sugerenciasProds.length > 0 || cargandoProds) && (
-              <div
-                ref={dropdownRef}
-                className="absolute left-0 top-full z-[100] mt-1 w-full sm:w-[28rem] rounded-xl border border-slate-200 bg-white shadow-xl overflow-hidden"
-                onScroll={e => e.stopPropagation()}
-              >
-                <ul className="py-1 max-h-[60vh] overflow-y-auto">
-                  {sugerenciasCats.length > 0 && (
-                    <li><p className="px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 bg-slate-50/80">Categorias</p></li>
-                  )}
-                  {sugerenciasCats.map((sug, i) => {
-                    const isActive = sugerenciaActiva === i;
-                    return (
-                      <li key={`cat-${sug.href}`}>
-                        <button type="button"
-                          className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 transition-colors ${isActive ? 'bg-amber-50 text-slate-900' : 'text-slate-700 hover:bg-slate-50'}`}
-                          onMouseDown={e => { e.preventDefault(); cerrarDropdown(); setInputBuscar(''); router.push(sug.href); }}
-                          onMouseEnter={() => setSugerenciaActiva(i)}>
-                          <span className="flex items-center justify-center h-7 w-7 rounded-full border border-slate-200 bg-slate-50 text-slate-400 shrink-0">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{sug.texto}</p>
-                            {sug.textoCompleto !== sug.texto && <p className="text-[11px] text-slate-400 truncate">{sug.textoCompleto}</p>}
-                          </div>
-                          <span className={`text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full shrink-0 ${sug.nivel === 0 ? 'bg-amber-100 text-amber-700' : 'bg-orange-100 text-orange-600'}`}>{sug.tipo}</span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                  {sugerenciasCats.length > 0 && (sugerenciasProds.length > 0 || cargandoProds) && <li className="border-t border-slate-100" />}
-                  {sugerenciasProds.length > 0 || cargandoProds ? (
-                    <li><p className="px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 bg-slate-50/80">Productos</p></li>
-                  ) : null}
-                  {cargandoProds && sugerenciasProds.length === 0 && (
-                    <li><div className="px-3.5 py-4 text-center text-sm text-slate-400">Buscando productos...</div></li>
-                  )}
-                  {sugerenciasProds.map((prod, i) => {
-                    const thisIndex = sugerenciasCats.length + i;
-                    const isActive = sugerenciaActiva === thisIndex;
-                    return (
-                      <li key={`prod-${prod.id}`}>
-                        <button type="button"
-                          className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 transition-colors ${isActive ? 'bg-amber-50 text-slate-900' : 'text-slate-700 hover:bg-slate-50'}`}
-                          onMouseDown={e => { e.preventDefault(); cerrarDropdown(); setInputBuscar(''); router.push(`/productos/${prod.id}`); }}
-                          onMouseEnter={() => setSugerenciaActiva(thisIndex)}>
-                          {prod.imagen ? (
-                            <img src={prod.imagen} alt="" className="h-10 w-10 rounded-lg object-cover bg-slate-100 border border-slate-200 shrink-0" />
-                          ) : (
-                            <span className="flex items-center justify-center h-10 w-10 rounded-lg bg-slate-100 border border-slate-200 text-slate-400 text-lg shrink-0">⚙️</span>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{prod.nombre}</p>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              {prod.sku && <span className="text-[10px] font-mono text-slate-400">{prod.sku}</span>}
-                              {prod.marcas && <span className="text-[10px] text-orange-500 font-medium">{prod.marcas}</span>}
-                            </div>
-                          </div>
-                          <span className="text-orange-400 text-xs shrink-0">→</span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                  <li className="border-t border-slate-100">
-                    <button type="button"
-                      className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 text-sm transition-colors ${sugerenciaActiva === totalSugerencias - 1 ? 'bg-amber-50 text-slate-900' : 'text-slate-500 hover:bg-slate-50'}`}
-                      onMouseDown={e => { e.preventDefault(); onSubmitBuscar(e); }}
-                      onMouseEnter={() => setSugerenciaActiva(totalSugerencias - 1)}>
-                      <span className="flex items-center justify-center h-7 w-7 rounded-full border border-slate-200 bg-slate-50 text-slate-400 shrink-0">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                      </span>
-                      <span>Buscar &quot;{inputBuscar.trim()}&quot; en todos los productos</span>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </form>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 py-10">
+    <main className="catalog-page min-h-screen bg-slate-50 text-slate-900">
+      <div className={`catalog-content w-full max-w-[1500px] mx-auto px-4 sm:px-6 py-8 ${buscarInicial ? 'catalog-content--searching' : ''}`}>
         {buscarInicial ? (
           cargandoBusqueda ? (
             <div className="py-20 text-center text-xl text-slate-500">Buscando productos...</div>
@@ -375,45 +159,56 @@ function ProductosInner() {
           ) : productos.length === 0 ? (
             <div className="py-20 text-center text-xl text-slate-500">No se encontraron productos para &quot;{buscarInicial}&quot;.</div>
           ) : (
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
+            <div className="catalog-search-layout">
+              <aside className="catalog-filters">
+                <div className="catalog-filters__heading"><h2>Filtrar resultados</h2><button type="button" onClick={() => { setFiltrosAbiertos({ marcas: [], categorias: [] }); setPaginaResultados(1); }}>Limpiar</button></div>
+                {marcasDisponibles.length > 0 && <fieldset><legend>Marca</legend>{marcasDisponibles.map(marca => <label key={marca}><input type="checkbox" checked={filtrosAbiertos.marcas.includes(marca)} onChange={() => alternarFiltro('marcas', marca)} /><span>{marca}</span><small>{productos.filter(p => String(p.marcas || '').toLowerCase().includes(marca.toLowerCase())).length}</small></label>)}</fieldset>}
+                {categoriasDisponibles.length > 0 && <fieldset><legend>Categoría</legend>{categoriasDisponibles.map(categoria => <label key={categoria}><input type="checkbox" checked={filtrosAbiertos.categorias.includes(categoria)} onChange={() => alternarFiltro('categorias', categoria)} /><span>{categoria}</span><small>{productos.filter(p => String(p.categorias || '').toLowerCase().includes(categoria.toLowerCase())).length}</small></label>)}</fieldset>}
+                {!marcasDisponibles.length && !categoriasDisponibles.length && <p className="catalog-filters__empty">No hay más filtros para esta búsqueda.</p>}
+              </aside>
+              <div className="catalog-results">
+              <div className="catalog-results__header flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.32em] text-orange-500 font-semibold">Busqueda</p>
-                  <h2 className="mt-2 text-2xl font-bold text-slate-900">Resultados para &quot;{buscarInicial}&quot; ({productos.length})</h2>
+                  <p className="catalog-eyebrow">Búsqueda <span /> {productosFiltrados.length} resultados</p>
+                  <h2 className="mt-2 text-2xl font-bold text-slate-900">Resultados para &quot;{buscarInicial}&quot; ({productosFiltrados.length})</h2>
                 </div>
-                <button type="button" onClick={() => router.push('/productos')}
-                  className="btn-anim rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900">
-                  Ver todas las categorias
+                <button type="button" onClick={() => { setFiltrosAbiertos({ marcas: [], categorias: [] }); setPaginaResultados(1); router.push('/productos'); }}
+                  className="catalog-results__all btn-anim rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors">
+                  Ver catálogo completo
                 </button>
               </div>
-              <div className="grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3">
-                {(Array.isArray(productos) ? productos : []).map(producto => {
+              {productosFiltrados.length === 0 ? <div className="catalog-filter-empty">No hay productos que coincidan con los filtros seleccionados.</div> : <div className="catalog-results-grid grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+                {productosVisibles.map(producto => {
                   const imagen = producto.imagen || obtenerImagenPrincipal(producto);
                   return (
                     <div key={producto.id} onClick={(e) => irADetalle(e, producto.id)}
-                      className="bg-white rounded-2xl border border-slate-200 hover:border-orange-400 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-lg flex flex-col cursor-pointer hover:-translate-y-1">
+                      className="catalog-product-card bg-white rounded-2xl border border-slate-200 transition-all duration-300 overflow-hidden shadow-sm flex flex-col cursor-pointer">
                       {imagen ? (
-                        <div className="relative w-full h-48 bg-slate-100 overflow-hidden">
-                          <Image src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-contain transition-transform duration-300" onError={e => { e.currentTarget.src = placeholderImage; }} />
+                        <div className="catalog-product-card__media relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                          <Image src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 25vw, (min-width: 640px) 33vw, 50vw" className="object-contain" onError={e => { e.currentTarget.src = placeholderImage; }} />
                         </div>
                       ) : (
-                        <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-5xl text-slate-300">⚙️</div>
+                        <div className="catalog-product-card__media catalog-product-card__media--empty w-full aspect-[4/3] bg-slate-100 flex items-center justify-center text-slate-300"><svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M8 18h32v20H8zM14 18l3-7h14l3 7M17 27h.01M24 27h.01M31 27h.01M14 38v3m20-3v3"/></svg></div>
                       )}
-                      <div className="p-4 flex flex-col flex-1">
-                        {producto.marcas && <p className="mb-1.5 text-xs font-semibold text-orange-500 uppercase tracking-wider">{producto.marcas}</p>}
-                        <h3 className="text-slate-900 font-semibold text-sm mb-1 line-clamp-2 leading-snug">{producto.nombre}</h3>
-                        {producto.categorias && <p className="text-slate-400 text-xs mb-3 line-clamp-1">{producto.categorias}</p>}
+                      <div className="catalog-product-card__content p-4 flex flex-col flex-1">
+                        {producto.marcas && <p className="catalog-product-card__brand mb-1.5 text-xs font-semibold uppercase tracking-wider">{producto.marcas}</p>}
+                        <h3 className="catalog-product-card__title text-slate-900 font-semibold text-sm mb-1 line-clamp-2 leading-snug">{producto.nombre}</h3>
+                        {producto.sku && <p className="catalog-product-card__sku">Ref. {producto.sku}</p>}
+                        {producto.categorias && <p className="catalog-product-card__category text-slate-400 text-xs mb-3 line-clamp-1">{producto.categorias}</p>}
                         <div className="mt-auto pt-3">
                           <a href={'https://api.whatsapp.com/send?phone=573163293151&text=' + encodeURIComponent('Hola, me interesa: ' + producto.nombre)}
                             target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-                            className="btn-anim block w-full text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm py-2.5 rounded-lg transition-colors font-medium">
-                            Consultar por WhatsApp
+                            className="catalog-product-card__action btn-anim block w-full text-center text-sm py-2.5 rounded-lg transition-colors font-medium">
+                            Consultar disponibilidad
                           </a>
                         </div>
                       </div>
                     </div>
                   );
                 })}
+              </div>
+              }
+              {paginaMaxima > 1 && <nav className="catalog-pagination" aria-label="Paginación de resultados"><button type="button" disabled={paginaResultados === 1} onClick={() => setPaginaResultados(p => p - 1)}>Anterior</button><span>Página {paginaResultados} de {paginaMaxima}</span><button type="button" disabled={paginaResultados === paginaMaxima} onClick={() => setPaginaResultados(p => p + 1)}>Siguiente</button></nav>}
               </div>
             </div>
           )
@@ -423,7 +218,7 @@ function ProductosInner() {
               <section key={categoria.nombre} className="flex flex-col gap-5">
                 <BloqueCategorias items={[categoria]} nivel={0} categoriasConImagenError={categoriasConImagenError} setCategoriasConImagenError={setCategoriasConImagenError} hrefCategoria={hrefCategoria} onNavigate={guardarScrollCatalogo} />
                 {categoria.hijos?.length > 0 && (
-                  <div className="rounded-[24px] border border-orange-200 bg-gradient-to-b from-orange-50/80 to-white p-4 shadow-sm">
+                  <div className="rounded-[24px] border border-orange-200 bg-white p-4 shadow-sm">
                     <div className="mb-4 flex items-center gap-3 text-sm font-semibold text-orange-700">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-orange-300 bg-white text-orange-500 shadow-sm">↓</span>
                       <span className="uppercase tracking-[0.24em] text-[11px]">Subcategorias de {categoria.nombre}</span>
