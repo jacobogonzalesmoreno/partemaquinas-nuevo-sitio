@@ -47,30 +47,41 @@ export async function GET(request) {
       params.push(buscarLower, buscarLower, buscarLower, buscarLower);
     }
 
+    let isEditor = false;
+    try {
+      isEditor = requireRole(request, 'editor').ok;
+    } catch {
+      // Mantiene el catálogo público disponible si falla la configuración administrativa.
+    }
+
     if (categoria) {
-      const listQuery = `SELECT * FROM productos${whereClause} ORDER BY nombre ASC`;
+      const columns = isEditor ? '*' : 'id, sku, nombre, descripcion_corta, categorias, marcas, imagenes';
+      const listQuery = `SELECT ${columns} FROM productos${whereClause} ORDER BY nombre ASC`;
       const [rows] = await db.query(listQuery, params);
       const filtered = rows.filter(row => productoCoincideCategoriaPorNombre(row, categoria));
       const total = filtered.length;
       const paged = filtered.slice(offset, offset + limit);
-      const response = NextResponse.json(paged);
+      const publicPaged = isEditor ? paged : paged.map(({ id, sku, nombre, descripcion_corta, categorias, marcas, imagenes }) => ({ id, sku, nombre, descripcion_corta, categorias, marcas, imagenes }));
+      const response = NextResponse.json(publicPaged);
       response.headers.set('X-Total-Count', String(total));
       return response;
     }
 
     const countQuery = `SELECT COUNT(*) AS total FROM productos${whereClause}`;
-    const listQuery = `SELECT * FROM productos${whereClause} ORDER BY nombre ASC LIMIT ? OFFSET ?`;
+    const columns = isEditor ? '*' : 'id, sku, nombre, descripcion_corta, categorias, marcas, imagenes';
+    const listQuery = `SELECT ${columns} FROM productos${whereClause} ORDER BY nombre ASC LIMIT ? OFFSET ?`;
 
     const [countRows] = await db.query(countQuery, params);
     const total = countRows?.[0]?.total ?? 0;
 
     const listParams = [...params, limit, offset];
     const [rows] = await db.query(listQuery, listParams);
-    const response = NextResponse.json(rows);
+    const publicRows = isEditor ? rows : rows.map(({ id, sku, nombre, descripcion_corta, categorias, marcas, imagenes }) => ({ id, sku, nombre, descripcion_corta, categorias, marcas, imagenes }));
+    const response = NextResponse.json(publicRows);
     response.headers.set('X-Total-Count', String(total));
     return response;
   } catch (error) {
-    console.error('Error en GET /api/productos:', error);
+    console.error('Error en GET /api/productos:', error?.code || 'unknown');
     return NextResponse.json({ error: 'No se pudo obtener los productos.' }, { status: 500 });
   }
 }
@@ -82,7 +93,7 @@ export async function POST(request) {
     const schema = await getProductosSchema();
     const validation = validateWritablePayload(body, schema);
     if (!validation.ok) {
-      console.error('Validacion invalida al crear producto:', validation.errors, 'body:', body);
+      console.error('Validacion invalida al crear producto:', validation.errors.length);
       return NextResponse.json({ error: 'Datos invalidos.', details: validation.errors }, { status: 400 });
     }
     const writableSchema = schema.filter(column => column.name !== 'id');
@@ -100,7 +111,7 @@ export async function POST(request) {
     const [result] = await db.query(query, values);
     return NextResponse.json({ id: result.insertId });
   } catch (error) {
-    console.error('Error creando producto:', error, 'mensaje:', error?.message, 'sqlMessage:', error?.sqlMessage);
-    return NextResponse.json({ error: 'No se pudo crear el producto.', detalle: error?.sqlMessage || error?.message }, { status: 500 });
+    console.error('Error creando producto:', error?.code || 'unknown');
+    return NextResponse.json({ error: 'No se pudo crear el producto.' }, { status: 500 });
   }
 }

@@ -16,8 +16,9 @@ export const dynamic = 'force-dynamic';
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const q = (searchParams.get('q') || '').trim();
-    const limit = Math.min(parseInt(searchParams.get('limit') || '5', 10), 20);
+    const q = (searchParams.get('q') || '').trim().slice(0, 120);
+    const requestedLimit = Number.parseInt(searchParams.get('limit') || '5', 10);
+    const limit = Number.isFinite(requestedLimit) ? Math.max(1, Math.min(requestedLimit, 20)) : 5;
 
     if (!q || q.length < 2) {
       return NextResponse.json({ productos: [] });
@@ -29,7 +30,8 @@ export async function GET(request) {
     // --- Paso 1: Filtrado SQL con LIKE (generoso) ---
     const tokens = normalizarClave(queryNormalizada)
       .split(/\s+/)
-      .filter(t => t.length >= 2);
+      .filter(t => t.length >= 2)
+      .slice(0, 8);
 
     if (tokens.length === 0) {
       return NextResponse.json({ productos: [] });

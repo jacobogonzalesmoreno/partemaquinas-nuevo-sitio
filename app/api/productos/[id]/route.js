@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
   if (!parsedId.success) {
     return NextResponse.json({ error: 'ID invalido.' }, { status: 400 });
   }
-  const [rows] = await db.query('SELECT * FROM productos WHERE id = ?', [id]);
+  const [rows] = await db.query('SELECT id, sku, nombre, descripcion_corta, categorias, marcas, imagenes FROM productos WHERE id = ?', [id]);
   if (rows.length === 0) {
     return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 });
   }

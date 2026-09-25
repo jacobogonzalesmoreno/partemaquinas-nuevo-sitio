@@ -1,0 +1,4 @@
+export function GET() {
+  const content = `# ParteMáquinas\n\n> Repuestos para maquinaria pesada en Medellín, Colombia.\n\n## Sitio\n- [Inicio](https://partemaquinas.com/): información y productos destacados.\n- [Catálogo](https://partemaquinas.com/productos): búsqueda de repuestos para maquinaria pesada.\n- [Maquinaria](https://partemaquinas.com/maquinaria): equipos disponibles.\n- [Nosotros](https://partemaquinas.com/nosotros): información de la empresa.\n- [Contacto](https://partemaquinas.com/contacto): consultas y asesoría.\n\nPara confirmar disponibilidad, referencias y compatibilidad, contacta directamente a ParteMáquinas. Los precios se cotizan bajo consulta.\n`;
+  return new Response(content, { headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' } });
+}
