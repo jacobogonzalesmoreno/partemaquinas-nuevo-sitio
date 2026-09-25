@@ -58,7 +58,7 @@ export default function Home() {
   useEffect(() => {
     const cargarProductos = async () => {
       try {
-        const respuesta = await fetch('/api/productos?limit=20');
+        const respuesta = await fetch('/api/productos?categoria=Motores&limit=10');
         if (!respuesta.ok) throw new Error('No fue posible cargar los productos.');
         const data = await respuesta.json();
         setProductos(Array.isArray(data) ? data : []);
@@ -96,7 +96,7 @@ export default function Home() {
     if (marca === 'Todas') {
       setCargando(true);
       try {
-        const respuesta = await fetch('/api/productos?limit=20', { signal: controller.signal });
+        const respuesta = await fetch('/api/productos?categoria=Motores&limit=10', { signal: controller.signal });
         if (!respuesta.ok) throw new Error('No fue posible cargar los productos.');
         const data = await respuesta.json();
         if (!controller.signal.aborted) setProductos(Array.isArray(data) ? data : []);
@@ -107,7 +107,7 @@ export default function Home() {
 
     setCargando(true);
     try {
-      const respuesta = await fetch(`/api/productos?buscar=${encodeURIComponent(marca)}&limit=1000`, { signal: controller.signal });
+      const respuesta = await fetch(`/api/productos?categoria=Motores&buscar=${encodeURIComponent(marca)}&limit=1000`, { signal: controller.signal });
       if (!respuesta.ok) throw new Error('No fue posible buscar productos de esta marca.');
       const data = await respuesta.json();
       if (!controller.signal.aborted) setProductos(Array.isArray(data) ? data : []);
