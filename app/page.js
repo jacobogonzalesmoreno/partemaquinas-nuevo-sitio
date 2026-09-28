@@ -13,7 +13,7 @@ const MARCAS = [
   'Link-Belt', 'LiuGong', 'Mitsubishi', 'New Holland', 'NTN', 'SANY', 'Shibaura', 'Volvo', 'XGMA', 'Yanmar',
 ];
 const CATEGORIAS = [
-  { nombre: 'Motor', archivo: 'motor.png', descripcion: 'Componentes y repuestos de motor' },
+  { nombre: 'Motor', archivo: 'motor-portada.png', descripcion: 'Componentes y repuestos de motor' },
   { nombre: 'Turbos', archivo: 'turbos-portada-v2.png', descripcion: 'Turbocompresores y accesorios' },
   { nombre: 'Bomba Aceite', archivo: 'bomba-aceite.png', descripcion: 'Lubricación y sistema de aceite' },
 ];

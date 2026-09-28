@@ -11,10 +11,10 @@ import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 const CATALOGO_URL_KEY = 'catalogoListadoUrl';
 const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
 const PORTADAS_CATEGORIA = {
-  motor: '/categorias/motor-portada.png',
+  motor: '/categorias/motor.png',
   giro: '/categorias/giro-portada.png',
-  motores: '/categorias/motores-portada.png',
-  ventiladores: '/categorias/ventiladores-portada.png',
+  motores: '/categorias/motores.png',
+  ventiladores: '/categorias/ventiladores.png',
   cadenas: '/categorias/cadenas.png',
   turbos: '/categorias/turbos.png',
 };
