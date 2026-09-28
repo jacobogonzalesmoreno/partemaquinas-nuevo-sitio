@@ -11,9 +11,12 @@ import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
 const CATALOGO_URL_KEY = 'catalogoListadoUrl';
 const CATALOGO_SCROLL_KEY = 'catalogoListadoScroll';
 const PORTADAS_CATEGORIA = {
+  motor: '/categorias/motor-portada.png',
   giro: '/categorias/giro-portada.png',
   motores: '/categorias/motores-portada.png',
   ventiladores: '/categorias/ventiladores-portada.png',
+  cadenas: '/categorias/cadenas.png',
+  turbos: '/categorias/turbos.png',
 };
 
 const obtenerClasesTarjeta = nivel => {

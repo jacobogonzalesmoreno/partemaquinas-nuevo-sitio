@@ -14,7 +14,7 @@ const MARCAS = [
 ];
 const CATEGORIAS = [
   { nombre: 'Motor', archivo: 'motor.png', descripcion: 'Componentes y repuestos de motor' },
-  { nombre: 'Turbos', archivo: 'turbos.png', descripcion: 'Turbocompresores y accesorios' },
+  { nombre: 'Turbos', archivo: 'turbos-portada-v2.png', descripcion: 'Turbocompresores y accesorios' },
   { nombre: 'Bomba Aceite', archivo: 'bomba-aceite.png', descripcion: 'Lubricación y sistema de aceite' },
 ];
 
@@ -154,7 +154,7 @@ export default function Home() {
             <div className="store-hero__art" aria-hidden="true">
               <div className="store-hero__ring store-hero__ring--one" />
               <div className="store-hero__ring store-hero__ring--two" />
-              <Image src="/categorias/motor.png" alt="" fill priority sizes="(min-width: 1024px) 42vw, 80vw" className="object-contain" />
+              <Image src="/categorias/motor-portada.png" alt="" fill priority sizes="(min-width: 1024px) 42vw, 80vw" className="object-contain" />
               <span className="store-hero__art-label">Repuestos de motor y maquinaria</span>
             </div>
           </Link>
@@ -163,13 +163,13 @@ export default function Home() {
               <span className="store-eyebrow">Amplio catálogo</span>
               <strong>Encuentra tu pieza</strong>
               <span>Buscar repuestos <b aria-hidden="true">↗</b></span>
-              <span className="store-promo-card__image"><Image src="/categorias/turbos.png" alt="" fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-contain" /></span>
+              <span className="store-promo-card__image"><Image src="/categorias/turbos-portada-v2.png" alt="" fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-contain" /></span>
             </Link>
             <Link href="/maquinaria" className="store-promo-card store-promo-card--machines">
               <span className="store-eyebrow">Equipos disponibles</span>
               <strong>Maquinaria pesada</strong>
               <span>Ver equipos <b aria-hidden="true">↗</b></span>
-              <span className="store-promo-card__image"><Image src="/categorias/cadenas.png" alt="" fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-contain" /></span>
+              <span className="store-promo-card__image"><Image src="/categorias/cadenas-portada-v2.png" alt="" fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-contain" /></span>
             </Link>
           </div>
         </section>
