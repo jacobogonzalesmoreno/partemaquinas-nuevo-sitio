@@ -3,16 +3,22 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import Script from 'next/script';
 import { getImagenesProducto } from '@/lib/imagenes';
+import Modelo3DPreview from './Modelo3DPreview';
 
-export default function DetalleClient({ producto }) {
+export default function DetalleClient({ producto, modelo3d = null }) {
   const router = useRouter();
   const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const [mostrarModeloAmpliado, setMostrarModeloAmpliado] = useState(false);
   const [montado, setMontado] = useState(false);
+  const [mostrarInfoModelo, setMostrarInfoModelo] = useState(false);
   const scrollAnterior = useRef(0);
   const placeholderImage = '/logo/logo-partemaquinas-oficial.jpeg';
 
   const imagenes = producto ? getImagenesProducto(producto) : [];
+  const cantidadElementosLightbox = imagenes.length + (modelo3d ? 1 : 0);
+  const lightboxMuestraModelo = Boolean(modelo3d) && lightboxIndex === imagenes.length;
 
   // Esperar a que el DOM esté listo para portales
   useEffect(() => { setMontado(true); }, []);
@@ -41,12 +47,27 @@ export default function DetalleClient({ producto }) {
     window.scrollTo(0, scrollAnterior.current);
   }, []);
 
+  const abrirModeloAmpliado = useCallback(() => {
+    scrollAnterior.current = window.scrollY;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    setMostrarModeloAmpliado(true);
+  }, []);
+
+  const cerrarModeloAmpliado = useCallback(() => {
+    setMostrarModeloAmpliado(false);
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, scrollAnterior.current);
+  }, []);
+
   const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape' && mostrarModeloAmpliado) cerrarModeloAmpliado();
     if (lightboxIndex < 0) return;
     if (e.key === 'Escape') cerrarLightbox();
-    if (e.key === 'ArrowRight' && lightboxIndex < imagenes.length - 1) setLightboxIndex(lightboxIndex + 1);
+    if (e.key === 'ArrowRight' && lightboxIndex < cantidadElementosLightbox - 1) setLightboxIndex(lightboxIndex + 1);
     if (e.key === 'ArrowLeft' && lightboxIndex > 0) setLightboxIndex(lightboxIndex - 1);
-  }, [lightboxIndex, imagenes.length, cerrarLightbox]);
+  }, [lightboxIndex, imagenes.length, cantidadElementosLightbox, cerrarLightbox, mostrarModeloAmpliado, cerrarModeloAmpliado]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -98,7 +119,7 @@ export default function DetalleClient({ producto }) {
       {/* Barra superior */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', flexShrink: 0, position: 'relative', zIndex: 10 }}>
         <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>
-          {lightboxIndex + 1} / {imagenes.length}
+          {lightboxMuestraModelo ? 'Modelo 3D' : `${lightboxIndex + 1} / ${imagenes.length}`}
         </div>
         <button
           onClick={cerrarLightbox}
@@ -126,17 +147,28 @@ export default function DetalleClient({ producto }) {
         )}
 
         {/* Imagen */}
-        <img
-          src={imagenes[lightboxIndex] || placeholderImage}
-          alt={`Imagen ${lightboxIndex + 1} de ${producto.nombre}`}
-          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 8, display: 'block' }}
-          onClick={e => e.stopPropagation()}
-          onError={e => { e.currentTarget.src = placeholderImage; }}
-          draggable={false}
-        />
+        {lightboxMuestraModelo ? (
+          <div style={{ position: 'relative', width: 'min(900px, 100%)', height: '100%', background: '#e9e4d7', borderRadius: 4 }}>
+            <Modelo3DPreview
+              src={`/modelos/${modelo3d.archivo}`}
+              alt={`Modelo 3D ampliado del ${modelo3d.nombre}`}
+              showOpenButton={false}
+              large
+            />
+          </div>
+        ) : (
+          <img
+            src={imagenes[lightboxIndex] || placeholderImage}
+            alt={`Imagen ${lightboxIndex + 1} de ${producto.nombre}`}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 8, display: 'block' }}
+            onClick={e => e.stopPropagation()}
+            onError={e => { e.currentTarget.src = placeholderImage; }}
+            draggable={false}
+          />
+        )}
 
         {/* Flecha siguiente */}
-        {lightboxIndex < imagenes.length - 1 && (
+        {lightboxIndex < cantidadElementosLightbox - 1 && (
           <button
             onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
             style={{
@@ -153,10 +185,31 @@ export default function DetalleClient({ producto }) {
     </div>
   ) : null;
 
+  const modeloAmpliadoContent = mostrarModeloAmpliado ? (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Modelo 3D ampliado del ${modelo3d?.nombre || 'motor'}`}
+      onClick={cerrarModeloAmpliado}
+      style={{ position: 'fixed', inset: 0, zIndex: 100000, background: 'rgba(0,0,0,.86)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(12px, 4vw, 40px)' }}
+    >
+      <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: 'min(900px, 100%)', height: 'min(80dvh, 720px)', background: '#e9e4d7', border: '1px solid #ddc98e' }}>
+        <button type="button" onClick={cerrarModeloAmpliado} aria-label="Cerrar modelo 3D" style={{ position: 'absolute', top: 12, right: 12, zIndex: 2, width: 40, height: 40, border: '1px solid #d3bd7a', background: 'rgba(255,255,255,.92)', color: '#171719', fontSize: 24, cursor: 'pointer' }}>×</button>
+        <Modelo3DPreview
+          src={`/modelos/${modelo3d.archivo}`}
+          alt={`Modelo 3D ampliado del ${modelo3d.nombre}`}
+          showOpenButton={false}
+          large
+        />
+      </div>
+    </div>
+  ) : null;
+
   return (
     <main className="catalog-page product-detail-page min-h-screen bg-slate-50 text-slate-900">
+      {modelo3d && <Script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js" strategy="afterInteractive" />}
       {/* LIGHTBOX via Portal - se monta directamente en <body>, fuera de cualquier contenedor con overflow */}
-      {montado && lightboxContent && createPortal(lightboxContent, document.body)}
+      {montado && (lightboxContent || modeloAmpliadoContent) && createPortal(<>{lightboxContent}{modeloAmpliadoContent}</>, document.body)}
 
       {/* ===== ENCABEZADO ===== */}
       <div className="bg-white py-6 px-6 border-b border-slate-200">
@@ -173,8 +226,8 @@ export default function DetalleClient({ producto }) {
       </div>
 
       {/* ===== CONTENIDO ===== */}
-      <div className="max-w-5xl mx-auto px-6 py-8 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <div className="max-w-5xl mx-auto px-4 py-6 sm:px-6 md:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
           {/* Columna de imágenes */}
           <div className="flex flex-col gap-4">
             <div
@@ -187,19 +240,44 @@ export default function DetalleClient({ producto }) {
                 <div className="w-full aspect-square bg-slate-50 flex items-center justify-center text-slate-300"><svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M8 18h32v20H8zM14 18l3-7h14l3 7M17 27h.01M24 27h.01M31 27h.01M14 38v3m20-3v3"/></svg></div>
               )}
             </div>
-            {imagenes.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
-                {imagenes.slice(0, 8).map((img, i) => (
+            {(imagenes.length > 1 || modelo3d) && (
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3">
+                {imagenes.map((img, i) => (
                   <div key={i}
                     className="product-detail__thumbnail relative aspect-square bg-white border border-slate-200 overflow-hidden cursor-zoom-in hover:border-orange-400 transition-all hover:shadow-md"
                     onClick={() => abrirLightbox(i)}>
-                    <Image src={img} alt={`Miniatura ${i + 1}`} fill sizes="(min-width: 768px) 12vw, 25vw" className="object-contain bg-slate-50 p-2" onError={e => { e.currentTarget.src = placeholderImage; }} />
+                    <Image src={img} alt={`Miniatura ${i + 1}`} fill sizes="(min-width: 640px) 12vw, 33vw" className="object-contain bg-slate-50 p-2" onError={e => { e.currentTarget.src = placeholderImage; }} />
                   </div>
                 ))}
+                {modelo3d && (
+                  <section key="modelo3d" className="product-detail__model3d" aria-label={`Modelo 3D del ${modelo3d.nombre}`} onClick={abrirModeloAmpliado}>
+                    <Modelo3DPreview
+                      key={modelo3d.archivo}
+                      src={`/modelos/${modelo3d.archivo}`}
+                      alt={`Modelo 3D ilustrativo del ${modelo3d.nombre}`}
+                      onOpen={abrirModeloAmpliado}
+                    />
+                    <button
+                      type="button"
+                      className="product-detail__model3d-info-button"
+                      aria-label="Información y licencia del modelo 3D"
+                      aria-expanded={mostrarInfoModelo}
+                      aria-controls="product-model3d-info"
+                      onClick={event => { event.stopPropagation(); setMostrarInfoModelo(value => !value); }}
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
+                    </button>
+                    {mostrarInfoModelo && (
+                      <div className="product-detail__model3d-info" id="product-model3d-info" onClick={event => event.stopPropagation()}>
+                        Modelo ilustrativo generado con Meshy AI; no es un escaneo técnico. <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">Licencia CC BY 4.0</a>.
+                      </div>
+                    )}
+                  </section>
+                )}
               </div>
             )}
             {imagenes.length > 8 && (
-              <p className="text-center text-sm text-slate-400">Haz clic en cualquier imagen para ver todas ({imagenes.length} en total)</p>
+              <p className="text-center text-sm text-slate-400">Haz clic en cualquier imagen para ampliarla ({imagenes.length} en total)</p>
             )}
           </div>
 
