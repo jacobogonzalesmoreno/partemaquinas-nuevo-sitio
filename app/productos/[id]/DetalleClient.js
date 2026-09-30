@@ -7,6 +7,11 @@ import Script from 'next/script';
 import { getImagenesProducto } from '@/lib/imagenes';
 import Modelo3DPreview from './Modelo3DPreview';
 
+if (typeof window !== 'undefined') {
+  window.ModelViewerElement = window.ModelViewerElement || {};
+  window.ModelViewerElement.meshoptDecoderLocation = 'https://cdn.jsdelivr.net/npm/meshoptimizer/meshopt_decoder.js';
+}
+
 export default function DetalleClient({ producto, modelo3d = null }) {
   const router = useRouter();
   const [lightboxIndex, setLightboxIndex] = useState(-1);
@@ -207,7 +212,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
 
   return (
     <main className="catalog-page product-detail-page min-h-screen bg-slate-50 text-slate-900">
-      {modelo3d && <Script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js" strategy="lazyOnload" />}
+      {modelo3d && <Script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js" strategy="afterInteractive" />}
       {/* LIGHTBOX via Portal - se monta directamente en <body>, fuera de cualquier contenedor con overflow */}
       {montado && (lightboxContent || modeloAmpliadoContent) && createPortal(<>{lightboxContent}{modeloAmpliadoContent}</>, document.body)}
 
