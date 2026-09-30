@@ -619,16 +619,29 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
 .footer-legal-links { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; color: #d3d3d5; font-size: .8rem; }
 .footer-legal-links a { color: #e4c979; }
 .footer-legal-links button { padding: 0; border: 0; background: transparent; color: #e4c979; text-decoration: underline; text-underline-offset: 3px; }
-.cookie-banner { position: fixed; z-index: 100000; right: 1rem; bottom: 1rem; left: 1rem; display: flex; max-width: 1100px; margin: auto; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1rem 1.2rem; border: 1px solid #38383a; background: #1b1b1d; color: #fff; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+.site-footer > div > *, .footer-legal-links > * { animation: footer-item-in 460ms cubic-bezier(.2,.8,.2,1) both; }
+.site-footer > div > :nth-child(2) { animation-delay: 70ms; }
+.site-footer > div > :nth-child(3) { animation-delay: 130ms; }
+.footer-legal-links > :nth-child(2) { animation-delay: 45ms; }
+.footer-legal-links > :nth-child(3) { animation-delay: 90ms; }
+.footer-legal-links > :nth-child(4) { animation-delay: 135ms; }
+.footer-legal-links > :nth-child(5) { animation-delay: 180ms; }
+.footer-legal-links > :nth-child(6) { animation-delay: 225ms; }
+.footer-legal-links a, .footer-legal-links button { display: inline-block; transition: color 180ms ease, transform 180ms ease, text-decoration-color 180ms ease; }
+.footer-legal-links a:hover, .footer-legal-links button:hover { color: #fff2bf; transform: translateY(-2px); }
+.site-footer a:focus-visible, .site-footer button:focus-visible { outline: 2px solid #ffcf45; outline-offset: 4px; }
+.cookie-banner { position: fixed; z-index: 100000; right: 1rem; bottom: 1rem; left: 1rem; display: flex; max-width: 1100px; margin: auto; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1rem 1.2rem; border: 1px solid #38383a; background: #1b1b1d; color: #fff; box-shadow: 0 12px 40px rgba(0,0,0,.3); animation: cookie-banner-in 420ms cubic-bezier(.2,.8,.2,1) both; }
 .cookie-banner strong { font-size: .95rem; }
 .cookie-banner p, .cookie-dialog p { margin: .35rem 0 0; color: #c7c7ca; font-size: .82rem; line-height: 1.5; }
 .cookie-banner a { color: #f5cf58; text-decoration: underline; text-underline-offset: 2px; }
 .cookie-banner__actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: .45rem; }
-.cookie-button { min-height: 40px; padding: .55rem .8rem; border: 1px solid #77777c; font-size: .78rem; font-weight: 650; cursor: pointer; }
+.cookie-button { min-height: 40px; padding: .55rem .8rem; border: 1px solid #77777c; font-size: .78rem; font-weight: 650; cursor: pointer; transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease; }
+.cookie-button:hover { transform: translateY(-2px); border-color: #ffcf45; box-shadow: 0 5px 14px rgba(0,0,0,.22); }
+.cookie-button:active { transform: translateY(0) scale(.98); }
 .cookie-button--quiet { background: #242426; color: #fff; }
 .cookie-button--accept { border-color: #ffb600; background: #ffb600; color: #171719; }
-.cookie-dialog-backdrop { position: fixed; z-index: 100001; inset: 0; display: grid; place-items: center; padding: 1rem; background: rgba(0,0,0,.64); }
-.cookie-dialog { position: relative; width: min(100%, 580px); max-height: min(90dvh, 820px); overflow-y: auto; padding: clamp(1.2rem, 4vw, 2rem); background: #1b1b1d; color: #fff; box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+.cookie-dialog-backdrop { position: fixed; z-index: 100001; inset: 0; display: grid; place-items: center; padding: 1rem; background: rgba(0,0,0,.64); animation: cookie-backdrop-in 220ms ease-out both; }
+.cookie-dialog { position: relative; width: min(100%, 580px); max-height: min(90dvh, 820px); overflow-y: auto; padding: clamp(1.2rem, 4vw, 2rem); background: #1b1b1d; color: #fff; box-shadow: 0 24px 80px rgba(0,0,0,.35); animation: cookie-dialog-in 280ms cubic-bezier(.2,.8,.2,1) both; }
 .cookie-dialog .legal-eyebrow { margin-top: 0; }
 .cookie-dialog h2 { margin: 0; font-size: 1.55rem; }
 .cookie-dialog__close { position: absolute; top: .75rem; right: .75rem; width: 2.4rem; height: 2.4rem; border: 1px solid #55555b; background: #242426; color: white; font-size: 1.5rem; }
@@ -637,6 +650,10 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
 .cookie-choice input { width: 1.15rem; height: 1.15rem; accent-color: #ffb600; }
 .cookie-choice__locked { flex: 0 0 auto; color: #f5cf58; font-size: .75rem; }
 .cookie-dialog .cookie-banner__actions { justify-content: flex-end; margin-top: 1.2rem; }
+@keyframes cookie-banner-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cookie-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cookie-dialog-in { from { opacity: 0; transform: translateY(12px) scale(.975); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes footer-item-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .mapa-consentido { min-height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem; border-radius: 1rem; background: #f1f1f1; color: #55555b; text-align: center; }
 .mapa-consentido > div { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; }
 .mapa-consentido button, .mapa-consentido a { padding: .7rem 1rem; border: 1px solid #d8d8db; background: white; color: #795b00; font-weight: 650; }
@@ -646,6 +663,12 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
   .cookie-banner__actions .cookie-button--accept { grid-column: 1 / -1; }
   .cookie-button { padding: .5rem; }
   .cookie-dialog .cookie-banner__actions { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cookie-banner, .cookie-dialog-backdrop, .cookie-dialog { animation-duration: .01ms; animation-iteration-count: 1; }
+  .cookie-button { transition-duration: .01ms; }
+  .site-footer > div > *, .footer-legal-links > * { animation-duration: .01ms; animation-delay: 0ms; }
+  .footer-legal-links a, .footer-legal-links button { transition-duration: .01ms; }
 }
 .admin-password-toggle { position: absolute; top: 50%; right: 10px; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; transform: translateY(-50%); color: #65656b; cursor: pointer; }
 .admin-password-toggle:hover, .admin-password-toggle:focus-visible { color: #171719; outline: 2px solid #ffb600; outline-offset: 1px; }

@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/react';
 
-const CLAVE_CONSENTIMIENTO = 'partemaquinas-consentimiento-v1';
+const CLAVE_CONSENTIMIENTO = 'partemaquinas-consentimiento-v2';
 const CONSENTIMIENTO_VACIO = { analitica: false, herramientas: false };
 
 function leerConsentimiento() {
   try {
     const guardado = JSON.parse(localStorage.getItem(CLAVE_CONSENTIMIENTO));
-    return guardado?.version === 1 ? { analitica: Boolean(guardado.analitica), herramientas: Boolean(guardado.herramientas) } : null;
+    return guardado?.version === 2 ? { analitica: Boolean(guardado.analitica), herramientas: Boolean(guardado.herramientas) } : null;
   } catch { return null; }
 }
 
@@ -32,7 +32,7 @@ export default function ServiciosConConsentimiento() {
 
   const guardar = valor => {
     const anterior = leerConsentimiento();
-    const registro = { version: 1, ...valor, fecha: new Date().toISOString() };
+    const registro = { version: 2, ...valor, fecha: new Date().toISOString() };
     localStorage.setItem(CLAVE_CONSENTIMIENTO, JSON.stringify(registro));
     setConsentimiento(valor);
     setOpciones(valor);
