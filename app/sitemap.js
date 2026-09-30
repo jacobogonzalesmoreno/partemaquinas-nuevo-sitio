@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap() {
   const base = 'https://partemaquinas.com';
   const now = new Date();
-  const staticRoutes = ['', '/productos', '/maquinaria', '/nosotros', '/contacto'].map(path => ({ url: `${base}${path}`, lastModified: now, changeFrequency: path === '' ? 'weekly' : 'monthly', priority: path === '' ? 1 : 0.7 }));
+  const staticRoutes = ['', '/productos', '/maquinaria', '/nosotros', '/contacto', '/politica-datos', '/terminos-y-condiciones', '/politica-cookies', '/derecho-retracto'].map(path => ({ url: `${base}${path}`, lastModified: now, changeFrequency: path === '' ? 'weekly' : 'monthly', priority: path === '' ? 1 : 0.7 }));
   const categories = MENU_CATEGORIAS_FLAT.map(name => ({ url: `${base}/productos/categorias/${slugifyCategoria(name)}`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 }));
   let products = [];
   try {

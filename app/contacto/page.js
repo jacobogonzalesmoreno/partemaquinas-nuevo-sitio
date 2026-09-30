@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import MapaConsentido from './MapaConsentido';
 
 export default function Contacto() {
   const asesores = [
@@ -138,14 +139,7 @@ export default function Contacto() {
           </div>
 
           <div className="reveal-up stagger-2 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm overflow-hidden">
-            <iframe
-              title="Mapa ParteMaquinas"
-              src={mapa}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-[360px] w-full rounded-2xl border-0"
-              allowFullScreen
-            />
+            <MapaConsentido src={mapa} href={rutaGoogleMaps} />
           </div>
         </div>
       </section>

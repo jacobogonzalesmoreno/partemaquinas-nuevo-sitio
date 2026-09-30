@@ -12,12 +12,15 @@ export default function Modelo3DPreview({ src, alt, onOpen, showOpenButton = tru
     const viewer = viewerRef.current;
     if (!viewer) return;
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     let timer;
     let iniciada = false;
     const iniciarVuelta = () => {
       if (iniciada) return;
       iniciada = true;
       setMostrarIndicacion(true);
+      if (reduceMotion) return;
       viewer.setAttribute('rotation-per-second', '24deg');
       viewer.setAttribute('auto-rotate-delay', '0');
       viewer.setAttribute('auto-rotate', '');
@@ -53,7 +56,7 @@ export default function Modelo3DPreview({ src, alt, onOpen, showOpenButton = tru
         camera-controls
         touch-action="pan-y"
         interaction-prompt="none"
-        loading="lazy"
+        loading={large ? 'eager' : 'lazy'}
         shadow-intensity="1"
         exposure="1"
         ar={false}

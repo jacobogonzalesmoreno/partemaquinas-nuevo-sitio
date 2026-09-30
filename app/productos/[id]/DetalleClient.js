@@ -207,7 +207,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
 
   return (
     <main className="catalog-page product-detail-page min-h-screen bg-slate-50 text-slate-900">
-      {modelo3d && <Script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js" strategy="afterInteractive" />}
+      {modelo3d && <Script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js" strategy="lazyOnload" />}
       {/* LIGHTBOX via Portal - se monta directamente en <body>, fuera de cualquier contenedor con overflow */}
       {montado && (lightboxContent || modeloAmpliadoContent) && createPortal(<>{lightboxContent}{modeloAmpliadoContent}</>, document.body)}
 
@@ -251,12 +251,15 @@ export default function DetalleClient({ producto, modelo3d = null }) {
                 ))}
                 {modelo3d && (
                   <section key="modelo3d" className="product-detail__model3d" aria-label={`Modelo 3D del ${modelo3d.nombre}`} onClick={abrirModeloAmpliado}>
-                    <Modelo3DPreview
-                      key={modelo3d.archivo}
-                      src={`/modelos/${modelo3d.archivo}`}
-                      alt={`Modelo 3D ilustrativo del ${modelo3d.nombre}`}
-                      onOpen={abrirModeloAmpliado}
-                    />
+                    <button
+                      type="button"
+                      className="product-detail__model3d-poster"
+                      aria-label={`Abrir el modelo 3D del ${modelo3d.nombre}`}
+                      onClick={event => { event.stopPropagation(); abrirModeloAmpliado(); }}
+                    >
+                      {imagenes[0] && <Image src={imagenes[0]} alt="" fill sizes="(min-width: 640px) 12vw, 33vw" className="object-contain bg-[#e9e4d7] p-2" />}
+                      <span>Ver modelo 3D</span>
+                    </button>
                     <button
                       type="button"
                       className="product-detail__model3d-info-button"

@@ -464,6 +464,29 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
   background: #e9e4d7;
   --poster-color: #e9e4d7;
 }
+.product-detail__model3d-poster {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: #e9e4d7;
+  cursor: pointer;
+}
+.product-detail__model3d-poster > span {
+  position: absolute;
+  right: 0.3rem;
+  bottom: 0.3rem;
+  left: 0.3rem;
+  padding: 0.35rem 0.25rem;
+  background: rgba(255,255,255,.9);
+  color: #39393d;
+  font-size: clamp(.55rem, 2.4vw, .72rem);
+  text-align: center;
+}
 .product-detail__model3d-open-button {
   position: absolute;
   top: 0.45rem;
@@ -580,6 +603,50 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
 .admin-login-submit { border: 1px solid #ffb600 !important; border-radius: 0 !important; background: #ffb600 !important; color: #171719 !important; }
 .admin-login-submit:hover { background: #ffc533 !important; }
 .admin-login-error { border-color: #e6a3a3 !important; background: #fff1f1 !important; color: #8c2525 !important; }
+
+.legal-page { min-height: 65vh; padding: clamp(1.25rem, 5vw, 4rem) 1rem; background: #f5f5f5; color: #242426; }
+.legal-document { width: min(100%, 850px); margin: auto; padding: clamp(1.25rem, 4vw, 3.25rem); background: #fff; border: 1px solid #e3e3e6; box-shadow: 0 5px 18px rgba(18,18,18,.05); }
+.legal-back { color: #795b00; font-size: .9rem; }
+.legal-eyebrow { margin: 1.5rem 0 .45rem; color: #8a6200; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.legal-document h1 { margin: .4rem 0; color: #171719; font-size: clamp(1.8rem, 5vw, 2.7rem); line-height: 1.12; }
+.legal-updated { color: #737379; font-size: .86rem; }
+.legal-intro { margin: 1.5rem 0 2.2rem; color: #4a4a4f; font-size: 1.08rem; line-height: 1.75; }
+.legal-document section { margin-top: 1.8rem; }
+.legal-document section h2 { margin: 0 0 .65rem; color: #252528; font-size: 1.16rem; }
+.legal-document section p, .legal-document__contact { margin: .6rem 0; color: #55555b; font-size: .96rem; line-height: 1.75; }
+.legal-document a, .footer-legal-links a { color: #795b00; text-decoration: underline; text-underline-offset: 3px; }
+.legal-document__contact { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e3e3e6; }
+.footer-legal-links { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; color: #d3d3d5; font-size: .8rem; }
+.footer-legal-links a { color: #e4c979; }
+.footer-legal-links button { padding: 0; border: 0; background: transparent; color: #e4c979; text-decoration: underline; text-underline-offset: 3px; }
+.cookie-banner { position: fixed; z-index: 100000; right: 1rem; bottom: 1rem; left: 1rem; display: flex; max-width: 1100px; margin: auto; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1rem 1.2rem; border: 1px solid #38383a; background: #1b1b1d; color: #fff; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+.cookie-banner strong { font-size: .95rem; }
+.cookie-banner p, .cookie-dialog p { margin: .35rem 0 0; color: #c7c7ca; font-size: .82rem; line-height: 1.5; }
+.cookie-banner a { color: #f5cf58; text-decoration: underline; text-underline-offset: 2px; }
+.cookie-banner__actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: .45rem; }
+.cookie-button { min-height: 40px; padding: .55rem .8rem; border: 1px solid #77777c; font-size: .78rem; font-weight: 650; cursor: pointer; }
+.cookie-button--quiet { background: #242426; color: #fff; }
+.cookie-button--accept { border-color: #ffb600; background: #ffb600; color: #171719; }
+.cookie-dialog-backdrop { position: fixed; z-index: 100001; inset: 0; display: grid; place-items: center; padding: 1rem; background: rgba(0,0,0,.64); }
+.cookie-dialog { position: relative; width: min(100%, 580px); max-height: min(90dvh, 820px); overflow-y: auto; padding: clamp(1.2rem, 4vw, 2rem); background: #1b1b1d; color: #fff; box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+.cookie-dialog .legal-eyebrow { margin-top: 0; }
+.cookie-dialog h2 { margin: 0; font-size: 1.55rem; }
+.cookie-dialog__close { position: absolute; top: .75rem; right: .75rem; width: 2.4rem; height: 2.4rem; border: 1px solid #55555b; background: #242426; color: white; font-size: 1.5rem; }
+.cookie-choice { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: .8rem; padding: .85rem; border: 1px solid #48484c; }
+.cookie-choice p { max-width: 410px; }
+.cookie-choice input { width: 1.15rem; height: 1.15rem; accent-color: #ffb600; }
+.cookie-choice__locked { flex: 0 0 auto; color: #f5cf58; font-size: .75rem; }
+.cookie-dialog .cookie-banner__actions { justify-content: flex-end; margin-top: 1.2rem; }
+.mapa-consentido { min-height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem; border-radius: 1rem; background: #f1f1f1; color: #55555b; text-align: center; }
+.mapa-consentido > div { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; }
+.mapa-consentido button, .mapa-consentido a { padding: .7rem 1rem; border: 1px solid #d8d8db; background: white; color: #795b00; font-weight: 650; }
+@media (max-width: 700px) {
+  .cookie-banner { right: .5rem; bottom: .5rem; left: .5rem; max-height: 65dvh; overflow-y: auto; flex-direction: column; align-items: stretch; gap: .8rem; padding: .9rem; }
+  .cookie-banner__actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .cookie-banner__actions .cookie-button--accept { grid-column: 1 / -1; }
+  .cookie-button { padding: .5rem; }
+  .cookie-dialog .cookie-banner__actions { display: flex; }
+}
 .admin-password-toggle { position: absolute; top: 50%; right: 10px; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; transform: translateY(-50%); color: #65656b; cursor: pointer; }
 .admin-password-toggle:hover, .admin-password-toggle:focus-visible { color: #171719; outline: 2px solid #ffb600; outline-offset: 1px; }
 .contact-page, .about-page { background: #f1f1f1 !important; color: #171719; font-family: inherit; }

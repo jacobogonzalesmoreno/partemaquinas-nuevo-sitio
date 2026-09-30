@@ -1,10 +1,9 @@
 import './globals.css';
-import Script from 'next/script';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import BotonWhatsapp from '@/components/BotonWhattsapp';
 import PageTransition from '@/components/PageTransition';
-import { Analytics } from '@vercel/analytics/react';
+import ServiciosConConsentimiento from '@/app/privacidad/ServiciosConConsentimiento';
 
 export const metadata = {
   metadataBase: new URL('https://partemaquinas.com'),
@@ -28,8 +27,7 @@ export default function RootLayout({ children }) {
         <PageTransition>{children}</PageTransition>
         <Footer />
         <BotonWhatsapp />
-        <Analytics />
-        <Script src="//code.tidio.co/ik3zg1kybelonasjdzw8q5wxqbwt9htr.js" strategy="afterInteractive" />
+        <ServiciosConConsentimiento />
       </body>
     </html>
   );

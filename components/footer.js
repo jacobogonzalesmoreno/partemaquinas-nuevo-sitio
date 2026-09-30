@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import Link from 'next/link';
+import CookieSettingsButton from './CookieSettingsButton';
 
 export default function Footer() {
   return (
@@ -27,6 +29,14 @@ export default function Footer() {
         </div>
         <p className="text-slate-500 text-xs">© 2026 ParteMaquinas. Todos los derechos reservados.</p>
       </div>
+      <nav className="footer-legal-links max-w-6xl mx-auto mt-7 pt-5 border-t border-slate-700" aria-label="Políticas y condiciones">
+        <Link href="/politica-datos">Tratamiento de datos</Link>
+        <Link href="/terminos-y-condiciones">Términos y condiciones</Link>
+        <Link href="/politica-cookies">Política de cookies</Link>
+        <Link href="/derecho-retracto">Derecho de retracto</Link>
+        <a href="https://www.sic.gov.co/" target="_blank" rel="noreferrer">SIC · Protección al consumidor</a>
+        <CookieSettingsButton />
+      </nav>
     </footer>
   );
 }
