@@ -155,15 +155,12 @@ export default function DetalleClient({ producto, modelo3d = null }) {
         {/* Flecha anterior */}
         {lightboxIndex > 0 && (
           <button
+            type="button"
+            className="product-lightbox__arrow product-lightbox__arrow--previous"
+            aria-label="Ver imagen anterior"
             onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex - 1); }}
-            style={{
-              position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
-              width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderRadius: 0, backgroundColor: 'rgba(255,255,255,0.1)', border: 'none',
-              color: 'white', fontSize: 30, cursor: 'pointer',
-            }}
           >
-            ‹
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
           </button>
         )}
 
@@ -180,6 +177,8 @@ export default function DetalleClient({ producto, modelo3d = null }) {
           </div>
         ) : (
           <img
+            key={lightboxIndex}
+            className="product-lightbox__image"
             src={imagenes[lightboxIndex] || placeholderImage}
             alt={`Imagen ${lightboxIndex + 1} de ${producto.nombre}`}
             style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 8, display: 'block' }}
@@ -192,15 +191,12 @@ export default function DetalleClient({ producto, modelo3d = null }) {
         {/* Flecha siguiente */}
         {lightboxIndex < cantidadElementosLightbox - 1 && (
           <button
+            type="button"
+            className="product-lightbox__arrow product-lightbox__arrow--next"
+            aria-label="Ver imagen siguiente"
             onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
-            style={{
-              position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
-              width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderRadius: 0, backgroundColor: 'rgba(255,255,255,0.1)', border: 'none',
-              color: 'white', fontSize: 30, cursor: 'pointer',
-            }}
           >
-            ›
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
           </button>
         )}
       </div>

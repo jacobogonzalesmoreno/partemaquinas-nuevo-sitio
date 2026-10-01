@@ -370,6 +370,7 @@ footer.bg-slate-900 { border-top: 1px solid #29292c; background: #121212; }
   html { scroll-behavior: auto; }
   .store-home *, .site-navbar * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
   .store-brand-marquee__track { animation: none; }
+  .product-lightbox__image { animation-duration: .01ms !important; }
 }
 
 /* Negro sólido para los paneles destacados del inicio y sus llamadas de contacto. */
@@ -443,6 +444,35 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
 .product-detail-page .product-detail__gallery img { background: #f1f1f1; padding: 12px; }
 .product-detail-page .product-detail__thumbnail { background: #fff; }
 .product-detail-page .product-detail__thumbnail img { background: #f1f1f1; }
+.product-lightbox__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 12;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, .78);
+  border-radius: 50%;
+  background: rgba(15, 18, 24, .88);
+  color: #fff;
+  box-shadow: 0 3px 16px rgba(0, 0, 0, .45);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease, scale .18s ease;
+}
+.product-lightbox__arrow--previous { left: max(12px, env(safe-area-inset-left)); }
+.product-lightbox__arrow--next { right: max(12px, env(safe-area-inset-right)); }
+.product-lightbox__arrow svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.2; }
+.product-lightbox__arrow:hover { border-color: #ffbf24; background: #ffbf24; color: #171719; scale: 1.06; }
+.product-lightbox__arrow:focus-visible { outline: 3px solid #ffbf24; outline-offset: 3px; }
+.product-lightbox__image { animation: product-lightbox-image-in .24s cubic-bezier(.2,.75,.3,1) both; }
+@keyframes product-lightbox-image-in {
+  from { opacity: 0; transform: scale(.985); }
+  to { opacity: 1; transform: scale(1); }
+}
 .product-detail-page button.product-detail__back, .product-detail-page .product-detail__whatsapp { border-radius: 0 !important; }
 .product-detail-page button:not(:disabled), .product-detail-page a, button:not(:disabled), .btn-anim:not(:disabled) { cursor: pointer; }
 .product-detail-page button.product-detail__back { border-color: #cfcfd2; background: #fff; color: #333337; }
@@ -573,6 +603,8 @@ footer.bg-slate-900 { background: #1b1b1d !important; }
 }
 @media (max-width: 640px) {
   .product-detail-page .product-detail__gallery img { padding: 8px; }
+  .product-lightbox__arrow { width: 46px; height: 46px; }
+  .product-lightbox__arrow svg { width: 24px; height: 24px; }
   .product-detail__model3d-info {
     right: 0.35rem;
     bottom: 2.8rem;

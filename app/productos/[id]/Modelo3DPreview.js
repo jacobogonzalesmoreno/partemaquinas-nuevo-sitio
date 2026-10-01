@@ -56,6 +56,7 @@ export default function Modelo3DPreview({ src, alt, poster, onOpen, showOpenButt
         alt={alt}
         reveal="auto"
         camera-controls
+        disable-pan
         touch-action="none"
         interaction-prompt="none"
         loading={large ? 'eager' : 'lazy'}
