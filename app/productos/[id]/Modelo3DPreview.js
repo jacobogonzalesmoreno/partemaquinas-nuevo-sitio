@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const DURACION_VUELTA_MS = 15000;
 
-export default function Modelo3DPreview({ src, alt, onOpen, showOpenButton = true, large = false }) {
+export default function Modelo3DPreview({ src, alt, poster, onOpen, showOpenButton = true, large = false }) {
   const viewerRef = useRef(null);
   const [mostrarIndicacion, setMostrarIndicacion] = useState(false);
 
@@ -52,9 +52,11 @@ export default function Modelo3DPreview({ src, alt, onOpen, showOpenButton = tru
         ref={viewerRef}
         className="product-detail__model3d-viewer"
         src={src}
+        poster={poster || undefined}
         alt={alt}
+        reveal="auto"
         camera-controls
-        touch-action="pan-y"
+        touch-action="none"
         interaction-prompt="none"
         loading={large ? 'eager' : 'lazy'}
         shadow-intensity="1"

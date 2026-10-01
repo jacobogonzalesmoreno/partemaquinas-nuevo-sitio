@@ -19,6 +19,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
   const [montado, setMontado] = useState(false);
   const [mostrarInfoModelo, setMostrarInfoModelo] = useState(false);
   const scrollAnterior = useRef(0);
+  const estilosScrollPrevios = useRef(null);
   const placeholderImage = '/logo/logo-partemaquinas-oficial.jpeg';
 
   const imagenes = producto ? getImagenesProducto(producto) : [];
@@ -28,43 +29,59 @@ export default function DetalleClient({ producto, modelo3d = null }) {
   // Esperar a que el DOM esté listo para portales
   useEffect(() => { setMontado(true); }, []);
 
-  const abrirLightbox = useCallback((idx) => {
-    // 1. Guardar scroll actual
+  const bloquearScrollFondo = useCallback(() => {
+    if (estilosScrollPrevios.current) return;
+    const body = document.body;
+    const html = document.documentElement;
     scrollAnterior.current = window.scrollY;
-    // 2. Scroll instantáneo al tope SIN animación
-    window.scrollTo(0, 0);
-    // 3. Bloquear scroll del body
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-    // 4. Mostrar lightbox en el siguiente frame (después del scroll)
+    estilosScrollPrevios.current = {
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyWidth: body.style.width,
+      bodyOverflow: body.style.overflow,
+      htmlOverflow: html.style.overflow,
+    };
+    html.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollAnterior.current}px`;
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+  }, []);
+
+  const restaurarScrollFondo = useCallback(() => {
+    const estilos = estilosScrollPrevios.current;
+    if (!estilos) return;
+    document.documentElement.style.overflow = estilos.htmlOverflow;
+    document.body.style.position = estilos.bodyPosition;
+    document.body.style.top = estilos.bodyTop;
+    document.body.style.width = estilos.bodyWidth;
+    document.body.style.overflow = estilos.bodyOverflow;
+    estilosScrollPrevios.current = null;
+    window.scrollTo(0, scrollAnterior.current);
+  }, []);
+
+  const abrirLightbox = useCallback((idx) => {
+    bloquearScrollFondo();
     requestAnimationFrame(() => {
       setLightboxIndex(idx);
     });
-  }, []);
+  }, [bloquearScrollFondo]);
 
   const cerrarLightbox = useCallback(() => {
     // 1. Ocultar lightbox primero
     setLightboxIndex(-1);
-    // 2. Restaurar scroll del body
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    // 3. Volver a la posición original
-    window.scrollTo(0, scrollAnterior.current);
-  }, []);
+    restaurarScrollFondo();
+  }, [restaurarScrollFondo]);
 
   const abrirModeloAmpliado = useCallback(() => {
-    scrollAnterior.current = window.scrollY;
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+    bloquearScrollFondo();
     setMostrarModeloAmpliado(true);
-  }, []);
+  }, [bloquearScrollFondo]);
 
   const cerrarModeloAmpliado = useCallback(() => {
     setMostrarModeloAmpliado(false);
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    window.scrollTo(0, scrollAnterior.current);
-  }, []);
+    restaurarScrollFondo();
+  }, [restaurarScrollFondo]);
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape' && mostrarModeloAmpliado) cerrarModeloAmpliado();
@@ -76,13 +93,10 @@ export default function DetalleClient({ producto, modelo3d = null }) {
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      // Limpieza por si el componente se desmonta con el lightbox abierto
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
+
+  useEffect(() => () => restaurarScrollFondo(), [restaurarScrollFondo]);
 
   if (!producto) {
     return (
@@ -114,6 +128,8 @@ export default function DetalleClient({ producto, modelo3d = null }) {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        overscrollBehavior: 'none',
+        touchAction: 'none',
         margin: 0,
         padding: 0,
         border: 'none',
@@ -157,6 +173,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
             <Modelo3DPreview
               src={`/modelos/${modelo3d.archivo}`}
               alt={`Modelo 3D ampliado del ${modelo3d.nombre}`}
+              poster={imagenes[0]}
               showOpenButton={false}
               large
             />
@@ -196,13 +213,14 @@ export default function DetalleClient({ producto, modelo3d = null }) {
       aria-modal="true"
       aria-label={`Modelo 3D ampliado del ${modelo3d?.nombre || 'motor'}`}
       onClick={cerrarModeloAmpliado}
-      style={{ position: 'fixed', inset: 0, zIndex: 100000, background: 'rgba(0,0,0,.86)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(12px, 4vw, 40px)' }}
+      style={{ position: 'fixed', inset: 0, zIndex: 100000, background: 'rgba(0,0,0,.86)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(12px, 4vw, 40px)', overscrollBehavior: 'none', touchAction: 'none' }}
     >
-      <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: 'min(900px, 100%)', height: 'min(80dvh, 720px)', background: '#e9e4d7', border: '1px solid #ddc98e' }}>
+      <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: 'min(900px, 100%)', height: 'min(80dvh, 720px)', background: '#e9e4d7', border: '1px solid #ddc98e', overscrollBehavior: 'none', touchAction: 'none' }}>
         <button type="button" onClick={cerrarModeloAmpliado} aria-label="Cerrar modelo 3D" style={{ position: 'absolute', top: 12, right: 12, zIndex: 2, width: 40, height: 40, border: '1px solid #d3bd7a', background: 'rgba(255,255,255,.92)', color: '#171719', fontSize: 24, cursor: 'pointer' }}>×</button>
         <Modelo3DPreview
           src={`/modelos/${modelo3d.archivo}`}
           alt={`Modelo 3D ampliado del ${modelo3d.nombre}`}
+          poster={imagenes[0]}
           showOpenButton={false}
           large
         />
