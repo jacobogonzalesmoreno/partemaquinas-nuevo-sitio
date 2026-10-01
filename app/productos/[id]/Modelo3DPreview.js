@@ -78,8 +78,10 @@ export default function Modelo3DPreview({ src, alt, poster, onOpen, showOpenButt
       )}
       {mostrarIndicacion && (
         <span className={`product-detail__model3d-hint${large ? ' product-detail__model3d-hint--large' : ''}`} aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M8 12V6a2 2 0 0 1 4 0v5-6a2 2 0 0 1 4 0v7-5a2 2 0 0 1 4 0v8a7 7 0 0 1-7 7h-1a7 7 0 0 1-5-2l-3-3a2 2 0 0 1 3-3l2 2"/></svg>
-          <span>Arrastra para girar</span>
+          <svg className="product-detail__model3d-hint-touch" viewBox="0 0 32 32" aria-hidden="true"><path d="M12.5 14.3V7.1a2.5 2.5 0 0 1 5 0v6.3-2a2.4 2.4 0 0 1 4.8 0v2.3-1a2.3 2.3 0 0 1 4.6 0v6.7c0 5.1-3.7 8.6-8.5 8.6h-1.1a8.3 8.3 0 0 1-6-2.6l-4.1-4.5a2.4 2.4 0 0 1 3.5-3.3l1.8 1.8v-4.1a2.5 2.5 0 0 1 0-5Z"/><path className="product-detail__model3d-hint-touch-line" d="M15 8v9m5-5v5m5-4v4"/></svg>
+          <svg className="product-detail__model3d-hint-mouse" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 3.5v23l6.4-6.1 5.1 8.1 4.1-2.5-5.1-8.1 8.8-.5L6 3.5Z"/></svg>
+          <span className="product-detail__model3d-hint-mobile-text">Arrastra para girar</span>
+          <span className="product-detail__model3d-hint-desktop-text">Arrastra con el clic para girar</span>
         </span>
       )}
     </>
