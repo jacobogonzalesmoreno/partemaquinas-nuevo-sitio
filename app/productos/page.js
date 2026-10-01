@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import ImagenProducto from '@/components/ImagenProducto';
 import { getImagenesProducto } from '@/lib/imagenes';
 import { slugifyCategoria } from '@/lib/catalogo-categorias';
 import { MENU_CATEGORIAS } from '@/lib/menu-categorias';
@@ -148,7 +149,6 @@ function ProductosInner() {
     sessionStorage.setItem(CATALOGO_URL_KEY, window.location.pathname + window.location.search);
     sessionStorage.setItem(CATALOGO_SCROLL_KEY, String(window.scrollY));
   };
-  const placeholderImage = '/logo/logo-partemaquinas-oficial.jpeg';
   const obtenerImagenPrincipal = producto => { const imgs = getImagenesProducto(producto); return imgs[0] || null; };
   const irADetalle = (e, productoId) => { guardarScrollCatalogo(); router.push(`/productos/${productoId}`); };
 
@@ -193,7 +193,7 @@ function ProductosInner() {
                       className="catalog-product-card bg-white rounded-2xl border border-slate-200 transition-all duration-300 overflow-hidden shadow-sm flex flex-col cursor-pointer">
                       {imagen ? (
                         <div className="catalog-product-card__media relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
-                          <Image src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 25vw, (min-width: 640px) 33vw, 50vw" className="object-contain" onError={e => { e.currentTarget.src = placeholderImage; }} />
+                          <ImagenProducto src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 25vw, (min-width: 640px) 33vw, 50vw" className="object-contain" />
                         </div>
                       ) : (
                         <div className="catalog-product-card__media catalog-product-card__media--empty w-full aspect-[4/3] bg-slate-100 flex items-center justify-center text-slate-300"><svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M8 18h32v20H8zM14 18l3-7h14l3 7M17 27h.01M24 27h.01M31 27h.01M14 38v3m20-3v3"/></svg></div>

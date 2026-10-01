@@ -2,28 +2,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
-import Image from 'next/image';
 import Script from 'next/script';
 import { getImagenesProducto } from '@/lib/imagenes';
+import ImagenProducto from '@/components/ImagenProducto';
 import Modelo3DPreview from './Modelo3DPreview';
-
-const IMAGEN_RESPALDO = '/logo/logo-partemaquinas-oficial.jpeg';
-
-function ImagenConRespaldo({ src, alt, ...props }) {
-  const [error, setError] = useState(false);
-
-  useEffect(() => { setError(false); }, [src]);
-
-  if (!src) return null;
-  return (
-    <Image
-      {...props}
-      src={error ? IMAGEN_RESPALDO : src}
-      alt={alt}
-      onError={() => setError(true)}
-    />
-  );
-}
 
 if (typeof window !== 'undefined') {
   window.ModelViewerElement = window.ModelViewerElement || {};
@@ -258,7 +240,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
               onClick={() => imagenes.length > 0 && abrirLightbox(0)}
             >
               {imagenes[0] ? (
-                <ImagenConRespaldo src={imagenes[0]} alt={producto.nombre} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain bg-slate-50 p-4" priority />
+                <ImagenProducto src={imagenes[0]} alt={producto.nombre} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain bg-slate-50 p-4" priority />
               ) : (
                 <div className="w-full aspect-square bg-slate-50 flex items-center justify-center text-slate-300"><svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M8 18h32v20H8zM14 18l3-7h14l3 7M17 27h.01M24 27h.01M31 27h.01M14 38v3m20-3v3"/></svg></div>
               )}
@@ -269,7 +251,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
                   <div key={i}
                     className="product-detail__thumbnail relative aspect-square bg-white border border-slate-200 overflow-hidden cursor-zoom-in hover:border-orange-400 transition-all hover:shadow-md"
                     onClick={() => abrirLightbox(i)}>
-                    <ImagenConRespaldo src={img} alt={`${producto.nombre}, foto ${i + 1}`} fill sizes="(min-width: 640px) 12vw, 33vw" className="object-contain bg-slate-50 p-2" />
+                    <ImagenProducto src={img} alt={`${producto.nombre}, foto ${i + 1}`} fill sizes="(min-width: 640px) 12vw, 33vw" className="object-contain bg-slate-50 p-2" />
                   </div>
                 ))}
                 {modelo3d && (
@@ -280,7 +262,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
                       aria-label={`Abrir el modelo 3D del ${modelo3d.nombre}`}
                       onClick={event => { event.stopPropagation(); abrirModeloAmpliado(); }}
                     >
-                      {imagenes[0] && <ImagenConRespaldo src={imagenes[0]} alt="" fill sizes="(min-width: 640px) 12vw, 33vw" className="object-contain bg-[#e9e4d7] p-2" />}
+                      {imagenes[0] && <ImagenProducto src={imagenes[0]} alt="" fill sizes="(min-width: 640px) 12vw, 33vw" className="object-contain bg-[#e9e4d7] p-2" />}
                       <span>Ver modelo 3D</span>
                     </button>
                     <button

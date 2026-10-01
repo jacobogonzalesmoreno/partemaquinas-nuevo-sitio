@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import ImagenProducto from '@/components/ImagenProducto';
 import { getImagenesProducto } from '@/lib/imagenes';
 import { slugifyCategoria } from '@/lib/catalogo-categorias';
 
@@ -14,8 +14,6 @@ export default function SlugClient({ categoria, categoriaPadre }) {
   const [cargando, setCargando] = useState(true);
   const [errorCarga, setErrorCarga] = useState(false);
   const [intentoCarga, setIntentoCarga] = useState(0);
-  const placeholderImage = '/logo/logo-partemaquinas-oficial.jpeg';
-
   const obtenerImagenPrincipal = producto => {
     const imagenes = getImagenesProducto(producto);
     return imagenes[0] || null;
@@ -151,13 +149,12 @@ export default function SlugClient({ categoria, categoriaPadre }) {
                 >
                   {imagen ? (
                     <div className="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
-                      <Image
+                      <ImagenProducto
                         src={imagen}
                         alt={producto.nombre}
                         fill
                         sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
                         className="object-contain"
-                        onError={e => { e.currentTarget.src = placeholderImage; }}
                       />
                     </div>
                   ) : (

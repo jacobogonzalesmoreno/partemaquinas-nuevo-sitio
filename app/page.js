@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
+import ImagenProducto from '@/components/ImagenProducto';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getImagenesProducto } from '@/lib/imagenes';
@@ -27,7 +28,7 @@ function ProductoCard({ producto }) {
     <article className="store-product-card">
       <button type="button" className="store-product-card__visual" onClick={() => router.push(`/productos/${producto.id}`)} aria-label={`Ver ${producto.nombre}`}>
         {imagen ? (
-          <Image src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw" className="object-contain" />
+          <ImagenProducto src={imagen} alt={producto.nombre} fill sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw" className="object-contain" />
         ) : (
           <span className="store-product-card__placeholder" aria-hidden="true"><svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 18h32v20H8zM14 18l3-7h14l3 7M17 27h.01M24 27h.01M31 27h.01M14 38v3m20-3v3" /></svg></span>
         )}
