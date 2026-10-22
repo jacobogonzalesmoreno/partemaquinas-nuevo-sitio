@@ -222,6 +222,8 @@ export default function BlogAdminPanel() {
   const [actionLabel, setActionLabel] = useState('');
   const [actionUrl, setActionUrl] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
+  const [pdfUrl, setPdfUrl] = useState('');
+  const [pdfLabel, setPdfLabel] = useState('');
   const [coverUrl, setCoverUrl] = useState('');
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [pageCount, setPageCount] = useState(1);
@@ -463,6 +465,20 @@ export default function BlogAdminPanel() {
     updatePageCount();
     setDialog(null);
   };
+  const openPdfDialog = () => {
+    saveSelection();
+    setPdfUrl('');
+    setPdfLabel('Descargar lista de inspección del tren de rodaje');
+    setDialog('pdf');
+  };
+  const insertPdf = event => {
+    event.preventDefault();
+    const url = pdfUrl.trim();
+    if (!safeUrl(url) || !isPdfUrl(url)) { setNotice('Pega un enlace HTTPS que termine en .pdf.'); return; }
+    insertHtml(`<a class="blog-file" data-blog-pdf="true" href="${escapeHtml(url)}" data-blog-width="100" data-blog-align="center">📄 ${escapeHtml(pdfLabel || 'Abrir documento PDF')} ↗</a>`);
+    setDialog(null);
+    updatePageCount();
+  };
 
   const startNew = () => { setEditId(null); setForm(blankArticle()); setCoverUrl(''); setEditing(true); setTab('inicio'); setNotice(''); };
   const startEdit = article => { setEditId(article.id); setForm({ titulo: article.titulo || '', resumen: article.resumen || '', imagen_portada: article.imagen_portada || '', contenido: legacyToDoc(article.contenido), estado: article.estado || 'borrador' }); setCoverUrl(article.imagen_portada || ''); setEditing(true); setTab('inicio'); setNotice(''); };
@@ -534,7 +550,7 @@ export default function BlogAdminPanel() {
         </div> : <div className="word-ribbon-tools word-ribbon-tools--insert">
           <div className="word-tool-group">{toolbarButton('Imagen','image',() => { saveSelection(); imageInputRef.current?.click(); })}<span>Ilustraciones</span></div>
           <div className="word-tool-group">{toolbarButton('Video','video',openVideoDialog)}<span>Multimedia</span></div>
-          <div className="word-tool-group">{toolbarButton('PDF','pdf',() => { saveSelection(); pdfInputRef.current?.click(); })}{toolbarButton('Salto de página','page',addPageBreak)}<span>Archivos y páginas</span></div>
+          <div className="word-tool-group">{toolbarButton('PDF','pdf',openPdfDialog)}{toolbarButton('Salto de página','page',addPageBreak)}<span>Archivos y páginas</span></div>
           <div className="word-tool-group">{toolbarButton('Hipervínculo','link',openLinkDialog)}{toolbarButton('Botón','button',openActionDialog)}<span>Vínculos</span></div>
         </div>}
       </div>
@@ -551,11 +567,12 @@ export default function BlogAdminPanel() {
 
     {previewUrl && <div className="blog-dialog-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setPreviewUrl(''); }}><section className="blog-dialog blog-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="blog-preview-title"><button type="button" className="blog-dialog-close" onClick={() => setPreviewUrl('')} aria-label="Cerrar">×</button><span className="blog-dialog-kicker">REVISIÓN DEL ARTÍCULO</span><h3 id="blog-preview-title">Vista previa lista para compartir</h3><p>Las personas podrán revisar el borrador con este enlace, sin iniciar sesión ni entrar al panel.</p><label>Enlace de revisión<input ref={previewInputRef} readOnly value={previewUrl} onFocus={event => event.target.select()} /></label><div className="blog-dialog-actions"><button type="button" className="blog-admin-secondary" onClick={() => setPreviewUrl('')}>Cerrar</button><a className="blog-admin-secondary" href={previewUrl} target="_blank" rel="noreferrer">Abrir vista previa</a><button type="button" className="blog-admin-primary" onClick={copyPreview}>Copiar enlace</button></div></section></div>}
 
-    {dialog && <div className="blog-dialog-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setDialog(null); }}><section className="blog-dialog" role="dialog" aria-modal="true" aria-labelledby="blog-dialog-title"><button type="button" className="blog-dialog-close" onClick={() => setDialog(null)} aria-label="Cerrar">×</button><span className="blog-dialog-kicker">INSERTAR EN EL ARTÍCULO</span><h3 id="blog-dialog-title">{dialog === 'link' ? 'Agregar hipervínculo' : dialog === 'button' ? 'Insertar botón' : 'Insertar video'}</h3><form onSubmit={dialog === 'link' ? insertLink : dialog === 'button' ? insertAction : insertVideo}>
+    {dialog && <div className="blog-dialog-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setDialog(null); }}><section className="blog-dialog" role="dialog" aria-modal="true" aria-labelledby="blog-dialog-title"><button type="button" className="blog-dialog-close" onClick={() => setDialog(null)} aria-label="Cerrar">×</button><span className="blog-dialog-kicker">INSERTAR EN EL ARTÍCULO</span><h3 id="blog-dialog-title">{dialog === 'link' ? 'Agregar hipervínculo' : dialog === 'button' ? 'Insertar botón' : dialog === 'pdf' ? 'Adjuntar documento PDF' : 'Insertar video'}</h3><form onSubmit={dialog === 'link' ? insertLink : dialog === 'button' ? insertAction : dialog === 'pdf' ? insertPdf : insertVideo}>
       {dialog === 'link' && <><label>Texto del enlace<input ref={linkInputRef} value={linkText} onChange={event => setLinkText(event.target.value)} placeholder="Selecciona texto en la hoja o escribe el texto" /></label><label>Dirección web<input type="text" value={linkUrl} onChange={event => setLinkUrl(event.target.value)} placeholder="https://ejemplo.com" /></label><p className="blog-dialog-hint">Si seleccionaste texto en la hoja, el vínculo se aplicará solo a esa selección.</p></>}
       {dialog === 'button' && <><label>Texto del botón<input value={actionLabel} onChange={event => setActionLabel(event.target.value)} placeholder="Consultar disponibilidad" /></label><label>Dirección del botón<input type="text" value={actionUrl} onChange={event => setActionUrl(event.target.value)} placeholder="https:// o ruta interna" /></label></>}
       {dialog === 'video' && <><label>Enlace de YouTube o Vimeo<input value={videoUrl} onChange={event => setVideoUrl(event.target.value)} placeholder="Pega el enlace del video" /></label><p className="blog-dialog-hint">También puedes subir un MP4 o WEBM desde la pestaña Insertar.</p></>}
-      <div className="blog-dialog-actions"><button type="button" className="blog-admin-secondary" onClick={() => setDialog(null)}>Cancelar</button><button className="blog-admin-primary">{dialog === 'link' ? 'Insertar vínculo' : dialog === 'button' ? 'Insertar botón' : 'Insertar video'}</button></div>
+      {dialog === 'pdf' && <><label>Texto del enlace<input value={pdfLabel} onChange={event => setPdfLabel(event.target.value)} placeholder="Abrir ficha de inspección" /></label><label>Enlace seguro del PDF<input type="url" value={pdfUrl} onChange={event => setPdfUrl(event.target.value)} placeholder="https://www.partemaquinas.com/archivo.pdf" /></label><p className="blog-dialog-hint">Pega un enlace HTTPS terminado en .pdf. También puedes subir un archivo desde la pestaña Insertar.</p><button type="button" className="blog-admin-secondary" onClick={() => pdfInputRef.current?.click()} disabled={uploading === 'pdf'}>{uploading === 'pdf' ? 'Subiendo PDF…' : 'Elegir archivo PDF'}</button></>}
+      <div className="blog-dialog-actions"><button type="button" className="blog-admin-secondary" onClick={() => setDialog(null)}>Cancelar</button><button className="blog-admin-primary">{dialog === 'link' ? 'Insertar vínculo' : dialog === 'button' ? 'Insertar botón' : dialog === 'pdf' ? 'Adjuntar PDF' : 'Insertar video'}</button></div>
     </form></section></div>}
   </section>;
 }
