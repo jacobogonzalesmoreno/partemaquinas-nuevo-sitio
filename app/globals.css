@@ -40,7 +40,7 @@
 .blog-prose figcaption { margin-top:.5rem; color:#64748b; text-align:center; font-size:.85rem; }
 .blog-video { position:relative; width:100%; padding-top:56.25%; overflow:hidden; border-radius:.85rem; background:#0f172a; }
 .blog-video iframe,.blog-video video { position:absolute; inset:0; width:100%; height:100%; border:0; }
-.blog-file { display:flex; align-items:center; justify-content:space-between; margin:1.5rem 0; padding:1rem 1.2rem; border:1px solid #fed7aa; border-radius:.75rem; color:#9a3412; font-weight:700; text-decoration:none; background:#fff7ed; }
+.blog-file { display:flex; width:100%; min-height:48px; box-sizing:border-box; align-items:center; justify-content:space-between; gap:.75rem; margin:1.5rem 0; padding:1rem 1.2rem; border:1px solid #fed7aa; border-radius:.75rem; color:#9a3412; font-weight:700; text-decoration:none; background:#fff7ed; overflow-wrap:anywhere; touch-action:manipulation; cursor:pointer; }
 .blog-link-preview { position:relative; display:inline-block; }
 .blog-link-preview-card { position:absolute; left:0; top:100%; z-index:90; display:flex; width:min(330px,80vw); flex-direction:column; gap:0; padding:8px 0 0; border:0; border-radius:0 0 .6rem .6rem; background:#292929; box-shadow:0 10px 24px rgba(0,0,0,.3); color:#f3f3f3; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(4px); transition:opacity .14s ease,transform .14s ease,visibility .14s ease; text-align:left; white-space:normal; }
 .blog-link-preview:hover .blog-link-preview-card,.blog-link-preview:focus-within .blog-link-preview-card { opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0); }
@@ -287,7 +287,7 @@
   .blog-prose figure img,.blog-prose figure video,.blog-prose figure iframe { max-width:100%; }
   .blog-prose figure img { max-height:460px; border-radius:.65rem; }
   .blog-prose figure.blog-pdf iframe { min-height:min(65vh,520px); }
-  .blog-file { gap:.6rem; margin:1rem 0; padding:.85rem; overflow-wrap:anywhere; }
+  .blog-file { min-height:52px; gap:.6rem; margin:1rem 0; padding:.85rem; overflow-wrap:anywhere; -webkit-tap-highlight-color:rgba(255,182,0,.22); }
   .blog-link-preview-card { max-width:calc(100vw - 2rem); }
   .blog-cta a { max-width:100%; flex-wrap:wrap; }
   .blog-preview-banner { margin-bottom:1rem; padding:.85rem .9rem; }
