@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { getBlogLinkPreview } from '@/lib/blog-link-preview';
 
 const emptyDoc = () => ({ type: 'doc', content: [{ type: 'paragraph', content: [] }] });
@@ -210,6 +211,7 @@ export default function BlogAdminPanel() {
   const [form, setForm] = useState(blankArticle);
   const [editId, setEditId] = useState(null);
   const [editing, setEditing] = useState(false);
+  const [editStep, setEditStep] = useState('details');
   const [editorFullscreen, setEditorFullscreen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState('');
@@ -248,8 +250,8 @@ export default function BlogAdminPanel() {
   }, []);
   useEffect(() => { load().catch(error => setNotice(error.message)); }, [load]);
   useEffect(() => {
-    if (editing && editorRef.current) { editorRef.current.innerHTML = nodeToHtml(normalizeDraftTypography(legacyToDoc(form.contenido))); setPageCount(editorRef.current.querySelectorAll('[data-blog-pagebreak]').length + 1); setSelectedMedia(null); }
-  }, [editing, editId]);
+    if (editing && editStep === 'content' && editorRef.current) { editorRef.current.innerHTML = nodeToHtml(normalizeDraftTypography(legacyToDoc(form.contenido))); setPageCount(editorRef.current.querySelectorAll('[data-blog-pagebreak]').length + 1); setSelectedMedia(null); }
+  }, [editing, editStep, editId]);
   useEffect(() => {
     if (!editing) setEditorFullscreen(false);
   }, [editing]);
@@ -498,11 +500,21 @@ export default function BlogAdminPanel() {
     updatePageCount();
   };
 
-  const startNew = () => { setEditId(null); setForm(blankArticle()); setCoverUrl(''); setEditing(true); setTab('inicio'); setNotice(''); };
-  const startEdit = article => { setEditId(article.id); setForm({ titulo: article.titulo || '', resumen: article.resumen || '', imagen_portada: article.imagen_portada || '', contenido: legacyToDoc(article.contenido), estado: article.estado || 'borrador' }); setCoverUrl(article.imagen_portada || ''); setEditing(true); setTab('inicio'); setNotice(''); };
+  const startNew = () => { setEditId(null); setForm(blankArticle()); setCoverUrl(''); setEditing(true); setEditStep('details'); setEditorFullscreen(false); setTab('inicio'); setNotice(''); };
+  const startEdit = article => { setEditId(article.id); setForm({ titulo: article.titulo || '', resumen: article.resumen || '', imagen_portada: article.imagen_portada || '', contenido: legacyToDoc(article.contenido), estado: article.estado || 'borrador' }); setCoverUrl(article.imagen_portada || ''); setEditing(true); setEditStep('details'); setEditorFullscreen(false); setTab('inicio'); setNotice(''); };
+  const switchEditStep = step => {
+    if (step === 'details' && editStep === 'content' && editorRef.current) {
+      const content = readEditor(editorRef.current);
+      setForm(current => ({ ...current, contenido: content }));
+    }
+    setEditStep(step);
+    setEditorFullscreen(step === 'content');
+    setOpenMenu('');
+    if (step === 'content') setTab('inicio');
+  };
   const save = async event => {
     event.preventDefault(); setBusy(true); setNotice('Guardando artículo…');
-    const payload = { ...form, contenido: readEditor(editorRef.current) };
+    const payload = { ...form, contenido: editorRef.current ? readEditor(editorRef.current) : form.contenido };
     try {
       const response = await fetch(editId ? `/api/admin/blog/${editId}` : '/api/admin/blog', { method: editId ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const result = await response.json();
@@ -553,12 +565,14 @@ export default function BlogAdminPanel() {
     {notice && <p className="blog-admin-notice" role="status">{notice}</p>}
     {editing ? <form className={`blog-editor blog-word-editor${editorFullscreen ? ' blog-word-editor--fullscreen' : ''}`} onSubmit={save}>
       <div className="blog-editor-top"><div><span>{editId ? 'EDITANDO ARTÍCULO' : 'NUEVA PUBLICACIÓN'}</span><h3>{form.titulo || 'Artículo sin título'}</h3></div><button type="button" className="blog-admin-secondary" onClick={() => setEditing(false)}>Cerrar</button></div>
-      <div className="blog-word-meta">
+      <div className="blog-edit-mode-switch" role="tablist" aria-label="Modo de edición"><button type="button" role="tab" aria-selected={editStep === 'details'} className={editStep === 'details' ? 'is-active' : ''} onClick={() => switchEditStep('details')}><strong>1</strong><span><b>Título, resumen y portada</b><small>Edita la información principal</small></span></button><button type="button" role="tab" aria-selected={editStep === 'content'} className={editStep === 'content' ? 'is-active' : ''} onClick={() => switchEditStep('content')}><strong>2</strong><span><b>Edición completa</b><small>Abre el editor a pantalla completa</small></span></button></div>
+      {editStep === 'details' && <div className="blog-word-meta">
         <label className="blog-admin-field">Título del artículo<input required maxLength={220} value={form.titulo} onChange={event => setForm({ ...form, titulo: event.target.value })} placeholder="Escribe el título del artículo" /></label>
         <label className="blog-admin-field">Resumen<textarea required maxLength={500} rows={2} value={form.resumen} onChange={event => setForm({ ...form, resumen: event.target.value })} placeholder="Breve descripción para la página del blog" /></label>
         <div className="blog-word-cover"><div><strong>Portada del artículo</strong><span>Opcional · JPG, PNG, WEBP o GIF</span></div><input value={coverUrl} onChange={event => { setCoverUrl(event.target.value); setForm({ ...form, imagen_portada: event.target.value }); }} placeholder="Pega una URL de imagen" /><input ref={coverInputRef} hidden type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={event => upload(event.target.files?.[0], 'cover')} /><button type="button" className="blog-admin-secondary" onClick={() => coverInputRef.current?.click()} disabled={uploading === 'cover'}>{uploading === 'cover' ? 'Subiendo…' : 'Subir imagen'}</button>{coverUrl && <img src={coverUrl} alt="Vista previa de portada" />}</div>
-      </div>
+      </div>}
 
+      {editStep === 'content' && <>
       <div className="word-ribbon">
         <div className="word-ribbon-tabs"><button type="button" className={tab === 'inicio' ? 'active' : ''} onClick={() => { setTab('inicio'); setOpenMenu(''); }}>Inicio</button><button type="button" className={tab === 'insertar' ? 'active' : ''} onMouseDown={saveSelection} onClick={() => { setTab('insertar'); setOpenMenu(''); }}>Insertar</button><button type="button" className="word-ribbon-fullscreen" aria-pressed={editorFullscreen} onMouseDown={event => { saveSelection(); event.preventDefault(); }} onClick={() => setEditorFullscreen(value => !value)}><Icon name={editorFullscreen ? 'exitFullscreen' : 'fullscreen'} /><span>{editorFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}</span></button><span>Editor de artículos</span></div>
         {tab === 'inicio' ? <div className="word-ribbon-tools">
@@ -577,10 +591,16 @@ export default function BlogAdminPanel() {
       <input ref={pdfInputRef} hidden type="file" accept="application/pdf" onChange={event => upload(event.target.files?.[0], 'pdf')} />
       {selectedMedia?.isConnected && <div className="word-media-toolbar"><strong>{selectedMedia.hasAttribute('data-blog-pdf') ? 'PDF seleccionado' : selectedMedia.tagName === 'IMG' ? 'Imagen seleccionada' : 'Video seleccionado'}</strong><span>Tamaño</span>{[[35,'Pequeño'],[55,'Mediano'],[75,'Grande'],[100,'Ancho completo']].map(([width,label]) => <button type="button" key={width} onClick={() => applyMediaWidth(width)}>{label}</button>)}<span>Posición</span>{[['left','Izquierda'],['center','Centro'],['right','Derecha']].map(([align,label]) => <button type="button" key={align} onClick={() => applyMediaAlign(align)}>{label}</button>)}<button type="button" className="word-media-remove" onClick={removeSelectedMedia}>Quitar</button></div>}
       <div className="word-editor-canvas" onClick={() => setOpenMenu('')}><div className="word-page"><div ref={editorRef} className="word-editable" contentEditable suppressContentEditableWarning role="textbox" aria-label="Contenido del artículo" aria-multiline="true" spellCheck onClick={selectMedia} onInput={() => { setNotice(''); saveSelection(); updatePageCount(); }} onKeyUp={saveSelection} onMouseUp={saveSelection} onPointerUp={saveSelection} onSelect={saveSelection} data-placeholder="Empieza a escribir tu artículo aquí…" /></div></div>
-      <div className="blog-editor-actions"><span className="word-page-counter">Páginas: {pageCount}</span><div className="blog-status-dropdown"><span>Estado del artículo</span>{customMenu('status',form.estado === 'publicado' ? 'Publicado' : 'Borrador',<>{[['borrador','Borrador'],['publicado','Publicado']].map(([value,label]) => <button type="button" key={value} className={form.estado === value ? 'selected' : ''} onClick={() => { setForm({ ...form, estado: value }); setOpenMenu(''); }}>{label}</button>)}</>)}</div><button type="button" className="blog-admin-secondary" onClick={() => setEditing(false)}>Cancelar</button><button type="submit" className="blog-admin-primary" disabled={busy || Boolean(uploading)}>{busy ? 'Guardando…' : form.estado === 'publicado' ? 'Publicar artículo' : 'Guardar borrador'}</button></div>
+      </>}
+      <div className="blog-editor-actions">
+        <span className="word-page-counter">{editStep === 'content' ? `Páginas: ${pageCount}` : 'Información del artículo'}</span>
+        {editStep === 'content' && <div className="blog-status-dropdown"><span>Estado del artículo</span>{customMenu('status', form.estado === 'publicado' ? 'Publicado' : 'Borrador', <>{[['borrador','Borrador'],['publicado','Publicado']].map(([value,label]) => <button type="button" key={value} className={form.estado === value ? 'selected' : ''} onClick={() => { setForm({ ...form, estado: value }); setOpenMenu(''); }}>{label}</button>)}</>)}</div>}
+        <button type="button" className="blog-admin-secondary" onClick={() => setEditing(false)}>Cancelar</button>
+        <button type="submit" className="blog-admin-primary" disabled={busy || Boolean(uploading)}>{busy ? 'Guardando…' : form.estado === 'publicado' ? 'Publicar artículo' : 'Guardar borrador'}</button>
+      </div>
     </form> : <div className="blog-admin-list">{articles.length ? articles.map(article => <div className="blog-admin-row" key={article.id}><div>{article.imagen_portada && <img src={article.imagen_portada} alt="" />}<div><strong>{article.titulo}</strong><p>{article.resumen}</p><span className={article.estado === 'publicado' ? 'is-published' : ''}>{article.estado === 'publicado' ? 'Publicado' : 'Borrador'}{article.estado === 'publicado' && article.publicado_en ? ` · ${new Date(article.publicado_en).toLocaleDateString('es-CO', { timeZone: 'UTC' })}` : ''}</span></div></div><div><button type="button" className="blog-admin-secondary" onClick={() => startEdit(article)}>Editar</button><button type="button" className="blog-admin-secondary" disabled={previewBusy === article.id} onClick={() => createPreview(article)}>{previewBusy === article.id ? 'Creando enlace…' : 'Compartir vista previa'}</button>{article.estado === 'publicado' && <a className="blog-admin-secondary" href={`/blog/${article.slug}`} target="_blank" rel="noreferrer">Ver</a>}<button type="button" className="blog-admin-danger" onClick={() => setDeleteTarget(article)}>Eliminar</button></div></div>) : <div className="blog-block-empty">Todavía no hay artículos. Crea uno para empezar el blog.</div>}</div>}
 
-    {saveConfirmation && <div className="blog-save-confirmation-backdrop" role="presentation" onClick={() => setSaveConfirmation('')}><section className="blog-save-confirmation" role="status" aria-live="polite"><span className="blog-save-confirmation-check">✓</span><span className="blog-save-confirmation-kicker">{saveConfirmation === 'published' ? 'PUBLICACIÓN LISTA' : 'CAMBIOS GUARDADOS'}</span><h3>{saveConfirmation === 'published' ? 'Artículo publicado' : 'Borrador guardado'}</h3><p>{saveConfirmation === 'published' ? 'Tu artículo ya está publicado. Puedes continuar editándolo.' : 'Tu borrador está a salvo. Puedes continuar editándolo.'}</p><button type="button" onClick={() => setSaveConfirmation('')}>Continuar editando</button></section></div>}
+    {saveConfirmation && createPortal(<div className="blog-save-confirmation-backdrop" role="presentation" onClick={() => setSaveConfirmation('')}><section className="blog-save-confirmation" role="status" aria-live="polite"><span className="blog-save-confirmation-check">✓</span><span className="blog-save-confirmation-kicker">{saveConfirmation === 'published' ? 'PUBLICACIÓN LISTA' : 'CAMBIOS GUARDADOS'}</span><h3>{saveConfirmation === 'published' ? 'Artículo publicado' : 'Borrador guardado'}</h3><p>{saveConfirmation === 'published' ? 'Tu artículo ya está publicado. Puedes continuar editándolo.' : 'Tu borrador está a salvo. Puedes continuar editándolo.'}</p><button type="button" onClick={() => setSaveConfirmation('')}>Continuar editando</button></section></div>, document.body)}
     {deleteTarget && <div className="blog-dialog-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setDeleteTarget(null); }}><section className="blog-dialog" role="alertdialog" aria-modal="true" aria-labelledby="blog-delete-title"><span className="blog-dialog-icon">!</span><h3 id="blog-delete-title">¿Eliminar este artículo?</h3><p>Se eliminará “{deleteTarget.titulo}” del blog y del panel.</p><div><button type="button" className="blog-admin-secondary" onClick={() => setDeleteTarget(null)}>Cancelar</button><button type="button" className="blog-admin-danger blog-dialog-delete" onClick={remove}>Eliminar artículo</button></div></section></div>}
 
     {previewUrl && <div className="blog-dialog-backdrop" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setPreviewUrl(''); }}><section className="blog-dialog blog-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="blog-preview-title"><button type="button" className="blog-dialog-close" onClick={() => setPreviewUrl('')} aria-label="Cerrar">×</button><span className="blog-dialog-kicker">REVISIÓN DEL ARTÍCULO</span><h3 id="blog-preview-title">Vista previa lista para compartir</h3><p>Las personas podrán revisar el borrador con este enlace, sin iniciar sesión ni entrar al panel.</p><label>Enlace de revisión<input ref={previewInputRef} readOnly value={previewUrl} onFocus={event => event.target.select()} /></label><div className="blog-dialog-actions"><button type="button" className="blog-admin-secondary" onClick={() => setPreviewUrl('')}>Cerrar</button><a className="blog-admin-secondary" href={previewUrl} target="_blank" rel="noreferrer">Abrir vista previa</a><button type="button" className="blog-admin-primary" onClick={copyPreview}>Copiar enlace</button></div></section></div>}
