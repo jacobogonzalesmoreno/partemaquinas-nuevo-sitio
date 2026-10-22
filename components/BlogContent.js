@@ -4,6 +4,10 @@ function isPdfUrl(value) {
   try { return /\.pdf$/i.test(new URL(value).pathname); } catch { return false; }
 }
 
+function pdfLabel(value) {
+  return String(value || '').replace(/^(?:📄\s*)+/, '').replace(/(?:\s*↗)+$/, '').trim() || 'Abrir documento PDF';
+}
+
 function renderText(node, key) {
   let value = node.text || '';
   for (const [index, mark] of (node.marks || []).entries()) {
@@ -43,9 +47,9 @@ function renderNode(node, key) {
   if (node.type === 'pageBreak') return <hr key={key} className="blog-page-break" />;
   const mediaStyle = { width: `${node.attrs?.width || 100}%`, marginLeft: node.attrs?.align === 'left' ? 0 : 'auto', marginRight: node.attrs?.align === 'right' ? 0 : 'auto' };
   if (node.type === 'image') return <figure key={key} style={mediaStyle}><img src={node.attrs.src} alt={node.attrs.alt || ''} loading="lazy" />{node.attrs.title && <figcaption>{node.attrs.title}</figcaption>}</figure>;
-  if (node.type === 'video' && isPdfUrl(node.attrs.src)) return <figure key={key} className="blog-pdf" style={mediaStyle}><BlogLinkPreview href={node.attrs.src} linkClassName="blog-file">📄 {node.attrs.title || 'Abrir documento PDF'} <span>↗</span></BlogLinkPreview></figure>;
+  if (node.type === 'video' && isPdfUrl(node.attrs.src)) return <figure key={key} className="blog-pdf" style={mediaStyle}><BlogLinkPreview href={node.attrs.src} linkClassName="blog-file">📄 {pdfLabel(node.attrs.title)} <span>↗</span></BlogLinkPreview></figure>;
   if (node.type === 'video') return <figure key={key} style={mediaStyle}><div className="blog-video">{node.attrs.src.includes('/video/upload/') ? <video src={node.attrs.src} title={node.attrs.title || 'Video del artículo'} controls preload="metadata" /> : <iframe src={node.attrs.src} title={node.attrs.title || 'Video del artículo'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}</div>{node.attrs.title && <figcaption>{node.attrs.title}</figcaption>}</figure>;
-  if (node.type === 'pdf') return <figure key={key} className="blog-pdf" style={mediaStyle}><BlogLinkPreview href={node.attrs.src || node.attrs.href} linkClassName="blog-file">📄 {node.attrs.label || node.attrs.title || 'Abrir documento PDF'} <span>↗</span></BlogLinkPreview></figure>;
+  if (node.type === 'pdf') return <figure key={key} className="blog-pdf" style={mediaStyle}><BlogLinkPreview href={node.attrs.src || node.attrs.href} linkClassName="blog-file">📄 {pdfLabel(node.attrs.label || node.attrs.title)} <span>↗</span></BlogLinkPreview></figure>;
   if (node.type === 'button') return <p key={key} className="blog-cta"><BlogLinkPreview href={node.attrs.href}>{node.attrs.label || 'Más información'} <span>→</span></BlogLinkPreview></p>;
   return children;
 }
@@ -56,9 +60,9 @@ function renderLegacy(blocks) {
     if (block.type === 'heading') return <h2 key={key}>{block.text}</h2>;
     if (block.type === 'list') return <ul key={key}>{String(block.text || '').split('\n').filter(Boolean).map((item, i) => <li key={i}>{item}</li>)}</ul>;
     if (block.type === 'image') return <figure key={key}><img src={block.url} alt={block.text || block.caption || ''} loading="lazy" />{(block.text || block.caption) && <figcaption>{block.text || block.caption}</figcaption>}</figure>;
-    if (block.type === 'video' && isPdfUrl(block.url)) return <BlogLinkPreview key={key} href={block.url} linkClassName="blog-file">📄 {block.text || 'Abrir documento PDF'} <span>↗</span></BlogLinkPreview>;
+    if (block.type === 'video' && isPdfUrl(block.url)) return <BlogLinkPreview key={key} href={block.url} linkClassName="blog-file">📄 {pdfLabel(block.text)} <span>↗</span></BlogLinkPreview>;
     if (block.type === 'video') return <figure key={key}><div className="blog-video">{block.url.includes('/video/upload/') ? <video src={block.url} title={block.text || 'Video del artículo'} controls preload="metadata" /> : <iframe src={block.url} title={block.text || 'Video del artículo'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}</div>{block.text && <figcaption>{block.text}</figcaption>}</figure>;
-    if (block.type === 'pdf') return <BlogLinkPreview key={key} href={block.url} linkClassName="blog-file">📄 {block.text || 'Abrir documento PDF'} <span>↗</span></BlogLinkPreview>;
+    if (block.type === 'pdf') return <BlogLinkPreview key={key} href={block.url} linkClassName="blog-file">📄 {pdfLabel(block.text)} <span>↗</span></BlogLinkPreview>;
     if (block.type === 'button') return <p key={key} className="blog-cta"><BlogLinkPreview href={block.url}>{block.text || 'Más información'} <span>→</span></BlogLinkPreview></p>;
     if (block.type === 'link') return <p key={key}><BlogLinkPreview className="blog-inline-link" href={block.url}>{block.text || block.url}</BlogLinkPreview></p>;
     return <p key={key}>{block.text}</p>;
