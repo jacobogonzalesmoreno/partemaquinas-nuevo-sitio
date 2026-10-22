@@ -14,6 +14,7 @@ function normalizeDraftTypography(node) {
   return { ...node, ...(Array.isArray(node.content) ? { content: node.content.map(normalizeDraftTypography) } : {}) };
 }
 const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const cleanPdfLabel = value => String(value || '').replace(/^(?:📄\s*)+/, '').replace(/(?:\s*↗)+$/, '').trim() || 'Abrir documento PDF';
 const linkCardHtml = href => {
   try {
     const preview = getBlogLinkPreview(href);
@@ -97,9 +98,9 @@ function nodeToHtml(node) {
   if (node.type === 'horizontalRule') return '<hr>';
   if (node.type === 'pageBreak') return '<div data-blog-pagebreak="true" contenteditable="false">SALTO DE PÁGINA</div>';
   if (node.type === 'image') { const width = Number(node.attrs?.width) || 100; const align = node.attrs?.align || 'center'; return `<p><img src="${escapeHtml(node.attrs?.src)}" alt="${escapeHtml(node.attrs?.alt)}" title="${escapeHtml(node.attrs?.title)}" style="width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}"></p>`; }
-  if (node.type === 'video' && isPdfUrl(node.attrs?.src)) return `<p><a class="blog-file" data-blog-pdf="true" href="${escapeHtml(node.attrs.src)}" style="display:block;width:${Number(node.attrs?.width) || 100}%;margin-left:${node.attrs?.align === 'left' ? '0' : 'auto'};margin-right:${node.attrs?.align === 'right' ? '0' : 'auto'}" data-blog-width="${Number(node.attrs?.width) || 100}" data-blog-align="${node.attrs?.align || 'center'}">📄 ${escapeHtml(node.attrs?.title || 'Abrir documento PDF')} ↗</a></p>`;
+  if (node.type === 'video' && isPdfUrl(node.attrs?.src)) return `<p><a class="blog-file" data-blog-pdf="true" href="${escapeHtml(node.attrs.src)}" style="display:block;width:${Number(node.attrs?.width) || 100}%;margin-left:${node.attrs?.align === 'left' ? '0' : 'auto'};margin-right:${node.attrs?.align === 'right' ? '0' : 'auto'}" data-blog-width="${Number(node.attrs?.width) || 100}" data-blog-align="${node.attrs?.align || 'center'}">📄 ${escapeHtml(cleanPdfLabel(node.attrs?.title))} ↗</a></p>`;
   if (node.type === 'video') { const width = Number(node.attrs?.width) || 100; const align = node.attrs?.align || 'center'; return `<p>${node.attrs?.src?.includes('/video/upload/') ? `<video src="${escapeHtml(node.attrs.src)}" title="${escapeHtml(node.attrs?.title)}" style="width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}" controls></video>` : `<iframe src="${escapeHtml(node.attrs?.src)}" title="${escapeHtml(node.attrs?.title)}" style="width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}"></iframe>`}</p>`; }
-  if (node.type === 'pdf') { const width = Number(node.attrs?.width) || 100; const align = node.attrs?.align || 'center'; const href = node.attrs?.src || node.attrs?.href; return `<p><a class="blog-file" data-blog-pdf="true" href="${escapeHtml(href)}" style="display:block;width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}">📄 ${escapeHtml(node.attrs?.label || node.attrs?.title || 'Abrir documento PDF')} ↗</a></p>`; }
+  if (node.type === 'pdf') { const width = Number(node.attrs?.width) || 100; const align = node.attrs?.align || 'center'; const href = node.attrs?.src || node.attrs?.href; return `<p><a class="blog-file" data-blog-pdf="true" href="${escapeHtml(href)}" style="display:block;width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}">📄 ${escapeHtml(cleanPdfLabel(node.attrs?.label || node.attrs?.title))} ↗</a></p>`; }
   if (node.type === 'button') return `<p><a data-blog-button="true" href="${escapeHtml(node.attrs?.href)}">${escapeHtml(node.attrs?.label || 'Más información')}</a></p>`;
   return children;
 }
@@ -152,7 +153,7 @@ function domToNodes(node, marks = []) {
   if (tag === 'iframe') return [{ type: 'video', attrs: { src: node.getAttribute('src'), title: node.getAttribute('title') || '', ...mediaAttrs } }];
   if (tag === 'hr') return [{ type: 'horizontalRule' }];
   if (tag === 'br') return [{ type: 'hardBreak' }];
-  if (tag === 'a' && node.hasAttribute('data-blog-pdf')) return [{ type: 'pdf', attrs: { href: node.getAttribute('href'), src: node.getAttribute('href'), label: node.textContent, ...mediaAttrs } }];
+  if (tag === 'a' && node.hasAttribute('data-blog-pdf')) return [{ type: 'pdf', attrs: { href: node.getAttribute('href'), src: node.getAttribute('href'), label: cleanPdfLabel(node.textContent), ...mediaAttrs } }];
   if (tag === 'a' && node.hasAttribute('data-blog-button')) return [{ type: 'button', attrs: { href: node.getAttribute('href'), label: node.textContent } }];
   const nextMarks = getMarks(node, marks);
   const children = Array.from(node.childNodes).flatMap(child => domToNodes(child, nextMarks));
@@ -475,7 +476,7 @@ export default function BlogAdminPanel() {
     event.preventDefault();
     const url = pdfUrl.trim();
     if (!safeUrl(url) || !isPdfUrl(url)) { setNotice('Pega un enlace HTTPS que termine en .pdf.'); return; }
-    insertHtml(`<a class="blog-file" data-blog-pdf="true" href="${escapeHtml(url)}" data-blog-width="100" data-blog-align="center">📄 ${escapeHtml(pdfLabel || 'Abrir documento PDF')} ↗</a>`);
+    insertHtml(`<a class="blog-file" data-blog-pdf="true" href="${escapeHtml(url)}" data-blog-width="100" data-blog-align="center">${escapeHtml(cleanPdfLabel(pdfLabel))}</a>`);
     setDialog(null);
     updatePageCount();
   };
