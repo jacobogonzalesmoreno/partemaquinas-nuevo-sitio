@@ -192,6 +192,8 @@ function Icon({ name }) {
     underline: <><path d="M6 4v6a6 6 0 0 0 12 0V4"/><path d="M4 21h16"/></>,
     strike: <><path d="M5 12h14"/><path d="M17 6c-.7-1.3-2.2-2-5-2-3.4 0-5 1.1-5 3 0 2 2 3 5 4"/><path d="M7 18c.9 1.3 2.4 2 5 2 3.3 0 5-1 5-3 0-1.8-1.3-2.7-4-3.6"/></>,
     page: <><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M8 7h8M8 10h8M8 13h8M5 16h14"/></>,
+    fullscreen: <><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/></>,
+    exitFullscreen: <><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3m13-5h-3a2 2 0 0 0-2 2v3"/></>,
     link: <><path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 0 0 12 20.1l1.1-1.1"/></>,
     image: <><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></>,
     video: <><rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></>,
@@ -208,6 +210,7 @@ export default function BlogAdminPanel() {
   const [form, setForm] = useState(blankArticle);
   const [editId, setEditId] = useState(null);
   const [editing, setEditing] = useState(false);
+  const [editorFullscreen, setEditorFullscreen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState('');
   const [notice, setNotice] = useState('');
@@ -247,10 +250,24 @@ export default function BlogAdminPanel() {
   useEffect(() => {
     if (editing && editorRef.current) { editorRef.current.innerHTML = nodeToHtml(normalizeDraftTypography(legacyToDoc(form.contenido))); setPageCount(editorRef.current.querySelectorAll('[data-blog-pagebreak]').length + 1); setSelectedMedia(null); }
   }, [editing, editId]);
+  useEffect(() => {
+    if (!editing) setEditorFullscreen(false);
+  }, [editing]);
+  useEffect(() => {
+    if (!editorFullscreen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = event => { if (event.key === 'Escape') setEditorFullscreen(false); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [editorFullscreen]);
 
   const saveSelection = () => {
     const selection = window.getSelection();
-    if (selection?.rangeCount && editorRef.current?.contains(selection.anchorNode)) selectionRef.current = selection.getRangeAt(0).cloneRange();
+    if (selection?.rangeCount && editorRef.current?.contains(selection.anchorNode) && editorRef.current?.contains(selection.focusNode)) selectionRef.current = selection.getRangeAt(0).cloneRange();
   };
   const restoreSelection = () => {
     const editor = editorRef.current;
@@ -527,14 +544,14 @@ export default function BlogAdminPanel() {
     }
   };
 
-  const toolbarButton = (label, icon, onClick, extra = '') => <button type="button" className={`word-tool ${extra}`} title={label} aria-label={label} onMouseDown={event => event.preventDefault()} onClick={onClick}><Icon name={icon} /><span>{label}</span></button>;
+  const toolbarButton = (label, icon, onClick, extra = '') => <button type="button" className={`word-tool ${extra}`} title={label} aria-label={label} onMouseDown={event => { saveSelection(); event.preventDefault(); }} onClick={onClick}><Icon name={icon} /><span>{label}</span></button>;
   const customMenu = (name, label, children) => <div className="word-menu-wrap"><button type="button" className={`word-select ${openMenu === name ? 'is-open' : ''}`} onMouseDown={event => event.preventDefault()} onClick={() => setOpenMenu(openMenu === name ? '' : name)}>{label}<span>⌄</span></button>{openMenu === name && <div className="word-menu">{children}</div>}</div>;
   const runAndClose = (fn) => { fn(); setOpenMenu(''); };
 
   return <section className="blog-admin">
     <div className="blog-admin-heading"><div><span>CONTENIDO EDITORIAL</span><h2>Blog</h2><p>Crea, edita y publica artículos para el sitio.</p></div>{!editing && <button type="button" className="blog-admin-primary" onClick={startNew}>＋ Nuevo artículo</button>}</div>
     {notice && <p className="blog-admin-notice" role="status">{notice}</p>}
-    {editing ? <form className="blog-editor blog-word-editor" onSubmit={save}>
+    {editing ? <form className={`blog-editor blog-word-editor${editorFullscreen ? ' blog-word-editor--fullscreen' : ''}`} onSubmit={save}>
       <div className="blog-editor-top"><div><span>{editId ? 'EDITANDO ARTÍCULO' : 'NUEVA PUBLICACIÓN'}</span><h3>{form.titulo || 'Artículo sin título'}</h3></div><button type="button" className="blog-admin-secondary" onClick={() => setEditing(false)}>Cerrar</button></div>
       <div className="blog-word-meta">
         <label className="blog-admin-field">Título del artículo<input required maxLength={220} value={form.titulo} onChange={event => setForm({ ...form, titulo: event.target.value })} placeholder="Escribe el título del artículo" /></label>
@@ -543,7 +560,7 @@ export default function BlogAdminPanel() {
       </div>
 
       <div className="word-ribbon">
-        <div className="word-ribbon-tabs"><button type="button" className={tab === 'inicio' ? 'active' : ''} onClick={() => { setTab('inicio'); setOpenMenu(''); }}>Inicio</button><button type="button" className={tab === 'insertar' ? 'active' : ''} onClick={() => { saveSelection(); setTab('insertar'); setOpenMenu(''); }}>Insertar</button><span>Editor de artículos</span></div>
+        <div className="word-ribbon-tabs"><button type="button" className={tab === 'inicio' ? 'active' : ''} onClick={() => { setTab('inicio'); setOpenMenu(''); }}>Inicio</button><button type="button" className={tab === 'insertar' ? 'active' : ''} onMouseDown={saveSelection} onClick={() => { setTab('insertar'); setOpenMenu(''); }}>Insertar</button><button type="button" className="word-ribbon-fullscreen" aria-pressed={editorFullscreen} onMouseDown={event => { saveSelection(); event.preventDefault(); }} onClick={() => setEditorFullscreen(value => !value)}><Icon name={editorFullscreen ? 'exitFullscreen' : 'fullscreen'} /><span>{editorFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}</span></button><span>Editor de artículos</span></div>
         {tab === 'inicio' ? <div className="word-ribbon-tools">
           <div className="word-tool-group"><div className="word-font-row">{customMenu('font','Arial',<>{['Arial','Georgia','Verdana','Times New Roman'].map(font => <button type="button" key={font} onMouseDown={event => event.preventDefault()} onClick={() => runAndClose(() => applyInline('span',{ dataset: { font } }))}>{font}</button>)}</>)}{customMenu('size','12',<>{[['10','small'],['12','normal'],['16','large'],['20','huge']].map(([label,size]) => <button type="button" key={size} onClick={() => runAndClose(() => applyInline('span',{ dataset: { size } }))}>{label} pt</button>)}</>)}</div><div className="word-format-row">{toolbarButton('Negrita','bold',() => applyInline('strong'),'is-strong')}{toolbarButton('Cursiva','italic',() => applyInline('em'))}{toolbarButton('Subrayado','underline',() => applyInline('u'))}{toolbarButton('Tachado','strike',() => applyInline('s'))}{customMenu('color','A ▾',<div className="word-swatches">{['#171719','#bd2020','#2056b8','#16804c','#856000'].map(color => <button type="button" key={color} style={{ backgroundColor: color }} aria-label={`Color ${color}`} onClick={() => runAndClose(() => applyInline('span',{ color }))} />)}</div>)}{customMenu('highlight','▰ ▾',<div className="word-swatches">{['#fff2a8','#d8f3dc','#dbeafe','#fce7f3','#ffffff'].map(color => <button type="button" key={color} style={{ backgroundColor: color }} aria-label={`Resaltado ${color}`} onClick={() => runAndClose(() => applyInline('mark',{ backgroundColor: color }))} />)}</div>)}</div><span>Fuente</span></div>
           <div className="word-tool-group"><div className="word-format-row">{toolbarButton('Viñetas','list',() => exec('insertUnorderedList'))}{toolbarButton('Numeración','list',() => exec('insertOrderedList'))}{customMenu('style','Normal ▾',<>{[['Normal','p'],['Título 1','h1'],['Título 2','h2'],['Título 3','h3'],['Cita','blockquote']].map(([label,tag]) => <button type="button" key={tag} onClick={() => runAndClose(() => applyBlock(tag))}>{label}</button>)}</>)}{customMenu('align','Alinear ▾',<>{[['Izquierda','justifyLeft'],['Centrar','justifyCenter'],['Derecha','justifyRight']].map(([label,command]) => <button type="button" key={command} onClick={() => runAndClose(() => exec(command))}>{label}</button>)}</>)}</div><span>Párrafo y estilos</span></div>
@@ -559,7 +576,7 @@ export default function BlogAdminPanel() {
       <input ref={videoInputRef} hidden type="file" accept="video/mp4,video/webm" onChange={event => upload(event.target.files?.[0], 'video')} />
       <input ref={pdfInputRef} hidden type="file" accept="application/pdf" onChange={event => upload(event.target.files?.[0], 'pdf')} />
       {selectedMedia?.isConnected && <div className="word-media-toolbar"><strong>{selectedMedia.hasAttribute('data-blog-pdf') ? 'PDF seleccionado' : selectedMedia.tagName === 'IMG' ? 'Imagen seleccionada' : 'Video seleccionado'}</strong><span>Tamaño</span>{[[35,'Pequeño'],[55,'Mediano'],[75,'Grande'],[100,'Ancho completo']].map(([width,label]) => <button type="button" key={width} onClick={() => applyMediaWidth(width)}>{label}</button>)}<span>Posición</span>{[['left','Izquierda'],['center','Centro'],['right','Derecha']].map(([align,label]) => <button type="button" key={align} onClick={() => applyMediaAlign(align)}>{label}</button>)}<button type="button" className="word-media-remove" onClick={removeSelectedMedia}>Quitar</button></div>}
-      <div className="word-editor-canvas" onClick={() => setOpenMenu('')}><div className="word-page"><div ref={editorRef} className="word-editable" contentEditable suppressContentEditableWarning role="textbox" aria-label="Contenido del artículo" aria-multiline="true" spellCheck onClick={selectMedia} onInput={() => { setNotice(''); saveSelection(); updatePageCount(); }} onKeyUp={saveSelection} onMouseUp={saveSelection} data-placeholder="Empieza a escribir tu artículo aquí…" /></div></div>
+      <div className="word-editor-canvas" onClick={() => setOpenMenu('')}><div className="word-page"><div ref={editorRef} className="word-editable" contentEditable suppressContentEditableWarning role="textbox" aria-label="Contenido del artículo" aria-multiline="true" spellCheck onClick={selectMedia} onInput={() => { setNotice(''); saveSelection(); updatePageCount(); }} onKeyUp={saveSelection} onMouseUp={saveSelection} onPointerUp={saveSelection} onSelect={saveSelection} data-placeholder="Empieza a escribir tu artículo aquí…" /></div></div>
       <div className="blog-editor-actions"><span className="word-page-counter">Páginas: {pageCount}</span><div className="blog-status-dropdown"><span>Estado del artículo</span>{customMenu('status',form.estado === 'publicado' ? 'Publicado' : 'Borrador',<>{[['borrador','Borrador'],['publicado','Publicado']].map(([value,label]) => <button type="button" key={value} className={form.estado === value ? 'selected' : ''} onClick={() => { setForm({ ...form, estado: value }); setOpenMenu(''); }}>{label}</button>)}</>)}</div><button type="button" className="blog-admin-secondary" onClick={() => setEditing(false)}>Cancelar</button><button type="submit" className="blog-admin-primary" disabled={busy || Boolean(uploading)}>{busy ? 'Guardando…' : form.estado === 'publicado' ? 'Publicar artículo' : 'Guardar borrador'}</button></div>
     </form> : <div className="blog-admin-list">{articles.length ? articles.map(article => <div className="blog-admin-row" key={article.id}><div>{article.imagen_portada && <img src={article.imagen_portada} alt="" />}<div><strong>{article.titulo}</strong><p>{article.resumen}</p><span className={article.estado === 'publicado' ? 'is-published' : ''}>{article.estado === 'publicado' ? 'Publicado' : 'Borrador'}{article.estado === 'publicado' && article.publicado_en ? ` · ${new Date(article.publicado_en).toLocaleDateString('es-CO', { timeZone: 'UTC' })}` : ''}</span></div></div><div><button type="button" className="blog-admin-secondary" onClick={() => startEdit(article)}>Editar</button><button type="button" className="blog-admin-secondary" disabled={previewBusy === article.id} onClick={() => createPreview(article)}>{previewBusy === article.id ? 'Creando enlace…' : 'Compartir vista previa'}</button>{article.estado === 'publicado' && <a className="blog-admin-secondary" href={`/blog/${article.slug}`} target="_blank" rel="noreferrer">Ver</a>}<button type="button" className="blog-admin-danger" onClick={() => setDeleteTarget(article)}>Eliminar</button></div></div>) : <div className="blog-block-empty">Todavía no hay artículos. Crea uno para empezar el blog.</div>}</div>}
 

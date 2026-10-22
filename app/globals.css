@@ -154,6 +154,14 @@
 .word-ribbon-tabs button.active { color:#fff; }
 .word-ribbon-tabs button.active::after { position:absolute; right:.65rem; bottom:0; left:.65rem; height:2px; background:#ffb600; content:""; }
 .word-ribbon-tabs>span { margin-left:auto; color:#98989e; font-size:.68rem; }
+.word-ribbon-tabs .word-ribbon-fullscreen { display:inline-flex; align-items:center; gap:.4rem; margin-left:auto; padding:.35rem .55rem; border:1px solid #444448; color:#f0f0f2; background:#29292c; font-size:.68rem; cursor:pointer; }
+.word-ribbon-tabs .word-ribbon-fullscreen:hover { border-color:#ffb600; color:#ffca42; }
+.word-ribbon-tabs .word-ribbon-fullscreen::after { display:none; }
+.word-ribbon-tabs .word-ribbon-fullscreen svg { width:15px; height:15px; }
+.blog-word-editor--fullscreen { position:fixed; inset:0; z-index:120; display:flex; width:100vw; height:100vh; height:100dvh; max-height:100dvh; flex-direction:column; overflow:hidden; margin:0; border:0; box-shadow:none; }
+.blog-word-editor--fullscreen>.blog-editor-top,.blog-word-editor--fullscreen>.blog-word-meta,.blog-word-editor--fullscreen>.word-ribbon,.blog-word-editor--fullscreen>.blog-editor-actions { flex-shrink:0; }
+.blog-word-editor--fullscreen .word-editor-canvas { min-height:0; max-height:none; flex:1 1 auto; }
+.blog-word-editor--fullscreen .word-page { min-height:100%; }
 .word-ribbon-tools { display:flex; align-items:stretch; gap:.25rem; min-height:92px; overflow:visible; padding:.55rem .65rem .35rem; }
 .word-tool-group { position:relative; display:flex; min-width:200px; flex-direction:column; justify-content:space-between; gap:.3rem; padding:0 .55rem .25rem; border-right:1px solid #444448; }
 .word-tool-group:first-child { min-width:280px; }
@@ -252,7 +260,7 @@
 @keyframes blogConfirmationCheck { from { opacity:0; transform:scale(.55) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0); } }
 .blog-preview-page--arial12 article,.blog-preview-page--arial12 article * { font-family:Arial,Helvetica,sans-serif !important; font-size:12pt !important; letter-spacing:normal !important; line-height:1.5 !important; }
 .blog-preview-page--arial12 article strong,.blog-preview-page--arial12 article b { font-weight:700 !important; }
-@media(max-width:760px) { .word-ribbon-tools { overflow-x:auto; } .word-tool-group { flex:0 0 auto; } .word-editor-canvas { max-height:65vh; padding:.75rem; } .word-page { min-height:650px; padding:2rem 1.25rem; } .word-editable { min-height:560px; } .word-editable [data-blog-pagebreak] { margin:32px -1.25rem; } .blog-word-meta { grid-template-columns:1fr; padding:0 .75rem .75rem; } .blog-word-meta>.blog-admin-field:first-child { grid-column:auto; } .blog-word-editor>.blog-editor-top { margin:.75rem; } .blog-word-editor>.blog-editor-actions { align-items:flex-start; flex-wrap:wrap; } .blog-status-dropdown { width:100%; margin:0 0 .25rem; } .word-media-toolbar { position:relative; } }
+@media(max-width:760px) { .word-ribbon-tools { overflow-x:auto; } .word-tool-group { flex:0 0 auto; } .word-editor-canvas { max-height:65vh; padding:.75rem; } .word-page { min-height:650px; padding:2rem 1.25rem; } .word-editable { min-height:560px; } .word-editable [data-blog-pagebreak] { margin:32px -1.25rem; } .blog-word-meta { grid-template-columns:1fr; padding:0 .75rem .75rem; } .blog-word-meta>.blog-admin-field:first-child { grid-column:auto; } .blog-word-editor>.blog-editor-top { margin:.75rem; } .blog-word-editor>.blog-editor-actions { align-items:flex-start; flex-wrap:wrap; } .blog-status-dropdown { width:100%; margin:0 0 .25rem; } .word-media-toolbar { position:relative; } .word-ribbon-tabs .word-ribbon-fullscreen { margin-left:auto; } .word-ribbon-tabs>span { display:none; } .blog-word-editor--fullscreen .word-editor-canvas { padding:.55rem; } .blog-word-editor--fullscreen .word-page { min-height:100%; padding:1.25rem; } .blog-word-editor--fullscreen .word-editable { min-height:100%; } }
 @media(prefers-reduced-motion:reduce) { .blog-save-confirmation-backdrop,.blog-save-confirmation,.blog-save-confirmation-check { animation:none; } }
 
 :root {
