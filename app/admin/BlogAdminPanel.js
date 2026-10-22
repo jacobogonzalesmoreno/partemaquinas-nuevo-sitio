@@ -233,6 +233,7 @@ export default function BlogAdminPanel() {
   const [coverUrl, setCoverUrl] = useState('');
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [pageCount, setPageCount] = useState(1);
+  const editorFormRef = useRef(null);
   const editorRef = useRef(null);
   const titleRef = useRef(null);
   const coverInputRef = useRef(null);
@@ -255,6 +256,13 @@ export default function BlogAdminPanel() {
   useEffect(() => {
     if (!editing) setEditorFullscreen(false);
   }, [editing]);
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      setEditorFullscreen(document.fullscreenElement === editorFormRef.current);
+    };
+    document.addEventListener('fullscreenchange', syncFullscreenState);
+    return () => document.removeEventListener('fullscreenchange', syncFullscreenState);
+  }, []);
   useEffect(() => {
     if (!editorFullscreen) return undefined;
     const previousOverflow = document.body.style.overflow;
@@ -502,13 +510,41 @@ export default function BlogAdminPanel() {
 
   const startNew = () => { setEditId(null); setForm(blankArticle()); setCoverUrl(''); setEditing(true); setEditStep('details'); setEditorFullscreen(false); setTab('inicio'); setNotice(''); };
   const startEdit = article => { setEditId(article.id); setForm({ titulo: article.titulo || '', resumen: article.resumen || '', imagen_portada: article.imagen_portada || '', contenido: legacyToDoc(article.contenido), estado: article.estado || 'borrador' }); setCoverUrl(article.imagen_portada || ''); setEditing(true); setEditStep('details'); setEditorFullscreen(false); setTab('inicio'); setNotice(''); };
+  const enterEditorFullscreen = () => {
+    const element = editorFormRef.current;
+    if (!element?.requestFullscreen) {
+      setNotice('Este navegador no admite pantalla completa para el editor.');
+      return;
+    }
+    setEditorFullscreen(true);
+    const failed = () => {
+      setEditorFullscreen(false);
+      setNotice('No se pudo abrir el editor en pantalla completa.');
+    };
+    try {
+      Promise.resolve(element.requestFullscreen({ navigationUI: 'hide' })).catch(() => {
+        try { Promise.resolve(element.requestFullscreen()).catch(failed); }
+        catch { failed(); }
+      });
+    } catch {
+      try { Promise.resolve(element.requestFullscreen()).catch(failed); }
+      catch { failed(); }
+    }
+  };
+  const exitEditorFullscreen = () => {
+    setEditorFullscreen(false);
+    if (document.fullscreenElement === editorFormRef.current && document.exitFullscreen) {
+      Promise.resolve(document.exitFullscreen()).catch(() => {});
+    }
+  };
   const switchEditStep = step => {
     if (step === 'details' && editStep === 'content' && editorRef.current) {
       const content = readEditor(editorRef.current);
       setForm(current => ({ ...current, contenido: content }));
     }
     setEditStep(step);
-    setEditorFullscreen(step === 'content');
+    if (step === 'content') enterEditorFullscreen();
+    else exitEditorFullscreen();
     setOpenMenu('');
     if (step === 'content') setTab('inicio');
   };
@@ -563,7 +599,7 @@ export default function BlogAdminPanel() {
   return <section className="blog-admin">
     <div className="blog-admin-heading"><div><span>CONTENIDO EDITORIAL</span><h2>Blog</h2><p>Crea, edita y publica artículos para el sitio.</p></div>{!editing && <button type="button" className="blog-admin-primary" onClick={startNew}>＋ Nuevo artículo</button>}</div>
     {notice && <p className="blog-admin-notice" role="status">{notice}</p>}
-    {editing ? <form className={`blog-editor blog-word-editor${editorFullscreen ? ' blog-word-editor--fullscreen' : ''}`} onSubmit={save}>
+    {editing ? <form ref={editorFormRef} className={`blog-editor blog-word-editor${editorFullscreen ? ' blog-word-editor--fullscreen' : ''}`} onSubmit={save}>
       <div className="blog-editor-top"><div><span>{editId ? 'EDITANDO ARTÍCULO' : 'NUEVA PUBLICACIÓN'}</span><h3>{form.titulo || 'Artículo sin título'}</h3></div><button type="button" className="blog-admin-secondary" onClick={() => setEditing(false)}>Cerrar</button></div>
       <div className="blog-edit-mode-switch" role="tablist" aria-label="Modo de edición"><button type="button" role="tab" aria-selected={editStep === 'details'} className={editStep === 'details' ? 'is-active' : ''} onClick={() => switchEditStep('details')}><strong>1</strong><span><b>Título, resumen y portada</b><small>Edita la información principal</small></span></button><button type="button" role="tab" aria-selected={editStep === 'content'} className={editStep === 'content' ? 'is-active' : ''} onClick={() => switchEditStep('content')}><strong>2</strong><span><b>Edición completa</b><small>Abre el editor a pantalla completa</small></span></button></div>
       {editStep === 'details' && <div className="blog-word-meta">
@@ -574,7 +610,7 @@ export default function BlogAdminPanel() {
 
       {editStep === 'content' && <>
       <div className="word-ribbon">
-        <div className="word-ribbon-tabs"><button type="button" className={tab === 'inicio' ? 'active' : ''} onClick={() => { setTab('inicio'); setOpenMenu(''); }}>Inicio</button><button type="button" className={tab === 'insertar' ? 'active' : ''} onMouseDown={saveSelection} onClick={() => { setTab('insertar'); setOpenMenu(''); }}>Insertar</button><button type="button" className="word-ribbon-fullscreen" aria-pressed={editorFullscreen} onMouseDown={event => { saveSelection(); event.preventDefault(); }} onClick={() => setEditorFullscreen(value => !value)}><Icon name={editorFullscreen ? 'exitFullscreen' : 'fullscreen'} /><span>{editorFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}</span></button><span>Editor de artículos</span></div>
+        <div className="word-ribbon-tabs"><button type="button" className={tab === 'inicio' ? 'active' : ''} onClick={() => { setTab('inicio'); setOpenMenu(''); }}>Inicio</button><button type="button" className={tab === 'insertar' ? 'active' : ''} onMouseDown={saveSelection} onClick={() => { setTab('insertar'); setOpenMenu(''); }}>Insertar</button><button type="button" className="word-ribbon-fullscreen" aria-pressed={editorFullscreen} onMouseDown={event => { saveSelection(); event.preventDefault(); }} onClick={() => editorFullscreen ? exitEditorFullscreen() : enterEditorFullscreen()}><Icon name={editorFullscreen ? 'exitFullscreen' : 'fullscreen'} /><span>{editorFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}</span></button><span>Editor de artículos</span></div>
         {tab === 'inicio' ? <div className="word-ribbon-tools">
           <div className="word-tool-group"><div className="word-font-row">{customMenu('font','Arial',<>{['Arial','Georgia','Verdana','Times New Roman'].map(font => <button type="button" key={font} onMouseDown={event => event.preventDefault()} onClick={() => runAndClose(() => applyInline('span',{ dataset: { font } }))}>{font}</button>)}</>)}{customMenu('size','12',<>{[['10','small'],['12','normal'],['16','large'],['20','huge']].map(([label,size]) => <button type="button" key={size} onClick={() => runAndClose(() => applyInline('span',{ dataset: { size } }))}>{label} pt</button>)}</>)}</div><div className="word-format-row">{toolbarButton('Negrita','bold',() => applyInline('strong'),'is-strong')}{toolbarButton('Cursiva','italic',() => applyInline('em'))}{toolbarButton('Subrayado','underline',() => applyInline('u'))}{toolbarButton('Tachado','strike',() => applyInline('s'))}{customMenu('color','A ▾',<div className="word-swatches">{['#171719','#bd2020','#2056b8','#16804c','#856000'].map(color => <button type="button" key={color} style={{ backgroundColor: color }} aria-label={`Color ${color}`} onClick={() => runAndClose(() => applyInline('span',{ color }))} />)}</div>)}{customMenu('highlight','▰ ▾',<div className="word-swatches">{['#fff2a8','#d8f3dc','#dbeafe','#fce7f3','#ffffff'].map(color => <button type="button" key={color} style={{ backgroundColor: color }} aria-label={`Resaltado ${color}`} onClick={() => runAndClose(() => applyInline('mark',{ backgroundColor: color }))} />)}</div>)}</div><span>Fuente</span></div>
           <div className="word-tool-group"><div className="word-format-row">{toolbarButton('Viñetas','list',() => exec('insertUnorderedList'))}{toolbarButton('Numeración','list',() => exec('insertOrderedList'))}{customMenu('style','Normal ▾',<>{[['Normal','p'],['Título 1','h1'],['Título 2','h2'],['Título 3','h3'],['Cita','blockquote']].map(([label,tag]) => <button type="button" key={tag} onClick={() => runAndClose(() => applyBlock(tag))}>{label}</button>)}</>)}{customMenu('align','Alinear ▾',<>{[['Izquierda','justifyLeft'],['Centrar','justifyCenter'],['Derecha','justifyRight']].map(([label,command]) => <button type="button" key={command} onClick={() => runAndClose(() => exec(command))}>{label}</button>)}</>)}</div><span>Párrafo y estilos</span></div>

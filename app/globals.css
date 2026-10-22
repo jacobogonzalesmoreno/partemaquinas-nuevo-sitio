@@ -170,6 +170,10 @@
 .blog-word-editor--fullscreen>.blog-editor-top,.blog-word-editor--fullscreen>.blog-word-meta,.blog-word-editor--fullscreen>.word-ribbon,.blog-word-editor--fullscreen>.blog-editor-actions { flex-shrink:0; }
 .blog-word-editor--fullscreen .word-editor-canvas { min-height:0; max-height:none; flex:1 1 auto; }
 .blog-word-editor--fullscreen .word-page { min-height:100%; }
+.blog-word-editor:fullscreen { position:fixed; inset:0; z-index:auto; display:flex; width:100vw; height:100vh; height:100dvh; max-height:none; flex-direction:column; overflow:hidden; margin:0; border:0; border-radius:0; background:#f3f3f4; box-shadow:none; }
+.blog-word-editor:fullscreen>.blog-editor-top,.blog-word-editor:fullscreen>.blog-word-meta,.blog-word-editor:fullscreen>.word-ribbon,.blog-word-editor:fullscreen>.blog-editor-actions { flex-shrink:0; }
+.blog-word-editor:fullscreen .word-editor-canvas { min-height:0; max-height:none; flex:1 1 auto; }
+.blog-word-editor:fullscreen .word-page { min-height:100%; }
 .word-ribbon-tools { display:flex; align-items:stretch; gap:.25rem; min-height:92px; overflow:visible; padding:.55rem .65rem .35rem; }
 .word-tool-group { position:relative; display:flex; min-width:200px; flex-direction:column; justify-content:space-between; gap:.3rem; padding:0 .55rem .25rem; border-right:1px solid #444448; }
 .word-tool-group:first-child { min-width:280px; }
