@@ -4,6 +4,7 @@ import { normalizeImagenesText, parseImagenesValue, getImagenesProducto } from '
 import { prepararImagenProducto } from '@/lib/imagen-producto-client';
 import { normalizeCategoriasText, parseCategoriasValue, normalizeCategoriaKey } from '@/lib/categorias';
 import { MENU_CATEGORIAS_FLAT } from '@/lib/menu-categorias';
+import BlogAdminPanel from './BlogAdminPanel';
 
 const TEXTAREA_FIELDS = new Set(['descripcion', 'descripcion_corta']);
 const EXCLUDED_FIELDS = new Set(['id', 'created_at', 'updated_at', 'createdAt', 'updatedAt']);
@@ -701,6 +702,14 @@ export default function AdminPage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                 Maquinaria
               </button>
+              <button
+                type="button"
+                onClick={() => { setTabActiva('blog'); setError(''); setAviso(''); }}
+                className={`inline-flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition-colors ${tabActiva === 'blog' ? 'border-orange-500 text-orange-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 5.5v14A2.5 2.5 0 0 1 6.5 17H20"/><path d="M8 7h8M8 10h8M8 13h5"/></svg>
+                Blog
+              </button>
             </div>
           )}
         </div>
@@ -1131,6 +1140,7 @@ export default function AdminPage() {
                 </section>}
               </div>
             )}
+            {tabActiva === 'blog' && <BlogAdminPanel />}
           </>
         )}
       </div>

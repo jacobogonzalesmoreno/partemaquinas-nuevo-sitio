@@ -341,6 +341,7 @@ export default function Navbar() {
             {recursosAbiertos && <div className="support-menu">{renderRecursos()}</div>}
           </div>
           <Link href="/nosotros" className={navLinkClass}>Nosotros</Link>
+          <Link href="/blog" className={navLinkClass}>Blog</Link>
           <Link href="/contacto" className={navLinkClass}>Contacto</Link>
         </div>
         <div ref={searchRef} className="site-navbar__search relative hidden md:block">
@@ -396,6 +397,7 @@ export default function Navbar() {
                 <Link href="/" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Inicio</Link>
                 <Link href="/productos" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Productos</Link>
                 <Link href="/nosotros" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Nosotros</Link>
+                <Link href="/blog" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Blog</Link>
                 <Link href="/contacto" onClick={() => setMenuAbierto(false)} className={mobileLinkClass}>Contacto</Link>
               </div>
             </div>
