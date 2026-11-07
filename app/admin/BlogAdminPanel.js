@@ -98,6 +98,7 @@ function nodeToHtml(node) {
   if (node.type === 'hardBreak') return '<br>';
   if (node.type === 'horizontalRule') return '<hr>';
   if (node.type === 'pageBreak') return '<div data-blog-pagebreak="true" contenteditable="false">SALTO DE PÁGINA</div>';
+  if (node.type === 'articleSection') return `<section data-blog-article-section="true" data-blog-layout="${escapeHtml(node.attrs?.layout || 'image-right')}" data-blog-image-src="${escapeHtml(node.attrs?.src)}" data-blog-image-alt="${escapeHtml(node.attrs?.alt)}" data-blog-image-title="${escapeHtml(node.attrs?.title)}"><div data-blog-section-copy="true">${children}</div><img data-blog-section-illustration="true" contenteditable="false" src="${escapeHtml(node.attrs?.src)}" alt="${escapeHtml(node.attrs?.alt)}" title="${escapeHtml(node.attrs?.title)}"></section>`;
   if (node.type === 'image') { const width = Number(node.attrs?.width) || 100; const align = node.attrs?.align || 'center'; return `<p><img src="${escapeHtml(node.attrs?.src)}" alt="${escapeHtml(node.attrs?.alt)}" title="${escapeHtml(node.attrs?.title)}" style="width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}"></p>`; }
   if (node.type === 'video' && isPdfUrl(node.attrs?.src)) return `<p><a class="blog-file" data-blog-pdf="true" href="${escapeHtml(node.attrs.src)}" style="display:block;width:${Number(node.attrs?.width) || 100}%;margin-left:${node.attrs?.align === 'left' ? '0' : 'auto'};margin-right:${node.attrs?.align === 'right' ? '0' : 'auto'}" data-blog-width="${Number(node.attrs?.width) || 100}" data-blog-align="${node.attrs?.align || 'center'}">📄 ${escapeHtml(cleanPdfLabel(node.attrs?.title))} ↗</a></p>`;
   if (node.type === 'video') { const width = Number(node.attrs?.width) || 100; const align = node.attrs?.align || 'center'; return `<p>${node.attrs?.src?.includes('/video/upload/') ? `<video src="${escapeHtml(node.attrs.src)}" title="${escapeHtml(node.attrs?.title)}" style="width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}" controls></video>` : `<iframe src="${escapeHtml(node.attrs?.src)}" title="${escapeHtml(node.attrs?.title)}" style="width:${width}%;margin-left:${align === 'left' ? '0' : 'auto'};margin-right:${align === 'right' ? '0' : 'auto'}" data-blog-width="${width}" data-blog-align="${align}"></iframe>`}</p>`; }
@@ -145,6 +146,11 @@ function domToNodes(node, marks = []) {
   if (node.nodeType === Node.TEXT_NODE) return node.nodeValue ? [{ type: 'text', text: node.nodeValue, ...(marks.length ? { marks } : {}) }] : [];
   if (node.nodeType !== Node.ELEMENT_NODE) return [];
   const tag = node.tagName.toLowerCase();
+  if (node.hasAttribute('data-blog-article-section')) {
+    const copy = node.querySelector('[data-blog-section-copy]');
+    const content = copy ? Array.from(copy.childNodes).flatMap(child => domToNodes(child, marks)) : Array.from(node.childNodes).filter(child => !(child.nodeType === Node.ELEMENT_NODE && child.hasAttribute('data-blog-section-illustration'))).flatMap(child => domToNodes(child, marks));
+    return [{ type: 'articleSection', attrs: { layout: node.dataset.blogLayout, src: node.dataset.blogImageSrc, alt: node.dataset.blogImageAlt, title: node.dataset.blogImageTitle }, content }];
+  }
   if (node.hasAttribute('data-blog-link-card')) return [];
   if (node.hasAttribute('data-blog-pagebreak')) return [{ type: 'pageBreak' }];
   const mediaAttrs = { width: Math.max(20, Math.min(100, Number(node.dataset?.blogWidth || parseInt(node.style?.width, 10) || 100))), align: ['left', 'center', 'right'].includes(node.dataset?.blogAlign) ? node.dataset.blogAlign : 'center' };

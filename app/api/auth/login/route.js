@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { setSessionCookie, verifyAdminCredentials } from '@/lib/auth';
+import { hasValidRequestOrigin, setSessionCookie, verifyAdminCredentials } from '@/lib/auth';
 
 const loginSchema = z.object({
   username: z.string().trim().min(1).max(120),
@@ -12,8 +12,7 @@ export async function POST(request) {
   if (contentLength > 8 * 1024) {
     return NextResponse.json({ error: 'Solicitud demasiado grande.' }, { status: 413 });
   }
-  const origin = request.headers.get('origin');
-  if (!origin || origin !== new URL(request.url).origin) {
+  if (!hasValidRequestOrigin(request)) {
     return NextResponse.json({ error: 'Origen no permitido.' }, { status: 403 });
   }
 

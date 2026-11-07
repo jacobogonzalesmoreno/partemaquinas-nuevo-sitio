@@ -34,6 +34,7 @@ function renderNode(node, key) {
   if (node.type === 'text') return renderText(node, key);
   const children = (node.content || []).map((child, index) => renderNode(child, `${key}-${index}`));
   if (node.type === 'doc') return <>{children}</>;
+  if (node.type === 'articleSection') return <section key={key} className={`blog-visual-section ${node.attrs?.layout || 'image-right'}`}><div className="blog-visual-section__copy">{children}</div><figure><img src={node.attrs.src} alt={node.attrs.alt || ''} loading="lazy" /><figcaption>{node.attrs.title}</figcaption></figure></section>;
   if (node.type === 'paragraph') return <p key={key} style={node.attrs?.align ? { textAlign: node.attrs.align } : undefined}>{children}</p>;
   if (node.type === 'heading') {
     const level = [1, 2, 3].includes(Number(node.attrs?.level)) ? Number(node.attrs.level) : 2;
