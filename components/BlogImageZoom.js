@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 4;
+const VIEWPORT_SCALE = 0.5;
 
 export default function BlogImageZoom({ src, alt = '', className = '' }) {
   const [open, setOpen] = useState(false);
@@ -60,7 +61,7 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
           <button type="button" className="blog-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
         </div>
         <div className="blog-image-lightbox__stage" onWheel={event => { event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.15 : -0.15); }}>
-          <div className="blog-image-lightbox__canvas" style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%` }}>
+          <div className="blog-image-lightbox__canvas" style={{ width: `${zoom * VIEWPORT_SCALE * 100}%`, height: `${zoom * VIEWPORT_SCALE * 100}%` }}>
             <img src={src} alt={alt} draggable="false" />
           </div>
         </div>
