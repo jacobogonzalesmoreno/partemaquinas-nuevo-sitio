@@ -1,5 +1,6 @@
 import BlogLinkPreview from '@/components/BlogLinkPreview';
 import BlogImageZoom from '@/components/BlogImageZoom';
+import BlogPhotoCredit from '@/components/BlogPhotoCredit';
 
 function isPdfUrl(value) {
   try { return /\.pdf$/i.test(new URL(value).pathname); } catch { return false; }
@@ -35,7 +36,7 @@ function renderNode(node, key) {
   if (node.type === 'text') return renderText(node, key);
   const children = (node.content || []).map((child, index) => renderNode(child, `${key}-${index}`));
   if (node.type === 'doc') return <>{children}</>;
-  if (node.type === 'articleSection') return <section key={key} className={`blog-visual-section ${node.attrs?.layout || 'image-right'}`}><div className="blog-visual-section__copy">{children}</div><figure><BlogImageZoom src={node.attrs.src} alt={node.attrs.alt || node.attrs.title || ''} /><figcaption>{node.attrs.title}</figcaption></figure></section>;
+  if (node.type === 'articleSection') return <section key={key} className={`blog-visual-section ${node.attrs?.layout || 'image-right'}`}><div className="blog-visual-section__copy">{children}</div><figure><BlogImageZoom src={node.attrs.src} alt={node.attrs.alt || node.attrs.title || ''} /><figcaption>{node.attrs.title}<BlogPhotoCredit src={node.attrs.src} /></figcaption></figure></section>;
   if (node.type === 'paragraph') return <p key={key} style={node.attrs?.align ? { textAlign: node.attrs.align } : undefined}>{children}</p>;
   if (node.type === 'heading') {
     const level = [1, 2, 3].includes(Number(node.attrs?.level)) ? Number(node.attrs.level) : 2;
@@ -52,7 +53,7 @@ function renderNode(node, key) {
   if (node.type === 'horizontalRule') return <hr key={key} />;
   if (node.type === 'pageBreak') return <hr key={key} className="blog-page-break" />;
   const mediaStyle = { width: `${node.attrs?.width || 100}%`, marginLeft: node.attrs?.align === 'left' ? 0 : 'auto', marginRight: node.attrs?.align === 'right' ? 0 : 'auto' };
-  if (node.type === 'image') return <figure key={key} style={mediaStyle}><BlogImageZoom src={node.attrs.src} alt={node.attrs.alt || node.attrs.title || ''} />{node.attrs.title && <figcaption>{node.attrs.title}</figcaption>}</figure>;
+  if (node.type === 'image') return <figure key={key} style={mediaStyle}><BlogImageZoom src={node.attrs.src} alt={node.attrs.alt || node.attrs.title || ''} />{node.attrs.title && <figcaption>{node.attrs.title}<BlogPhotoCredit src={node.attrs.src} /></figcaption>}</figure>;
   if (node.type === 'video' && isPdfUrl(node.attrs.src)) return <figure key={key} className="blog-pdf" style={mediaStyle}><PdfLink href={node.attrs.src}>📄 {pdfLabel(node.attrs.title)} <span>↗</span></PdfLink></figure>;
   if (node.type === 'video') return <figure key={key} style={mediaStyle}><div className="blog-video">{node.attrs.src.includes('/video/upload/') ? <video src={node.attrs.src} title={node.attrs.title || 'Video del artículo'} controls preload="metadata" /> : <iframe src={node.attrs.src} title={node.attrs.title || 'Video del artículo'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}</div>{node.attrs.title && <figcaption>{node.attrs.title}</figcaption>}</figure>;
   if (node.type === 'pdf') return <figure key={key} className="blog-pdf" style={mediaStyle}><PdfLink href={node.attrs.src || node.attrs.href}>📄 {pdfLabel(node.attrs.label || node.attrs.title)} <span>↗</span></PdfLink></figure>;
@@ -65,7 +66,7 @@ function renderLegacy(blocks) {
     const key = `${block.type}-${index}`;
     if (block.type === 'heading') return <h2 key={key}>{block.text}</h2>;
     if (block.type === 'list') return <ul key={key}>{String(block.text || '').split('\n').filter(Boolean).map((item, i) => <li key={i}>{item}</li>)}</ul>;
-    if (block.type === 'image') return <figure key={key}><BlogImageZoom src={block.url} alt={block.text || block.caption || ''} />{(block.text || block.caption) && <figcaption>{block.text || block.caption}</figcaption>}</figure>;
+    if (block.type === 'image') return <figure key={key}><BlogImageZoom src={block.url} alt={block.text || block.caption || ''} />{(block.text || block.caption) && <figcaption>{block.text || block.caption}<BlogPhotoCredit src={block.url} /></figcaption>}</figure>;
     if (block.type === 'video' && isPdfUrl(block.url)) return <PdfLink key={key} href={block.url}>📄 {pdfLabel(block.text)} <span>↗</span></PdfLink>;
     if (block.type === 'video') return <figure key={key}><div className="blog-video">{block.url.includes('/video/upload/') ? <video src={block.url} title={block.text || 'Video del artículo'} controls preload="metadata" /> : <iframe src={block.url} title={block.text || 'Video del artículo'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}</div>{block.text && <figcaption>{block.text}</figcaption>}</figure>;
     if (block.type === 'pdf') return <PdfLink key={key} href={block.url}>📄 {pdfLabel(block.text)} <span>↗</span></PdfLink>;
