@@ -94,7 +94,7 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
           <button type="button" className="blog-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
         </div>
         <div ref={stage} className="blog-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
-          <div className="blog-image-lightbox__canvas" style={{ width: `${Math.max(100, zoom * 100)}%`, height: `${Math.max(100, zoom * 100)}%` }}>
+          <div className="blog-image-lightbox__canvas" style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%`, minWidth: zoom >= 1 ? '100%' : 0, minHeight: zoom >= 1 ? '100%' : 0 }}>
             <img src={src} alt={alt} draggable="false" />
           </div>
         </div>

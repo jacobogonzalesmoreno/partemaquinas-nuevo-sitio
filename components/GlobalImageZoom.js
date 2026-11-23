@@ -101,7 +101,7 @@ export default function GlobalImageZoom() {
         <button type="button" className="global-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
       </div>
       <div ref={stage} className="global-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); adjust(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
-        <div className="global-image-lightbox__canvas" style={{ width: `${Math.max(100, zoom * 100)}%`, height: `${Math.max(100, zoom * 100)}%` }}>
+        <div className="global-image-lightbox__canvas" style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%`, minWidth: zoom >= 1 ? '100%' : 0, minHeight: zoom >= 1 ? '100%' : 0 }}>
           <img src={image.src} alt={image.alt} draggable="false" />
         </div>
       </div>
