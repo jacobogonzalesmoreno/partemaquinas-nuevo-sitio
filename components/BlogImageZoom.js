@@ -1,15 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 4;
 const VIEWPORT_SCALE = 0.5;
+const pointerDistance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
 export default function BlogImageZoom({ src, alt = '', className = '' }) {
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const pointers = useRef(new Map());
+  const pinch = useRef(null);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -36,6 +39,27 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
   }, [open, close]);
 
   const changeZoom = amount => setZoom(current => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number((current + amount).toFixed(2)))));
+  const onPointerDown = event => {
+    if (event.pointerType !== 'touch') return;
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointers.current.size === 2) {
+      const [a, b] = [...pointers.current.values()];
+      pinch.current = { distance: pointerDistance(a, b), zoom };
+    }
+  };
+  const onPointerMove = event => {
+    if (!pointers.current.has(event.pointerId)) return;
+    pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointers.current.size === 2 && pinch.current) {
+      const [a, b] = [...pointers.current.values()];
+      const ratio = pointerDistance(a, b) / Math.max(pinch.current.distance, 1);
+      setZoom(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number((pinch.current.zoom * ratio).toFixed(2)))));
+    }
+  };
+  const onPointerUp = event => {
+    pointers.current.delete(event.pointerId);
+    if (pointers.current.size < 2) pinch.current = null;
+  };
 
   return <>
     <button
@@ -49,7 +73,7 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
       <span className="blog-image-zoom-hint" aria-hidden="true">⌕</span>
     </button>
     {open && createPortal(
-      <div className="blog-image-lightbox" role="dialog" aria-modal="true" aria-label={alt || 'Imagen ampliada'} onMouseDown={event => { if (event.target === event.currentTarget) close(); }}>
+      <div className="blog-image-lightbox" role="dialog" aria-modal="true" aria-label={alt || 'Imagen ampliada'} onClick={event => { if (event.target === event.currentTarget) close(); }}>
         <div className="blog-image-lightbox__toolbar">
           <span className="blog-image-lightbox__caption">{alt || 'Imagen de referencia'}</span>
           <div className="blog-image-lightbox__controls" aria-label="Controles de zoom">
@@ -60,12 +84,12 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
           </div>
           <button type="button" className="blog-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
         </div>
-        <div className="blog-image-lightbox__stage" onWheel={event => { event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.15 : -0.15); }}>
+        <div className="blog-image-lightbox__stage" onWheel={event => { event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.15 : -0.15); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
           <div className="blog-image-lightbox__canvas" style={{ width: `${zoom * VIEWPORT_SCALE * 100}%`, height: `${zoom * VIEWPORT_SCALE * 100}%` }}>
             <img src={src} alt={alt} draggable="false" />
           </div>
         </div>
-        <p className="blog-image-lightbox__help">Usa + / − o la rueda del ratón para hacer zoom. Presiona 0 para restablecer y Esc para cerrar.</p>
+        <p className="blog-image-lightbox__help">Usa + / −, la rueda o pellizca la imagen para hacer zoom. Haz clic fuera de la imagen o presiona Esc para cerrar.</p>
       </div>,
       document.body,
     )}

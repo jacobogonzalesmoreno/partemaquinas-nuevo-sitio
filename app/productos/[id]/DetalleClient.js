@@ -15,6 +15,9 @@ if (typeof window !== 'undefined') {
 export default function DetalleClient({ producto, modelo3d = null }) {
   const router = useRouter();
   const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const [lightboxZoom, setLightboxZoom] = useState(1);
+  const pointersLightbox = useRef(new Map());
+  const pinchLightbox = useRef(null);
   const [mostrarModeloAmpliado, setMostrarModeloAmpliado] = useState(false);
   const [montado, setMontado] = useState(false);
   const [mostrarInfoModelo, setMostrarInfoModelo] = useState(false);
@@ -70,8 +73,34 @@ export default function DetalleClient({ producto, modelo3d = null }) {
   const cerrarLightbox = useCallback(() => {
     // 1. Ocultar lightbox primero
     setLightboxIndex(-1);
+    setLightboxZoom(1);
+    pointersLightbox.current.clear();
+    pinchLightbox.current = null;
     restaurarScrollFondo();
   }, [restaurarScrollFondo]);
+
+  const ajustarZoomLightbox = amount => setLightboxZoom(current => Math.max(.5, Math.min(4, Number((current + amount).toFixed(2)))));
+  const pointerDownLightbox = event => {
+    if (event.pointerType !== 'touch') return;
+    pointersLightbox.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointersLightbox.current.size === 2) {
+      const [a, b] = [...pointersLightbox.current.values()];
+      pinchLightbox.current = { distance: Math.hypot(a.x - b.x, a.y - b.y), zoom: lightboxZoom };
+    }
+  };
+  const pointerMoveLightbox = event => {
+    if (!pointersLightbox.current.has(event.pointerId)) return;
+    pointersLightbox.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pointersLightbox.current.size === 2 && pinchLightbox.current) {
+      const [a, b] = [...pointersLightbox.current.values()];
+      const ratio = Math.hypot(a.x - b.x, a.y - b.y) / Math.max(pinchLightbox.current.distance, 1);
+      setLightboxZoom(Math.max(.5, Math.min(4, Number((pinchLightbox.current.zoom * ratio).toFixed(2)))));
+    }
+  };
+  const pointerUpLightbox = event => {
+    pointersLightbox.current.delete(event.pointerId);
+    if (pointersLightbox.current.size < 2) pinchLightbox.current = null;
+  };
 
   const abrirModeloAmpliado = useCallback(() => {
     bloquearScrollFondo();
@@ -138,10 +167,11 @@ export default function DetalleClient({ producto, modelo3d = null }) {
       }}
     >
       {/* Barra superior */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', flexShrink: 0, position: 'relative', zIndex: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, padding: '12px 16px', flexShrink: 0, position: 'relative', zIndex: 10 }}>
         <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>
           {lightboxMuestraModelo ? 'Modelo 3D' : `${lightboxIndex + 1} / ${imagenes.length}`}
         </div>
+        {!lightboxMuestraModelo && <div className="product-lightbox__zoom-controls" onClick={e => e.stopPropagation()}><button type="button" onClick={() => ajustarZoomLightbox(-.25)} disabled={lightboxZoom <= .5} aria-label="Alejar imagen">−</button><span>{Math.round(lightboxZoom * 100)}%</span><button type="button" onClick={() => ajustarZoomLightbox(.25)} disabled={lightboxZoom >= 4} aria-label="Acercar imagen">+</button><button type="button" onClick={() => setLightboxZoom(1)}>Restablecer</button></div>}
         <button
           onClick={cerrarLightbox}
           style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 0, backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', fontSize: 20, cursor: 'pointer' }}
@@ -151,7 +181,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
       </div>
 
       {/* Area de imagen */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '0 16px 16px', minHeight: 0, overflow: 'hidden' }}>
+      <div onClick={e => e.stopPropagation()} onWheel={e => { if (lightboxMuestraModelo) return; e.preventDefault(); ajustarZoomLightbox(e.deltaY < 0 ? .15 : -.15); }} onPointerDown={pointerDownLightbox} onPointerMove={pointerMoveLightbox} onPointerUp={pointerUpLightbox} onPointerCancel={pointerUpLightbox} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '0 16px 16px', minHeight: 0, overflow: 'auto', touchAction: 'none' }}>
         {/* Flecha anterior */}
         {lightboxIndex > 0 && (
           <button
@@ -181,7 +211,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
             className="product-lightbox__image"
             src={imagenes[lightboxIndex] || placeholderImage}
             alt={`Imagen ${lightboxIndex + 1} de ${producto.nombre}`}
-            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 8, display: 'block' }}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: 8, display: 'block', transform: `scale(${lightboxZoom})`, transformOrigin: 'center', transition: 'transform .08s linear' }}
             onClick={e => e.stopPropagation()}
             onError={e => { e.currentTarget.src = placeholderImage; }}
             draggable={false}

@@ -4,6 +4,7 @@ import Footer from '@/components/footer';
 import BotonWhatsapp from '@/components/BotonWhattsapp';
 import PageTransition from '@/components/PageTransition';
 import ServiciosConConsentimiento from '@/app/privacidad/ServiciosConConsentimiento';
+import GlobalImageZoom from '@/components/GlobalImageZoom';
 
 export const metadata = {
   metadataBase: new URL('https://partemaquinas.com'),
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
         <Footer />
         <BotonWhatsapp />
         <ServiciosConConsentimiento />
+        <GlobalImageZoom />
       </body>
     </html>
   );
