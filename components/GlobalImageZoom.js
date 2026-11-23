@@ -105,7 +105,7 @@ export default function GlobalImageZoom() {
           <img src={image.src} alt={image.alt} draggable="false" />
         </div>
       </div>
-      <p>Usa la rueda, el gesto de pellizcar o los controles para ajustar el zoom. Haz clic fuera de la imagen para cerrar.</p>
+      <p>Usa los controles o pellizca con dos dedos en el trackpad o la pantalla. Arrastra la imagen ampliada para recorrerla.</p>
     </div>,
     document.body,
   );

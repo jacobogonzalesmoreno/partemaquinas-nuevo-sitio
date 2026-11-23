@@ -98,7 +98,7 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
             <img src={src} alt={alt} draggable="false" />
           </div>
         </div>
-        <p className="blog-image-lightbox__help">Usa + / −, la rueda o pellizca la imagen para hacer zoom. Haz clic fuera de la imagen o presiona Esc para cerrar.</p>
+        <p className="blog-image-lightbox__help">Usa + / − o pellizca con dos dedos para hacer zoom. Arrastra la imagen ampliada para recorrerla; pulsa fuera o Esc para cerrar.</p>
       </div>,
       document.body,
     )}
