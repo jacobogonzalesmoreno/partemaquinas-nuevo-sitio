@@ -12,6 +12,8 @@ export default function GlobalImageZoom() {
   const [zoom, setZoom] = useState(1);
   const pointers = useRef(new Map());
   const pinch = useRef(null);
+  const drag = useRef(null);
+  const stage = useRef(null);
 
   const close = useCallback(() => {
     setImage(null);
@@ -56,11 +58,15 @@ export default function GlobalImageZoom() {
   }, [image, close, adjust]);
 
   const onPointerDown = event => {
-    if (event.pointerType !== 'touch') return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    event.currentTarget.setPointerCapture?.(event.pointerId);
     pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.current.size === 2) {
       const [a, b] = [...pointers.current.values()];
       pinch.current = { distance: distance(a, b), zoom };
+      drag.current = null;
+    } else if (zoom > 1) {
+      drag.current = { x: event.clientX, y: event.clientY, left: stage.current?.scrollLeft || 0, top: stage.current?.scrollTop || 0 };
     }
   };
   const onPointerMove = event => {
@@ -70,10 +76,14 @@ export default function GlobalImageZoom() {
       const [a, b] = [...pointers.current.values()];
       const ratio = distance(a, b) / Math.max(pinch.current.distance, 1);
       setZoom(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number((pinch.current.zoom * ratio).toFixed(2)))));
+    } else if (drag.current && stage.current) {
+      stage.current.scrollLeft = drag.current.left - (event.clientX - drag.current.x);
+      stage.current.scrollTop = drag.current.top - (event.clientY - drag.current.y);
     }
   };
   const onPointerUp = event => {
     pointers.current.delete(event.pointerId);
+    drag.current = null;
     if (pointers.current.size < 2) pinch.current = null;
   };
 
@@ -90,8 +100,10 @@ export default function GlobalImageZoom() {
         </div>
         <button type="button" className="global-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
       </div>
-      <div className="global-image-lightbox__stage" onWheel={event => { event.preventDefault(); adjust(event.deltaY < 0 ? 0.15 : -0.15); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
-        <img src={image.src} alt={image.alt} draggable="false" style={{ transform: `scale(${zoom})` }} />
+      <div ref={stage} className="global-image-lightbox__stage" onWheel={event => { event.preventDefault(); adjust(event.deltaY < 0 ? 0.15 : -0.15); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+        <div className="global-image-lightbox__canvas" style={{ width: `${Math.max(100, zoom * 100)}%`, height: `${Math.max(100, zoom * 100)}%` }}>
+          <img src={image.src} alt={image.alt} draggable="false" />
+        </div>
       </div>
       <p>Usa la rueda, el gesto de pellizcar o los controles para ajustar el zoom. Haz clic fuera de la imagen para cerrar.</p>
     </div>,

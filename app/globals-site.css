@@ -373,8 +373,10 @@
 .global-image-lightbox__controls button:hover,.global-image-lightbox__close:hover { border-color:#ffb600; background:#3a3424; }
 .global-image-lightbox__controls output { min-width:3rem; text-align:center; font-size:.8rem; font-variant-numeric:tabular-nums; }
 .global-image-lightbox__close { width:2.7rem; padding:0; font-size:1.65rem; line-height:1; }
-.global-image-lightbox__stage { display:flex; flex:1; min-height:0; align-items:center; justify-content:center; overflow:auto; overscroll-behavior:contain; touch-action:none; }
-.global-image-lightbox__stage img { display:block; max-width:100%; max-height:100%; object-fit:contain; transform-origin:center; transition:transform .08s linear; user-select:none; }
+.global-image-lightbox__stage { display:flex; flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; touch-action:none; cursor:grab; }
+.global-image-lightbox__stage:active,.blog-image-lightbox__stage:active { cursor:grabbing; }
+.global-image-lightbox__canvas { display:grid; flex:0 0 auto; min-width:0; min-height:0; place-items:center; margin:0 auto; }
+.global-image-lightbox__stage img { display:block; width:100%; height:100%; max-width:none; max-height:none; object-fit:contain; user-select:none; pointer-events:none; }
 .global-image-lightbox>p { margin:0; color:#b9b9bf; font-size:.75rem; text-align:center; }
 @media(max-width:600px) { .global-image-lightbox { padding:.6rem; } .global-image-lightbox__toolbar { flex-wrap:wrap; } .global-image-lightbox__toolbar>span { flex-basis:calc(100% - 3.5rem); } .global-image-lightbox__controls { order:3; flex:1; justify-content:center; } .global-image-lightbox__close { margin-left:auto; } }
 .blog-preview-page--arial12 .blog-article-header h1 { font-size:clamp(2.5rem,6vw,4.5rem) !important; line-height:1.04 !important; }
