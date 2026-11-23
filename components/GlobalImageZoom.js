@@ -10,14 +10,15 @@ const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 export default function GlobalImageZoom() {
   const [image, setImage] = useState(null);
   const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const pointers = useRef(new Map());
   const pinch = useRef(null);
   const drag = useRef(null);
-  const stage = useRef(null);
 
   const close = useCallback(() => {
     setImage(null);
     setZoom(1);
+    setPan({ x: 0, y: 0 });
     pointers.current.clear();
     pinch.current = null;
   }, []);
@@ -34,6 +35,7 @@ export default function GlobalImageZoom() {
       event.stopPropagation();
       event.stopImmediatePropagation?.();
       setZoom(1);
+      setPan({ x: 0, y: 0 });
       setImage({ src: img.currentSrc || img.src, alt: img.alt || img.title || 'Imagen ampliada' });
     };
     document.addEventListener('click', onClick, true);
@@ -66,7 +68,7 @@ export default function GlobalImageZoom() {
       pinch.current = { distance: distance(a, b), zoom };
       drag.current = null;
     } else if (zoom > 1) {
-      drag.current = { x: event.clientX, y: event.clientY, left: stage.current?.scrollLeft || 0, top: stage.current?.scrollTop || 0 };
+      drag.current = { x: event.clientX, y: event.clientY, pan };
     }
   };
   const onPointerMove = event => {
@@ -76,9 +78,8 @@ export default function GlobalImageZoom() {
       const [a, b] = [...pointers.current.values()];
       const ratio = distance(a, b) / Math.max(pinch.current.distance, 1);
       setZoom(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number((pinch.current.zoom * ratio).toFixed(2)))));
-    } else if (drag.current && stage.current) {
-      stage.current.scrollLeft = drag.current.left - (event.clientX - drag.current.x);
-      stage.current.scrollTop = drag.current.top - (event.clientY - drag.current.y);
+    } else if (drag.current) {
+      setPan({ x: drag.current.pan.x + event.clientX - drag.current.x, y: drag.current.pan.y + event.clientY - drag.current.y });
     }
   };
   const onPointerUp = event => {
@@ -100,10 +101,8 @@ export default function GlobalImageZoom() {
         </div>
         <button type="button" className="global-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
       </div>
-      <div ref={stage} className="global-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); adjust(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
-        <div className="global-image-lightbox__canvas" style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%`, minWidth: zoom >= 1 ? '100%' : 0, minHeight: zoom >= 1 ? '100%' : 0 }}>
-          <img src={image.src} alt={image.alt} draggable="false" />
-        </div>
+      <div className="global-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); adjust(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+        <img className="global-image-lightbox__full-image" src={image.src} alt={image.alt} draggable="false" style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})` }} />
       </div>
       <p>Usa los controles o pellizca con dos dedos en el trackpad o la pantalla. Arrastra la imagen ampliada para recorrerla.</p>
     </div>,

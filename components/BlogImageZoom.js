@@ -10,14 +10,15 @@ const pointerDistance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 export default function BlogImageZoom({ src, alt = '', className = '' }) {
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const pointers = useRef(new Map());
   const pinch = useRef(null);
   const drag = useRef(null);
-  const stage = useRef(null);
 
   const close = useCallback(() => {
     setOpen(false);
     setZoom(1);
+    setPan({ x: 0, y: 0 });
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
       pinch.current = { distance: pointerDistance(a, b), zoom };
       drag.current = null;
     } else if (zoom > 1) {
-      drag.current = { x: event.clientX, y: event.clientY, left: stage.current?.scrollLeft || 0, top: stage.current?.scrollTop || 0 };
+      drag.current = { x: event.clientX, y: event.clientY, pan };
     }
   };
   const onPointerMove = event => {
@@ -59,9 +60,8 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
       const [a, b] = [...pointers.current.values()];
       const ratio = pointerDistance(a, b) / Math.max(pinch.current.distance, 1);
       setZoom(Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number((pinch.current.zoom * ratio).toFixed(2)))));
-    } else if (drag.current && stage.current) {
-      stage.current.scrollLeft = drag.current.left - (event.clientX - drag.current.x);
-      stage.current.scrollTop = drag.current.top - (event.clientY - drag.current.y);
+    } else if (drag.current) {
+      setPan({ x: drag.current.pan.x + event.clientX - drag.current.x, y: drag.current.pan.y + event.clientY - drag.current.y });
     }
   };
   const onPointerUp = event => {
@@ -74,7 +74,7 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
     <button
       type="button"
       className={`blog-image-zoom-trigger ${className}`.trim()}
-      onClick={() => { setZoom(1); setOpen(true); }}
+      onClick={() => { setZoom(1); setPan({ x: 0, y: 0 }); setOpen(true); }}
       aria-label={`Ampliar imagen${alt ? `: ${alt}` : ''}`}
       title="Haz clic para ampliar"
     >
@@ -93,10 +93,8 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
           </div>
           <button type="button" className="blog-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
         </div>
-        <div ref={stage} className="blog-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
-          <div className="blog-image-lightbox__canvas" style={{ width: `${zoom * 100}%`, height: `${zoom * 100}%`, minWidth: zoom >= 1 ? '100%' : 0, minHeight: zoom >= 1 ? '100%' : 0 }}>
-            <img src={src} alt={alt} draggable="false" />
-          </div>
+        <div className="blog-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+          <img className="blog-image-lightbox__full-image" src={src} alt={alt} draggable="false" style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})` }} />
         </div>
         <p className="blog-image-lightbox__help">Usa + / − o pellizca con dos dedos para hacer zoom. Arrastra la imagen ampliada para recorrerla; pulsa fuera o Esc para cerrar.</p>
       </div>,
