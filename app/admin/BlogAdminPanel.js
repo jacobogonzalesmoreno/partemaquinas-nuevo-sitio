@@ -501,6 +501,13 @@ export default function BlogAdminPanel() {
     event.preventDefault();
     if (!sectionHeading.trim() || !sectionText.trim() || !safeUrl(sectionImageUrl)) { setNotice('Completa el título, la descripción y un enlace seguro de imagen.'); return; }
     const imageAlt = sectionAlt.trim() || sectionHeading.trim();
+    const editor = editorRef.current;
+    if (editor) {
+      const range = document.createRange();
+      range.selectNodeContents(editor);
+      range.collapse(false);
+      selectionRef.current = range.cloneRange();
+    }
     insertHtml(`<section data-blog-article-section="true" data-blog-layout="${sectionLayout}" data-blog-image-src="${escapeHtml(sectionImageUrl)}" data-blog-image-alt="${escapeHtml(imageAlt)}" data-blog-image-title="${escapeHtml(sectionHeading.trim())}"><div data-blog-section-copy="true"><h2>${escapeHtml(sectionHeading.trim())}</h2><p>${escapeHtml(sectionText.trim()).replace(/\n/g, '<br>')}</p><p><strong>Nota:</strong> Sigue las especificaciones del manual de tu máquina.</p></div><img data-blog-section-illustration="true" contenteditable="false" src="${escapeHtml(sectionImageUrl)}" alt="${escapeHtml(imageAlt)}" title="${escapeHtml(sectionHeading.trim())}"></section><p><br></p>`);
     setDialog(null);
     updatePageCount();
