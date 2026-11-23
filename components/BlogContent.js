@@ -43,6 +43,22 @@ const articleTwoIllustrations = {
     alt: 'Infografía con cinco pasos para inspeccionar el tren de rodaje por turno',
     title: 'Infografía: sigue esta rutina por turno y registra cualquier anomalía.',
   },
+  'articulo-3-radiador.png': {
+    alt: 'Radiador y ventilador de una excavadora con flujo de aire',
+    title: 'Esquema ilustrativo: aletas despejadas favorecen el paso del aire por el radiador.',
+  },
+  'articulo-3-refrigerante.png': {
+    alt: 'Depósito de refrigerante con marcas de nivel mínimo y máximo',
+    title: 'Esquema ilustrativo: comprueba el nivel únicamente con el motor frío.',
+  },
+  'articulo-3-temperatura.png': {
+    alt: 'Indicador de temperatura del motor con aguja en zona de alerta',
+    title: 'Esquema ilustrativo: detén la labor de forma segura si el indicador entra en alerta.',
+  },
+  'articulo-3-protocolo.png': {
+    alt: 'Cinco pasos seguros ante una temperatura alta del motor',
+    title: 'Infografía: sigue el manual y no abras el sistema de refrigeración caliente.',
+  },
 };
 
 function imageDetails(src, alt, title) {
