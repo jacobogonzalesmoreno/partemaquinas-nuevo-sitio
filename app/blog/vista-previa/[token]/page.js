@@ -22,7 +22,7 @@ export default async function BlogPreviewPage({ params }) {
       <Link href="/blog" className="blog-back">← Ir al blog</Link>
       <article>
         <header className="blog-article-header"><time>Borrador · Vista previa</time><h1>{article.titulo}</h1></header>
-        <section className="blog-article-intro"><div className="blog-article-summary"><span>RESUMEN DEL ARTÍCULO</span><p>{article.resumen || 'Este borrador todavía no tiene un resumen.'}</p></div>{article.imagen_portada && <figure className="blog-cover-figure"><BlogImageZoom className="blog-cover" src={article.imagen_portada} alt={article.slug.includes('sobrecalentamiento') ? 'Excavadora y componentes de su sistema de refrigeración' : article.slug.includes('tren-de-rodaje') ? 'Excavadora de orugas con detalle del tren de rodaje' : 'Excavadora con placa de identificación y número de serie o PIN'} /><BlogPhotoCredit src={article.imagen_portada} /></figure>}</section>
+        <section className="blog-article-intro"><div className="blog-article-summary"><span>RESUMEN DEL ARTÍCULO</span><p>{article.resumen || 'Este borrador todavía no tiene un resumen.'}</p></div>{article.imagen_portada && <figure className="blog-cover-figure"><BlogImageZoom className="blog-cover" src={article.imagen_portada} alt={article.slug.includes('sobrecalentamiento') ? 'Motor industrial y componentes de refrigeración con mangueras y ventilador' : article.slug.includes('tren-de-rodaje') ? 'Excavadora de orugas con detalle del tren de rodaje' : 'Excavadora con placa de identificación y número de serie o PIN'} /><BlogPhotoCredit src={article.imagen_portada} /></figure>}</section>
         <BlogContent blocks={article.contenido} />
       </article>
     </div>
