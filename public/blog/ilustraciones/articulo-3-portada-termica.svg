@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Prevención del sobrecalentamiento de una excavadora</title>
+  <desc id="desc">Ilustración técnica de una excavadora amarilla y su sistema de refrigeración con radiador, ventilador y temperatura elevada.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8fafb"/><stop offset="1" stop-color="#e7edf0"/></linearGradient>
+    <linearGradient id="yellow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffc928"/><stop offset="1" stop-color="#eaa900"/></linearGradient>
+    <filter id="shadow" x="-.2" y="-.2" width="1.4" height="1.5"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#17212a" flood-opacity=".16"/></filter>
+  </defs>
+  <rect width="1200" height="800" rx="30" fill="url(#sky)"/>
+  <path d="M0 0h1200v16H0z" fill="#ffb600"/>
+  <circle cx="985" cy="198" r="125" fill="#fff" opacity=".52"/><circle cx="985" cy="198" r="87" fill="none" stroke="#f4c747" stroke-width="4" opacity=".45"/>
+  <path d="M0 640q210-44 420-2t420-5q180-38 360 4v163H0z" fill="#d8dfe2"/>
+  <!-- Excavator body and crawler -->
+  <g filter="url(#shadow)" stroke="#22272b" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M136 637q14-89 98-89h425q96 0 117 77l-17 56H168z" fill="#343b40" stroke-width="10"/>
+    <path d="M180 625h535" fill="none" stroke="#69747a" stroke-width="9" stroke-dasharray="17 20"/>
+    <circle cx="220" cy="632" r="29" fill="#929ca1" stroke-width="8"/><circle cx="652" cy="632" r="29" fill="#929ca1" stroke-width="8"/>
+    <path d="M209 541l33-105q13-39 57-39h286q62 0 84 61l29 83z" fill="url(#yellow)" stroke-width="10"/>
+    <path d="M311 398h254l34 119H268z" fill="#eaa900" stroke-width="8"/>
+    <path d="M288 407h107v102H258z" fill="#30383c" stroke-width="8"/>
+    <path d="M302 418h73v73h-73z" fill="#a9c2cc" stroke="none"/><path d="M311 427v51m18-51v51m18-51v51" stroke="#e1edf0" stroke-width="5"/>
+    <path d="M399 417h118v93H399z" fill="#f7c424" stroke-width="6"/>
+    <path d="M545 432h45m-45 19h45m-45 19h45m-45 19h45" stroke="#30383c" stroke-width="7"/>
+    <path d="M287 386l-14-110 42-90 28 12-26 93 25 95" fill="url(#yellow)" stroke-width="10"/>
+    <path d="M302 283l-25-90 24-13 48 88 90 50-17 29-116-48" fill="#f4b700" stroke-width="10"/>
+    <path d="M436 319l97 31 96 4 2 27-125 5-86-28" fill="url(#yellow)" stroke-width="9"/>
+    <path d="M626 353l45 4-14 42-44-10z" fill="#343b40" stroke-width="8"/>
+  </g>
+  <!-- cooling system callout -->
+  <path d="M643 453C738 413 756 374 798 331" fill="none" stroke="#c28c00" stroke-width="5" stroke-dasharray="10 10"/>
+  <g filter="url(#shadow)">
+    <rect x="762" y="270" width="350" height="355" rx="28" fill="#fff" stroke="#e1e5e7" stroke-width="4"/>
+    <text x="800" y="316" font-family="Arial,sans-serif" font-size="20" font-weight="700" letter-spacing="3" fill="#806000">SISTEMA DE REFRIGERACIÓN</text>
+    <path d="M800 337h275" stroke="#ffb600" stroke-width="7"/>
+    <rect x="812" y="365" width="120" height="185" rx="10" fill="#dbe4e8" stroke="#30383c" stroke-width="8"/>
+    <path d="M831 382v150m21-150v150m21-150v150m21-150v150" stroke="#6f7d83" stroke-width="7"/>
+    <circle cx="1003" cy="457" r="72" fill="#f7f8f8" stroke="#30383c" stroke-width="7"/>
+    <circle cx="1003" cy="457" r="12" fill="#30383c"/>
+    <path d="M1003 444q-28-53-8-55 24 3 16 54m5 14q53-28 55-8-3 24-54 16m-14 5q28 53 8 55-24-3-16-54m-5-14q-53 28-55 8 3-24 54-16" fill="#414a4f"/>
+    <path d="M963 574h81" stroke="#d94b40" stroke-width="7" stroke-linecap="round"/>
+    <path d="M985 570c-17-20 18-24 0-43m33 43c-17-20 18-24 0-43" fill="none" stroke="#d94b40" stroke-width="6" stroke-linecap="round"/>
+    <rect x="794" y="576" width="286" height="32" rx="16" fill="#fff3d5"/>
+    <text x="937" y="598" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#8a5900">MANTÉN LIMPIO · REVISA EN FRÍO</text>
+  </g>
+  <text x="80" y="735" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="4" fill="#56636a">CUIDADO DEL MOTOR · GUÍA PRÁCTICA</text>
+</svg>
