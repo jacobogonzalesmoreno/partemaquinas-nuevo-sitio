@@ -184,24 +184,24 @@ export default function Navbar() {
     const tieneProds = sugerenciasProds.length > 0 || cargandoProds;
     if (!mostrarSugerencias || !tieneProds) return null;
     return (
-      <div className="absolute left-0 top-full z-[100] mt-1 w-80 sm:w-96 rounded-xl border border-slate-200 bg-white shadow-xl overflow-hidden">
+      <div className="navbar-search-suggestions absolute left-0 top-full z-[100] mt-1 w-80 sm:w-96 rounded-xl border border-slate-200 bg-white shadow-xl overflow-hidden">
         <ul className="py-1 max-h-[70vh] overflow-y-auto">
-          <li><p className="px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 bg-slate-50/80">Productos</p></li>
+          <li><p className="navbar-search-suggestions__heading px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 bg-slate-50/80">Productos</p></li>
           {cargandoProds && sugerenciasProds.length === 0 && (<li><div className="px-3.5 py-4 text-center text-sm text-slate-400">Buscando productos...</div></li>)}
           {sugerenciasProds.map((prod, index) => {
             const thisIndex = index;
             const isActive = sugerenciaActiva === thisIndex;
             return (
               <li key={`prod-${prod.id}`}>
-                <button type="button" className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 transition-colors ${isActive ? 'bg-amber-50 text-slate-900' : 'text-slate-700 hover:bg-slate-50'}`}
+                <button type="button" className={`navbar-search-suggestion w-full text-left px-3.5 py-2.5 flex items-center gap-3 transition-colors ${isActive ? 'bg-amber-50 text-slate-900' : 'text-slate-700 hover:bg-slate-50'}`}
                   onMouseDown={event => { event.preventDefault(); router.push(`/productos/${prod.id}`); setBuscarNav(''); setMostrarSugerencias(false); }}
                   onMouseEnter={() => setSugerenciaActiva(thisIndex)}>
                   {prod.imagen ? <img src={prod.imagen} alt="" className="h-10 w-10 rounded-lg object-contain bg-white border border-slate-200 flex-shrink-0" /> : <span className="flex items-center justify-center h-10 w-10 rounded-lg bg-slate-100 border border-slate-200 text-slate-400 flex-shrink-0" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 8h16v11H4zM7 8l1.5-3h7L17 8M8 13h.01M12 13h.01M16 13h.01"/><path d="M7 19v2m10-2v2"/></svg></span>}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{prod.nombre}</p>
+                    <p className="navbar-search-suggestion__title text-sm font-medium truncate">{prod.nombre}</p>
                     <div className="flex items-center gap-2 mt-0.5">
-                      {prod.sku && <span className="text-[10px] font-mono text-slate-400">{prod.sku}</span>}
-                      {prod.marcas && <span className="text-[10px] text-orange-500 font-medium">{prod.marcas}</span>}
+                      {prod.sku && <span className="navbar-search-suggestion__sku text-[10px] font-mono text-slate-400">{prod.sku}</span>}
+                      {prod.marcas && <span className="navbar-search-suggestion__brand text-[10px] text-orange-500 font-medium">{prod.marcas}</span>}
                     </div>
                   </div>
                   <span className="text-orange-400 text-xs flex-shrink-0">→</span>

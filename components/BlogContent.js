@@ -10,6 +10,47 @@ function pdfLabel(value) {
   return String(value || '').replace(/^(?:📄\s*)+/, '').replace(/(?:\s*↗)+$/, '').trim() || 'Abrir documento PDF';
 }
 
+const articleTwoIllustrations = {
+  'articulo-2-zapatas.png': {
+    alt: 'Esquema ilustrativo de zapatas y eslabones de oruga con un perno faltante',
+    title: 'Esquema ilustrativo: identifica grietas, deformaciones o pernos faltantes en las zapatas.',
+  },
+  'articulo-2-rodillos.png': {
+    alt: 'Diagrama de inspección de rodillos inferiores con una señal de posible fuga',
+    title: 'Diagrama de referencia: busca desgaste, daños y humedad alrededor de los sellos.',
+  },
+  'articulo-2-sprocket.png': {
+    alt: 'Esquema ilustrativo de una rueda dentada con perfil desgastado',
+    title: 'Esquema ilustrativo: compara el perfil de los dientes y su contacto con la cadena.',
+  },
+  'articulo-2-guia-tensor.png': {
+    alt: 'Esquema ilustrativo de rueda guía y tensor con residuos acumulados',
+    title: 'Esquema ilustrativo: ubica residuos alrededor de la rueda guía y el tensor.',
+  },
+  'articulo-2-bastidor.png': {
+    alt: 'Diagrama esquemático del bastidor y las protecciones de una excavadora de orugas',
+    title: 'Diagrama de referencia: revisa el bastidor, las fijaciones y las protecciones.',
+  },
+  'articulo-2-limpieza.png': {
+    alt: 'Diagrama ilustrativo de barro acumulado en rodillos y cadena',
+    title: 'Diagrama ilustrativo: retira barro y piedras antes de inspeccionar el tren de rodaje.',
+  },
+  'articulo-2-tension-manual.png': {
+    alt: 'Diagrama orientativo de medición de tensión y consulta del manual de la máquina',
+    title: 'Diagrama orientativo: consulta el procedimiento y las medidas del manual de tu máquina.',
+  },
+  'articulo-2-rutina.png': {
+    alt: 'Infografía con cinco pasos para inspeccionar el tren de rodaje por turno',
+    title: 'Infografía: sigue esta rutina por turno y registra cualquier anomalía.',
+  },
+};
+
+function imageDetails(src, alt, title) {
+  const filename = String(src || '').split('/').pop();
+  const illustration = articleTwoIllustrations[filename];
+  return illustration ? { ...illustration } : { alt: alt || title || '', title };
+}
+
 function PdfLink({ href, children }) {
   return <a className="blog-file" href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
 }
@@ -37,7 +78,12 @@ function renderNode(node, key) {
   const children = (node.content || []).map((child, index) => renderNode(child, `${key}-${index}`));
   if (node.type === 'doc') return <>{children}</>;
   if (node.type === 'articleSection') return <section key={key} className={`blog-visual-section ${node.attrs?.layout || 'image-right'}`}><div className="blog-visual-section__copy">{children}</div><figure><BlogImageZoom src={node.attrs.src} alt={node.attrs.alt || node.attrs.title || ''} /><figcaption>{node.attrs.title}<BlogPhotoCredit src={node.attrs.src} /></figcaption></figure></section>;
-  if (node.type === 'paragraph') return <p key={key} style={node.attrs?.align ? { textAlign: node.attrs.align } : undefined}>{children}</p>;
+  if (node.type === 'paragraph') {
+    const plainText = (node.content || []).filter(child => child.type === 'text').map(child => child.text || '').join('');
+    const articleTwoSourceNote = 'Las imágenes son de Unsplash. El video y los enlaces llevan a referencias externas sobre mantenimiento e inspección.';
+    const correctedSourceNote = 'El artículo combina diagramas ilustrativos, fotografías con su atribución y recursos externos. Confirma siempre los procedimientos en el manual de tu máquina.';
+    return <p key={key} style={node.attrs?.align ? { textAlign: node.attrs.align } : undefined}>{plainText === articleTwoSourceNote ? correctedSourceNote : children}</p>;
+  }
   if (node.type === 'heading') {
     const level = [1, 2, 3].includes(Number(node.attrs?.level)) ? Number(node.attrs.level) : 2;
     const style = node.attrs?.align ? { textAlign: node.attrs.align } : undefined;
@@ -53,7 +99,10 @@ function renderNode(node, key) {
   if (node.type === 'horizontalRule') return <hr key={key} />;
   if (node.type === 'pageBreak') return <hr key={key} className="blog-page-break" />;
   const mediaStyle = { width: `${node.attrs?.width || 100}%`, marginLeft: node.attrs?.align === 'left' ? 0 : 'auto', marginRight: node.attrs?.align === 'right' ? 0 : 'auto' };
-  if (node.type === 'image') return <figure key={key} style={mediaStyle}><BlogImageZoom src={node.attrs.src} alt={node.attrs.alt || node.attrs.title || ''} />{node.attrs.title && <figcaption>{node.attrs.title}<BlogPhotoCredit src={node.attrs.src} /></figcaption>}</figure>;
+  if (node.type === 'image') {
+    const details = imageDetails(node.attrs.src, node.attrs.alt, node.attrs.title);
+    return <figure key={key} style={mediaStyle}><BlogImageZoom src={node.attrs.src} alt={details.alt} />{details.title && <figcaption>{details.title}<BlogPhotoCredit src={node.attrs.src} /></figcaption>}</figure>;
+  }
   if (node.type === 'video' && isPdfUrl(node.attrs.src)) return <figure key={key} className="blog-pdf" style={mediaStyle}><PdfLink href={node.attrs.src}>📄 {pdfLabel(node.attrs.title)} <span>↗</span></PdfLink></figure>;
   if (node.type === 'video') return <figure key={key} style={mediaStyle}><div className="blog-video">{node.attrs.src.includes('/video/upload/') ? <video src={node.attrs.src} title={node.attrs.title || 'Video del artículo'} controls preload="metadata" /> : <iframe src={node.attrs.src} title={node.attrs.title || 'Video del artículo'} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />}</div>{node.attrs.title && <figcaption>{node.attrs.title}</figcaption>}</figure>;
   if (node.type === 'pdf') return <figure key={key} className="blog-pdf" style={mediaStyle}><PdfLink href={node.attrs.src || node.attrs.href}>📄 {pdfLabel(node.attrs.label || node.attrs.title)} <span>↗</span></PdfLink></figure>;
