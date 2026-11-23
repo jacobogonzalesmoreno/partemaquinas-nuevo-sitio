@@ -381,9 +381,10 @@
 .blog-preview-page--arial12 .blog-article-summary>p { font-size:clamp(1.05rem,2vw,1.3rem) !important; line-height:1.6 !important; }
 .blog-preview-page--arial12 .blog-visual-section__copy h2,.blog-preview-page--arial12 .blog-visual-section__copy h3 { font-size:1.45rem !important; line-height:1.25 !important; }
 @media(max-width:600px) {
-  .blog-article-page { min-height:0; }
-  .blog-article-shell { padding-bottom:1rem; }
-  .blog-article-shell article { padding-bottom:.85rem; }
+  .blog-article-page { min-height:0; width:100%; max-width:100%; overflow-x:clip; }
+  .blog-article-shell { width:100%; max-width:100%; box-sizing:border-box; padding-bottom:1rem; }
+  .blog-article-shell article { width:100%; max-width:100%; min-width:0; box-sizing:border-box; padding-bottom:.85rem; }
+  .blog-article-page img,.blog-article-page iframe,.blog-article-page video { max-width:100%; }
   .blog-article-header h1,.blog-preview-page--arial12 .blog-article-header h1 { max-width:100%; font-size:clamp(1.8rem,7.5vw,2.15rem) !important; line-height:1.12 !important; overflow-wrap:normal; word-break:normal; hyphens:none; }
   .blog-article-intro { margin-bottom:1.25rem; }
   .blog-cta { margin-bottom:0; }
