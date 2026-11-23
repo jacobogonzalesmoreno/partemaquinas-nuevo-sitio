@@ -508,7 +508,21 @@ export default function BlogAdminPanel() {
       range.collapse(false);
       selectionRef.current = range.cloneRange();
     }
-    insertHtml(`<section data-blog-article-section="true" data-blog-layout="${sectionLayout}" data-blog-image-src="${escapeHtml(sectionImageUrl)}" data-blog-image-alt="${escapeHtml(imageAlt)}" data-blog-image-title="${escapeHtml(sectionHeading.trim())}"><div data-blog-section-copy="true"><h2>${escapeHtml(sectionHeading.trim())}</h2><p>${escapeHtml(sectionText.trim()).replace(/\n/g, '<br>')}</p><p><strong>Nota:</strong> Sigue las especificaciones del manual de tu máquina.</p></div><img data-blog-section-illustration="true" contenteditable="false" src="${escapeHtml(sectionImageUrl)}" alt="${escapeHtml(imageAlt)}" title="${escapeHtml(sectionHeading.trim())}"></section><p><br></p>`);
+    const sectionHtml = `<section data-blog-article-section="true" data-blog-layout="${sectionLayout}" data-blog-image-src="${escapeHtml(sectionImageUrl)}" data-blog-image-alt="${escapeHtml(imageAlt)}" data-blog-image-title="${escapeHtml(sectionHeading.trim())}"><div data-blog-section-copy="true"><h2>${escapeHtml(sectionHeading.trim())}</h2><p>${escapeHtml(sectionText.trim()).replace(/\n/g, '<br>')}</p><p><strong>Nota:</strong> Sigue las especificaciones del manual de tu máquina.</p></div><img data-blog-section-illustration="true" contenteditable="false" src="${escapeHtml(sectionImageUrl)}" alt="${escapeHtml(imageAlt)}" title="${escapeHtml(sectionHeading.trim())}"></section><p><br></p>`;
+    // Always add illustrated sections as siblings at the document root. execCommand(insertHTML)
+    // can leave the caret inside the previous section, which nests subsequent sections and breaks
+    // the text/image columns in both the editor and the published article.
+    editor.insertAdjacentHTML('beforeend', sectionHtml);
+    const spacer = editor.lastElementChild;
+    const range = document.createRange();
+    range.selectNodeContents(spacer);
+    range.collapse(true);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+    editor.focus();
+    selectionRef.current = range.cloneRange();
+    saveSelection();
     setDialog(null);
     updatePageCount();
   };
