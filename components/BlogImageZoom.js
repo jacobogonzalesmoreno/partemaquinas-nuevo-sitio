@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 4;
+const MIN_ZOOM = 0.8;
+const MAX_ZOOM = 2;
 const pointerDistance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
 export default function BlogImageZoom({ src, alt = '', className = '' }) {
@@ -86,14 +86,14 @@ export default function BlogImageZoom({ src, alt = '', className = '' }) {
         <div className="blog-image-lightbox__toolbar">
           <span className="blog-image-lightbox__caption">{alt || 'Imagen de referencia'}</span>
           <div className="blog-image-lightbox__controls" aria-label="Controles de zoom">
-            <button type="button" onClick={() => changeZoom(-0.25)} disabled={zoom <= MIN_ZOOM} aria-label="Alejar">−</button>
+            <button type="button" onClick={() => changeZoom(-0.1)} disabled={zoom <= MIN_ZOOM} aria-label="Alejar">−</button>
             <span aria-live="polite">{Math.round(zoom * 100)}%</span>
-            <button type="button" onClick={() => changeZoom(0.25)} disabled={zoom >= MAX_ZOOM} aria-label="Acercar">+</button>
+            <button type="button" onClick={() => changeZoom(0.1)} disabled={zoom >= MAX_ZOOM} aria-label="Acercar">+</button>
             <button type="button" onClick={() => setZoom(1)} aria-label="Restablecer zoom">Restablecer</button>
           </div>
           <button type="button" className="blog-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
         </div>
-        <div ref={stage} className="blog-image-lightbox__stage" onWheel={event => { event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.15 : -0.15); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+        <div ref={stage} className="blog-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); changeZoom(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
           <div className="blog-image-lightbox__canvas" style={{ width: `${Math.max(100, zoom * 100)}%`, height: `${Math.max(100, zoom * 100)}%` }}>
             <img src={src} alt={alt} draggable="false" />
           </div>

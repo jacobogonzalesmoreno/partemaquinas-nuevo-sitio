@@ -65,6 +65,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
 
   const abrirLightbox = useCallback((idx) => {
     bloquearScrollFondo();
+    setLightboxZoom(1);
     requestAnimationFrame(() => {
       setLightboxIndex(idx);
     });
@@ -79,7 +80,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
     restaurarScrollFondo();
   }, [restaurarScrollFondo]);
 
-  const ajustarZoomLightbox = amount => setLightboxZoom(current => Math.max(.5, Math.min(4, Number((current + amount).toFixed(2)))));
+  const ajustarZoomLightbox = amount => setLightboxZoom(current => Math.max(.8, Math.min(2, Number((current + amount).toFixed(2)))));
   const pointerDownLightbox = event => {
     if (event.pointerType !== 'touch') return;
     pointersLightbox.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -94,7 +95,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
     if (pointersLightbox.current.size === 2 && pinchLightbox.current) {
       const [a, b] = [...pointersLightbox.current.values()];
       const ratio = Math.hypot(a.x - b.x, a.y - b.y) / Math.max(pinchLightbox.current.distance, 1);
-      setLightboxZoom(Math.max(.5, Math.min(4, Number((pinchLightbox.current.zoom * ratio).toFixed(2)))));
+      setLightboxZoom(Math.max(.8, Math.min(2, Number((pinchLightbox.current.zoom * ratio).toFixed(2)))));
     }
   };
   const pointerUpLightbox = event => {
@@ -171,7 +172,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
         <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>
           {lightboxMuestraModelo ? 'Modelo 3D' : `${lightboxIndex + 1} / ${imagenes.length}`}
         </div>
-        {!lightboxMuestraModelo && <div className="product-lightbox__zoom-controls" onClick={e => e.stopPropagation()}><button type="button" onClick={() => ajustarZoomLightbox(-.25)} disabled={lightboxZoom <= .5} aria-label="Alejar imagen">−</button><span>{Math.round(lightboxZoom * 100)}%</span><button type="button" onClick={() => ajustarZoomLightbox(.25)} disabled={lightboxZoom >= 4} aria-label="Acercar imagen">+</button><button type="button" onClick={() => setLightboxZoom(1)}>Restablecer</button></div>}
+        {!lightboxMuestraModelo && <div className="product-lightbox__zoom-controls" onClick={e => e.stopPropagation()}><button type="button" onClick={() => ajustarZoomLightbox(-.1)} disabled={lightboxZoom <= .8} aria-label="Alejar imagen">−</button><span>{Math.round(lightboxZoom * 100)}%</span><button type="button" onClick={() => ajustarZoomLightbox(.1)} disabled={lightboxZoom >= 2} aria-label="Acercar imagen">+</button><button type="button" onClick={() => setLightboxZoom(1)}>Restablecer</button></div>}
         <button
           onClick={cerrarLightbox}
           style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 0, backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', fontSize: 20, cursor: 'pointer' }}
@@ -181,7 +182,7 @@ export default function DetalleClient({ producto, modelo3d = null }) {
       </div>
 
       {/* Area de imagen */}
-      <div onClick={e => e.stopPropagation()} onWheel={e => { if (lightboxMuestraModelo) return; e.preventDefault(); ajustarZoomLightbox(e.deltaY < 0 ? .15 : -.15); }} onPointerDown={pointerDownLightbox} onPointerMove={pointerMoveLightbox} onPointerUp={pointerUpLightbox} onPointerCancel={pointerUpLightbox} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '0 16px 16px', minHeight: 0, overflow: 'auto', touchAction: 'none' }}>
+      <div onClick={e => e.stopPropagation()} onWheel={e => { if (lightboxMuestraModelo || !e.ctrlKey) return; e.preventDefault(); ajustarZoomLightbox(e.deltaY < 0 ? .05 : -.05); }} onPointerDown={pointerDownLightbox} onPointerMove={pointerMoveLightbox} onPointerUp={pointerUpLightbox} onPointerCancel={pointerUpLightbox} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', padding: '0 16px 16px', minHeight: 0, overflow: 'auto', touchAction: 'none' }}>
         {/* Flecha anterior */}
         {lightboxIndex > 0 && (
           <button

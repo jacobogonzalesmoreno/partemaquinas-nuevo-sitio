@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 4;
+const MIN_ZOOM = 0.8;
+const MAX_ZOOM = 2;
 const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
 export default function GlobalImageZoom() {
@@ -93,14 +93,14 @@ export default function GlobalImageZoom() {
       <div className="global-image-lightbox__toolbar">
         <span title={image.alt}>{image.alt}</span>
         <div className="global-image-lightbox__controls">
-          <button type="button" onClick={() => adjust(-0.25)} disabled={zoom <= MIN_ZOOM} aria-label="Alejar">−</button>
+          <button type="button" onClick={() => adjust(-0.1)} disabled={zoom <= MIN_ZOOM} aria-label="Alejar">−</button>
           <output aria-live="polite">{Math.round(zoom * 100)}%</output>
-          <button type="button" onClick={() => adjust(0.25)} disabled={zoom >= MAX_ZOOM} aria-label="Acercar">+</button>
+          <button type="button" onClick={() => adjust(0.1)} disabled={zoom >= MAX_ZOOM} aria-label="Acercar">+</button>
           <button type="button" onClick={() => setZoom(1)}>Restablecer</button>
         </div>
         <button type="button" className="global-image-lightbox__close" onClick={close} aria-label="Cerrar imagen ampliada">×</button>
       </div>
-      <div ref={stage} className="global-image-lightbox__stage" onWheel={event => { event.preventDefault(); adjust(event.deltaY < 0 ? 0.15 : -0.15); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+      <div ref={stage} className="global-image-lightbox__stage" onWheel={event => { if (!event.ctrlKey) return; event.preventDefault(); adjust(event.deltaY < 0 ? 0.05 : -0.05); }} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
         <div className="global-image-lightbox__canvas" style={{ width: `${Math.max(100, zoom * 100)}%`, height: `${Math.max(100, zoom * 100)}%` }}>
           <img src={image.src} alt={image.alt} draggable="false" />
         </div>
