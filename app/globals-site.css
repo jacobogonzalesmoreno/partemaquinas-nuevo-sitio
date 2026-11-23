@@ -477,14 +477,14 @@ main.min-h-screen.bg-slate-50 { background-color: var(--store-bg); }
 .site-navbar__mobile .border-slate-200 { border-color: #39393d; }
 .site-navbar__mobile a:hover { background: #252529; }
 .site-navbar__mobile input { color: #242426; background: #fff; }
-.site-navbar__mobile .navbar-search-suggestions { color:#242426; background:#fff; border-color:#dedee2; }
-.site-navbar__mobile .navbar-search-suggestions__heading { color:#74747a; background:#f5f5f6; }
-.site-navbar__mobile .navbar-search-suggestion { color:#303036; background:#fff; }
-.site-navbar__mobile .navbar-search-suggestion:hover,.site-navbar__mobile .navbar-search-suggestion:focus-visible { color:#171719; background:#fff8e5; outline:none; }
-.site-navbar__mobile .navbar-search-suggestion__title { color:#242426; }
-.site-navbar__mobile .navbar-search-suggestion__sku { color:#717178; }
-.site-navbar__mobile .navbar-search-suggestion__brand { color:#965c00; }
-.site-navbar__mobile .navbar-search-suggestions .bg-slate-50 { color:#707077; background:#f5f5f6; border-color:#e5e5e8; }
+.navbar-search-suggestions { color:#242426; background:#fff; border-color:#dedee2; }
+.navbar-search-suggestions__heading { color:#74747a; background:#f5f5f6; }
+.navbar-search-suggestion { color:#303036; background:#fff; }
+.navbar-search-suggestion:hover,.navbar-search-suggestion:focus-visible { color:#171719; background:#fff8e5; outline:none; }
+.navbar-search-suggestion__title { color:#242426; }
+.navbar-search-suggestion__sku { color:#717178; }
+.navbar-search-suggestion__brand { color:#965c00; }
+.navbar-search-suggestions .bg-slate-50 { color:#707077; background:#f5f5f6; border-color:#e5e5e8; }
 .support-menu { position: absolute; top: calc(100% + 12px); left: 0; z-index: 80; width: min(680px, calc(100vw - 32px)); padding: 18px; border: 1px solid var(--store-border); border-radius: 18px; background: #fff; color: var(--store-ink); box-shadow: 0 18px 45px rgba(18,18,18,.18); }
 .support-menu__tabs { display: flex; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--store-border); }
 .support-menu__tabs button { padding: 8px 13px; border: 1px solid var(--store-border); border-radius: 999px; color: var(--store-muted); font-size: 12px; font-weight: 700; }
